@@ -1,28 +1,45 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { login, signup } from '@/app/auth/actions'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase/client'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setMessage(null)
-    const formData = new FormData(e.currentTarget)
+    setLoading(true)
 
-    startTransition(async () => {
+    try {
       if (mode === 'signin') {
-        const result = await login(formData)
-        if (result?.error) setMessage({ type: 'error', text: result.error })
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) {
+          setMessage({ type: 'error', text: error.message })
+        } else {
+          router.push('/dashboard')
+          router.refresh()
+        }
       } else {
-        const result = await signup(formData)
-        if (result?.error) setMessage({ type: 'error', text: result.error })
-        if (result?.success) setMessage({ type: 'success', text: result.success })
+        const { error } = await supabase.auth.signUp({ email, password })
+        if (error) {
+          setMessage({ type: 'error', text: error.message })
+        } else {
+          setMessage({
+            type: 'success',
+            text: 'Account created! Check your email to confirm, then sign in.',
+          })
+        }
       }
-    })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -46,7 +63,6 @@ export default function LoginPage() {
           <p className="text-slate-400 text-lg leading-relaxed mb-10">
             Manage job costing, WIP reports, and multi-client dashboards for all your construction contractor clients — connected directly to QuickBooks Online.
           </p>
-
           <div className="space-y-4">
             {[
               { icon: '📊', label: 'Job Costing Reports', desc: 'Materials, labor, subs — budget vs actual' },
@@ -70,7 +86,6 @@ export default function LoginPage() {
       {/* Right panel — form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
             <div className="w-9 h-9 bg-amber-400 rounded-lg flex items-center justify-center">
               <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -85,105 +100,64 @@ export default function LoginPage() {
               {mode === 'signin' ? 'Welcome back' : 'Create your account'}
             </h2>
             <p className="text-slate-500 text-sm">
-              {mode === 'signin'
-                ? 'Sign in to your bookkeeper workspace'
-                : 'Start managing construction clients today'}
+              {mode === 'signin' ? 'Sign in to your bookkeeper workspace' : 'Start managing construction clients today'}
             </p>
           </div>
 
-          {/* Toggle */}
           <div className="flex rounded-xl bg-slate-100 p-1 mb-8">
             <button
               type="button"
               onClick={() => { setMode('signin'); setMessage(null) }}
-              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                mode === 'signin'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
-              }`}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${mode === 'signin' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               Sign In
             </button>
             <button
               type="button"
               onClick={() => { setMode('signup'); setMessage(null) }}
-              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                mode === 'signup'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
-              }`}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${mode === 'signup' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               Sign Up
             </button>
           </div>
 
-          {/* Alert */}
           {message && (
-            <div
-              className={`mb-6 px-4 py-3 rounded-xl text-sm font-medium border ${
-                message.type === 'error'
-                  ? 'bg-red-50 text-red-700 border-red-200'
-                  : 'bg-emerald-50 text-emerald-700 border-emerald-200'
-              }`}
-            >
+            <div className={`mb-6 px-4 py-3 rounded-xl text-sm font-medium border ${message.type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
               {message.text}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
-                Email address
-              </label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
               <input
-                id="email"
-                name="email"
                 type="email"
                 required
-                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@firm.com"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition"
               />
             </div>
-
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
               <input
-                id="password"
-                name="password"
                 type="password"
                 required
-                autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-                placeholder={mode === 'signup' ? 'Min. 8 characters' : '••••••••'}
-                minLength={mode === 'signup' ? 8 : undefined}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={mode === 'signup' ? 'Min. 6 characters' : '••••••••'}
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition"
               />
             </div>
-
             <button
               type="submit"
-              disabled={isPending}
+              disabled={loading}
               className="w-full py-3 px-6 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 disabled:cursor-not-allowed text-slate-900 font-semibold text-sm rounded-xl transition-colors"
             >
-              {isPending
-                ? mode === 'signin' ? 'Signing in…' : 'Creating account…'
-                : mode === 'signin' ? 'Sign In' : 'Create Account'}
+              {loading ? (mode === 'signin' ? 'Signing in…' : 'Creating account…') : (mode === 'signin' ? 'Sign In' : 'Create Account')}
             </button>
           </form>
-
-          {mode === 'signin' && (
-            <p className="mt-6 text-center text-xs text-slate-400">
-              Don&apos;t have an account?{' '}
-              <button
-                onClick={() => { setMode('signup'); setMessage(null) }}
-                className="text-amber-600 font-semibold hover:underline"
-              >
-                Sign up free
-              </button>
-            </p>
-          )}
         </div>
       </div>
     </div>
