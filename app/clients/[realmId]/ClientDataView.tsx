@@ -93,9 +93,14 @@ export default function ClientDataView({ realmId }: { realmId: string }) {
               <span className="font-semibold text-slate-900">{data?.company}</span>
             </div>
           </div>
-          <span className="text-xs bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full font-medium border border-emerald-200">
-            ✓ Live QBO Data
-          </span>
+          <div className="flex items-center gap-3">
+            <Link href={`/clients/${realmId}/job-costing`} className="flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 text-sm font-semibold rounded-xl transition-colors">
+              📊 Job Costing Report
+            </Link>
+            <Link href={`/clients/${realmId}/wip`} className="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-700 text-white text-sm font-semibold rounded-xl transition-colors">
+              🏗️ WIP Report
+            </Link>
+          </div>
         </div>
       </header>
 
