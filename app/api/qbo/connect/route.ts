@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const params = new URLSearchParams({
     client_id: process.env.QBO_CLIENT_ID!,
     scope: 'com.intuit.quickbooks.accounting',
-    redirect_uri: process.env.QBO_REDIRECT_URI!,
+    redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/qbo/callback`,
     response_type: 'code',
     access_type: 'offline',
     state,
