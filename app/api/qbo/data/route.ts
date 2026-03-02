@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-async function refreshToken(connection: Record<string, string>, supabase: ReturnType<typeof createClient>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function refreshToken(connection: Record<string, string>, supabase: any) {
   const credentials = Buffer.from(
     `${process.env.QBO_CLIENT_ID}:${process.env.QBO_CLIENT_SECRET}`
   ).toString('base64')
