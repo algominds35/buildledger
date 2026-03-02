@@ -1,0 +1,268 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@supabase/supabase-js'
+import Link from 'next/link'
+import type { WipRow } from '@/app/api/qbo/wip/route'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+const fmt = (n: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
+
+const pct = (n: number) => `${n.toFixed(1)}%`
+
+function PctBar({ value, color }: { value: number; color: string }) {
+  return (
+    <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1">
+      <div className={`h-1.5 rounded-full ${color}`} style={{ width: `${Math.min(value, 100)}%` }} />
+    </div>
+  )
+}
+
+export default function WipClient({ realmId }: { realmId: string }) {
+  const router = useRouter()
+  const [wip, setWip] = useState<WipRow[]>([])
+  const [company, setCompany] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'all' | 'active' | 'complete'>('active')
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) { router.push('/login'); return }
+      try {
+        const res = await fetch(`/api/qbo/wip?realmId=${realmId}&userId=${session.user.id}`)
+        const json = await res.json()
+        if (!res.ok) { setError(json.error); setLoading(false); return }
+        setWip(json.wip)
+        setCompany(json.company)
+      } catch {
+        setError('Failed to load WIP data')
+      } finally {
+        setLoading(false)
+      }
+    })
+  }, [realmId, router])
+
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+        <p className="text-slate-500 text-sm">Building WIP schedule…</p>
+      </div>
+    </div>
+  )
+
+  if (error) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-red-500 mb-3">{error}</p>
+        <Link href="/dashboard" className="text-sm text-amber-600 hover:underline">← Back</Link>
+      </div>
+    </div>
+  )
+
+  const filtered = wip.filter(r => filter === 'all' ? true : r.status === filter)
+  const active = wip.filter(r => r.status === 'active')
+
+  const totalContract = filtered.reduce((s, r) => s + r.contractAmount, 0)
+  const totalCosts = filtered.reduce((s, r) => s + r.costsToDate, 0)
+  const totalBilled = filtered.reduce((s, r) => s + r.billedToDate, 0)
+  const totalOver = filtered.reduce((s, r) => s + r.overBilling, 0)
+  const totalUnder = filtered.reduce((s, r) => s + r.underBilling, 0)
+  const totalRetainage = filtered.reduce((s, r) => s + r.retainage, 0)
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Nav */}
+      <header className="bg-white border-b border-slate-200 print:hidden">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link href={`/clients/${realmId}`} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-medium">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+              Back
+            </Link>
+            <span className="text-slate-300">/</span>
+            <span className="font-semibold text-slate-900">{company}</span>
+            <span className="text-slate-300">/</span>
+            <span className="text-slate-600 text-sm">WIP Schedule</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href={`/clients/${realmId}/job-costing`} className="text-sm text-slate-500 hover:text-slate-800 font-medium">
+              📊 Job Costing
+            </Link>
+            <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-xl hover:bg-slate-700 transition-colors">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" /></svg>
+              Print / Export PDF
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-slate-900">WIP Schedule</h1>
+          <p className="text-slate-500 text-sm mt-1">{company} · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+
+        {/* Summary cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
+          {[
+            { label: 'Active Jobs', value: active.length.toString(), icon: '🏗️', color: 'text-slate-900' },
+            { label: 'Contract Value', value: fmt(totalContract), icon: '📋', color: 'text-slate-900' },
+            { label: 'Costs to Date', value: fmt(totalCosts), icon: '💰', color: 'text-slate-900' },
+            { label: 'Billed to Date', value: fmt(totalBilled), icon: '🧾', color: 'text-slate-900' },
+            { label: 'Over Billings', value: fmt(totalOver), icon: '⬆️', color: totalOver > 0 ? 'text-red-600' : 'text-slate-400' },
+            { label: 'Under Billings', value: fmt(totalUnder), icon: '⬇️', color: totalUnder > 0 ? 'text-amber-600' : 'text-slate-400' },
+          ].map(s => (
+            <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-lg mb-1">{s.icon}</div>
+              <div className={`text-lg font-bold ${s.color}`}>{s.value}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Retainage callout */}
+        {totalRetainage > 0 && (
+          <div className="mb-5 bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 flex items-center gap-3">
+            <span className="text-blue-500 text-lg">🔒</span>
+            <p className="text-blue-700 text-sm font-medium">
+              Total retainage held: <strong>{fmt(totalRetainage)}</strong> — confirm release schedule with clients
+            </p>
+          </div>
+        )}
+
+        {/* Filter tabs */}
+        <div className="flex gap-2 mb-4 print:hidden">
+          {(['active', 'all', 'complete'] as const).map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors capitalize ${
+                filter === f ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-400'
+              }`}
+            >
+              {f === 'active' ? `🏗️ Active (${active.length})` : f === 'complete' ? `✓ Complete` : 'All Jobs'}
+            </button>
+          ))}
+        </div>
+
+        {/* WIP Table */}
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
+                <tr>
+                  <th className="px-4 py-3 text-left sticky left-0 bg-slate-50">Project</th>
+                  <th className="px-4 py-3 text-right">Contract $</th>
+                  <th className="px-4 py-3 text-right">Est. Costs</th>
+                  <th className="px-4 py-3 text-center min-w-[120px]">% Complete</th>
+                  <th className="px-4 py-3 text-right">Rev. Earned</th>
+                  <th className="px-4 py-3 text-right">Billed to Date</th>
+                  <th className="px-4 py-3 text-right">Costs to Date</th>
+                  <th className="px-4 py-3 text-right">Over Billing</th>
+                  <th className="px-4 py-3 text-right">Under Billing</th>
+                  <th className="px-4 py-3 text-right">Retainage</th>
+                  <th className="px-4 py-3 text-right">Cost to Complete</th>
+                  <th className="px-4 py-3 text-right">Gross Margin</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filtered.map((row) => (
+                  <tr key={row.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 sticky left-0 bg-white">
+                      <div className="font-medium text-slate-900 max-w-[160px] truncate">{row.name}</div>
+                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                        row.status === 'active' ? 'bg-emerald-50 text-emerald-700' :
+                        row.status === 'complete' ? 'bg-blue-50 text-blue-700' :
+                        'bg-slate-100 text-slate-500'
+                      }`}>
+                        {row.status === 'active' ? 'Active' : row.status === 'complete' ? 'Complete' : 'Not Started'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right text-slate-700">{fmt(row.contractAmount)}</td>
+                    <td className="px-4 py-3 text-right text-slate-500">{fmt(row.estimatedCosts)}</td>
+                    <td className="px-4 py-3">
+                      <div className="text-center font-semibold text-slate-900">{pct(row.pctComplete)}</div>
+                      <PctBar
+                        value={row.pctComplete}
+                        color={row.pctComplete >= 100 ? 'bg-blue-500' : row.pctComplete >= 50 ? 'bg-emerald-500' : 'bg-amber-400'}
+                      />
+                    </td>
+                    <td className="px-4 py-3 text-right text-slate-700">{fmt(row.earnedRevenue)}</td>
+                    <td className="px-4 py-3 text-right text-slate-700">{fmt(row.billedToDate)}</td>
+                    <td className="px-4 py-3 text-right text-slate-700">{fmt(row.costsToDate)}</td>
+                    <td className="px-4 py-3 text-right">
+                      {row.overBilling > 0
+                        ? <span className="text-red-600 font-semibold">{fmt(row.overBilling)}</span>
+                        : <span className="text-slate-300">—</span>}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {row.underBilling > 0
+                        ? <span className="text-amber-600 font-semibold">{fmt(row.underBilling)}</span>
+                        : <span className="text-slate-300">—</span>}
+                    </td>
+                    <td className="px-4 py-3 text-right text-blue-600 font-medium">{fmt(row.retainage)}</td>
+                    <td className="px-4 py-3 text-right text-slate-500">{fmt(row.costToComplete)}</td>
+                    <td className={`px-4 py-3 text-right font-semibold ${row.grossMarginPct >= 20 ? 'text-emerald-600' : row.grossMarginPct >= 0 ? 'text-amber-600' : 'text-red-600'}`}>
+                      {pct(row.grossMarginPct)}
+                    </td>
+                  </tr>
+                ))}
+                {/* Totals */}
+                <tr className="bg-slate-50 font-semibold text-sm border-t-2 border-slate-300">
+                  <td className="px-4 py-3 sticky left-0 bg-slate-50">TOTAL</td>
+                  <td className="px-4 py-3 text-right">{fmt(totalContract)}</td>
+                  <td className="px-4 py-3 text-right">{fmt(filtered.reduce((s, r) => s + r.estimatedCosts, 0))}</td>
+                  <td className="px-4 py-3 text-center">
+                    {totalContract > 0 ? pct(filtered.reduce((s, r) => s + r.earnedRevenue, 0) / totalContract * 100) : '—'}
+                  </td>
+                  <td className="px-4 py-3 text-right">{fmt(filtered.reduce((s, r) => s + r.earnedRevenue, 0))}</td>
+                  <td className="px-4 py-3 text-right">{fmt(totalBilled)}</td>
+                  <td className="px-4 py-3 text-right">{fmt(totalCosts)}</td>
+                  <td className="px-4 py-3 text-right text-red-600">{totalOver > 0 ? fmt(totalOver) : '—'}</td>
+                  <td className="px-4 py-3 text-right text-amber-600">{totalUnder > 0 ? fmt(totalUnder) : '—'}</td>
+                  <td className="px-4 py-3 text-right text-blue-600">{fmt(totalRetainage)}</td>
+                  <td className="px-4 py-3 text-right">{fmt(filtered.reduce((s, r) => s + r.costToComplete, 0))}</td>
+                  <td className="px-4 py-3 text-right">
+                    {(() => {
+                      const earned = filtered.reduce((s, r) => s + r.earnedRevenue, 0)
+                      const gp = filtered.reduce((s, r) => s + r.grossProfit, 0)
+                      return earned > 0 ? <span className={gp >= 0 ? 'text-emerald-600' : 'text-red-600'}>{pct(gp / earned * 100)}</span> : '—'
+                    })()}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className="font-semibold text-slate-900 mb-3 text-sm">WIP Schedule Definitions</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-600">
+            {[
+              { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method)' },
+              { term: 'Revenue Earned', def: 'Contract Amount × % Complete' },
+              { term: 'Over Billing', def: 'Billed to Date exceeds Revenue Earned — liability on balance sheet' },
+              { term: 'Under Billing', def: 'Revenue Earned exceeds Billed to Date — asset on balance sheet' },
+              { term: 'Retainage', def: 'Amount held by owner until project completion (typically 10%)' },
+              { term: 'Cost to Complete', def: 'Estimated Total Costs minus Costs to Date' },
+            ].map(({ term, def }) => (
+              <div key={term} className="flex gap-2">
+                <span className="font-semibold text-slate-800 min-w-fit">{term}:</span>
+                <span>{def}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
