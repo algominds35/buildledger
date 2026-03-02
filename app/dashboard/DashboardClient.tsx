@@ -183,6 +183,12 @@ export default function DashboardClient() {
                       <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
                       Connected
                     </span>
+                    <a
+                      href={`/clients/${conn.realm_id}`}
+                      className="text-xs bg-slate-900 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-slate-700 transition-colors"
+                    >
+                      View Data →
+                    </a>
                     <button
                       onClick={() => handleDisconnect(conn.realm_id, conn.company_name)}
                       className="text-xs text-slate-400 hover:text-red-500 font-medium transition-colors"
