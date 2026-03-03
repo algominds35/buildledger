@@ -207,7 +207,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</Link>
             <Link href="/login" className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 text-sm font-bold rounded-xl transition-colors">
-              Get early access
+              Start free trial
             </Link>
           </div>
         </div>
@@ -232,7 +232,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-400/20">
-                Get early access →
+                Start 14-day free trial →
               </Link>
               <a href="#features" className="px-7 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base rounded-xl transition-colors">
                 See how it works
@@ -454,7 +454,7 @@ export default function LandingPage() {
             Join construction bookkeepers who have automated their monthly reporting with ReconcileBook.
           </p>
           <Link href="/login" className="inline-block px-8 py-4 bg-slate-900 hover:bg-slate-700 text-white font-bold text-base rounded-xl transition-colors shadow-xl">
-            Get early access →
+            Start 14-day free trial →
           </Link>
           <p className="text-slate-800/50 text-xs mt-3">No credit card required · Set up in under 5 minutes</p>
         </div>
