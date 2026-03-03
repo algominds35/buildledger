@@ -202,6 +202,7 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a href="#features" className="hover:text-slate-900 transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-slate-900 transition-colors">How it works</a>
+            <a href="#pricing" className="hover:text-slate-900 transition-colors">Pricing</a>
             <a href="#testimonials" className="hover:text-slate-900 transition-colors">Reviews</a>
           </div>
           <div className="flex items-center gap-3">
@@ -444,6 +445,58 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── PRICING ─────────────────────────────────────────────── */}
+      <section id="pricing" className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">Simple pricing</p>
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">One plan. Everything included.</h2>
+            <p className="text-slate-500 mt-4 text-lg">No per-client fees. No report limits. Just one flat monthly rate.</p>
+          </div>
+
+          <div className="max-w-lg mx-auto">
+            <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/10 rounded-full -translate-y-12 translate-x-12" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+                  14-day free trial included
+                </div>
+                <div className="flex items-end gap-1 mb-1">
+                  <span className="text-5xl font-extrabold">$99</span>
+                  <span className="text-slate-400 mb-2">/month</span>
+                </div>
+                <p className="text-slate-400 text-sm mb-8">Everything included. Cancel anytime.</p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    'Unlimited contractor clients',
+                    'Job Costing reports — live from QBO',
+                    'WIP Schedule — cost-to-cost method',
+                    'Multi-client dashboard',
+                    'One-click PDF export',
+                    'Retainage & over/under billing tracking',
+                    'QuickBooks Online integration',
+                    'Priority support',
+                  ].map(item => (
+                    <li key={item} className="flex items-center gap-3 text-sm">
+                      <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg className="w-3 h-3 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                      </div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/login" className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-base">
+                  Start 14-day free trial →
+                </Link>
+                <p className="text-center text-slate-500 text-xs mt-3">No credit card required to start · Cancel anytime</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA BANNER ──────────────────────────────────────────── */}
       <section className="py-20 bg-amber-400">
         <div className="max-w-3xl mx-auto px-6 text-center">
@@ -474,6 +527,7 @@ export default function LandingPage() {
             </div>
             <div className="flex gap-6 text-sm text-slate-400">
               <a href="#features" className="hover:text-white transition-colors">Features</a>
+              <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
               <a href="#testimonials" className="hover:text-white transition-colors">Reviews</a>
               <Link href="/login" className="hover:text-white transition-colors">Sign in</Link>
             </div>
