@@ -58,12 +58,12 @@ export default function LoginClient() {
           </p>
           <div className="space-y-4">
             {[
-              { icon: '📊', label: 'Job Costing Reports', desc: 'Materials, labor, subs — budget vs actual' },
-              { icon: '🏗️', label: 'WIP Schedules', desc: 'Over/under billings at a glance' },
-              { icon: '👥', label: 'Multi-Client Management', desc: 'All your contractor clients in one place' },
+              { label: 'Job Costing Reports', desc: 'Materials, labor, subs — budget vs actual' },
+              { label: 'WIP Schedules', desc: 'Over/under billings at a glance' },
+              { label: 'Multi-Client Management', desc: 'All your contractor clients in one place' },
             ].map((item) => (
               <div key={item.label} className="flex items-start gap-4">
-                <span className="text-2xl">{item.icon}</span>
+                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 flex-shrink-0" />
                 <div>
                   <p className="text-white font-semibold text-sm">{item.label}</p>
                   <p className="text-slate-400 text-sm">{item.desc}</p>

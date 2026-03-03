@@ -35,7 +35,6 @@ export default function LandingPage() {
 
       {/* ── HERO ────────────────────────────────────────────────── */}
       <section className="pt-32 pb-20 bg-slate-900 relative overflow-hidden">
-        {/* Grid texture */}
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
 
         <div className="max-w-7xl mx-auto px-6 relative">
@@ -66,17 +65,14 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 mt-20 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/10">
             {[
-              { value: '100%', label: 'QuickBooks native', icon: '🔗' },
-              { value: 'Real-time', label: 'Job cost tracking', icon: '📊' },
-              { value: 'Instant', label: 'WIP schedule', icon: '🏗️' },
-              { value: 'PDF', label: 'One-click export', icon: '📄' },
+              { value: '100%', label: 'QuickBooks native' },
+              { value: 'Real-time', label: 'Job cost tracking' },
+              { value: 'Instant', label: 'WIP schedule' },
+              { value: 'PDF', label: 'One-click export' },
             ].map(s => (
-              <div key={s.label} className="bg-slate-800/60 px-6 py-5 flex items-center gap-4">
-                <span className="text-2xl">{s.icon}</span>
-                <div>
-                  <div className="text-white font-bold text-lg leading-none">{s.value}</div>
-                  <div className="text-slate-400 text-xs mt-1">{s.label}</div>
-                </div>
+              <div key={s.label} className="bg-slate-800/60 px-6 py-5">
+                <div className="text-white font-bold text-lg leading-none">{s.value}</div>
+                <div className="text-slate-400 text-xs mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -95,29 +91,27 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                icon: '📊',
                 title: 'Job Costing Reports',
-                desc: 'See total costs broken down by materials, labor, and subcontractors for every project. Budget vs. actual with variance highlighted in red.',
+                desc: 'See total costs broken down by materials, labor, and subcontractors for every project. Budget vs. actual with variance highlighted.',
                 bullets: ['Materials, labor, subs breakdown', 'Budget vs. actual variance', 'Over-budget alerts', 'Per-project detail cards'],
-                accent: 'amber',
               },
               {
-                icon: '🏗️',
                 title: 'WIP Schedules',
                 desc: 'The #1 report your contractor clients need for bonding and financing — automatically calculated using the cost-to-cost method.',
                 bullets: ['% complete (cost-to-cost)', 'Over/under billings', 'Retainage tracking', 'Revenue earned vs. billed'],
-                accent: 'blue',
               },
               {
-                icon: '🏢',
                 title: 'Multi-Client Dashboard',
                 desc: 'Manage every contractor client from one screen. See key financial metrics across your entire portfolio at a glance.',
-                bullets: ['Portfolio overview', 'Per-client financial pills', 'Open invoices & bills', 'Connect unlimited clients'],
-                accent: 'emerald',
+                bullets: ['Portfolio overview', 'Per-client financial summary', 'Open invoices & bills', 'Connect unlimited clients'],
               },
             ].map(f => (
               <div key={f.title} className="bg-slate-50 rounded-2xl p-7 border border-slate-100 hover:border-slate-200 transition-colors">
-                <div className="text-3xl mb-4">{f.icon}</div>
+                <div className="w-10 h-10 bg-amber-400/10 rounded-xl flex items-center justify-center mb-5">
+                  <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  </svg>
+                </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{f.title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed mb-5">{f.desc}</p>
                 <ul className="space-y-2">
@@ -137,12 +131,20 @@ export default function LandingPage() {
           {/* Additional feature row */}
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             <div className="bg-slate-900 rounded-2xl p-7 text-white">
-              <div className="text-3xl mb-4">📄</div>
+              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-5">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              </div>
               <h3 className="text-xl font-bold mb-2">One-click PDF Export</h3>
               <p className="text-slate-400 text-sm leading-relaxed">Download any report as a professionally formatted PDF — branded with the company name and date. Send directly to clients or lenders.</p>
             </div>
             <div className="bg-amber-400 rounded-2xl p-7">
-              <div className="text-3xl mb-4">🔗</div>
+              <div className="w-10 h-10 bg-slate-900/10 rounded-xl flex items-center justify-center mb-5">
+                <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                </svg>
+              </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Native QuickBooks Integration</h3>
               <p className="text-slate-800/70 text-sm leading-relaxed">Connect any contractor's QBO account in under a minute using secure OAuth. No manual data entry. Reports always reflect live data.</p>
             </div>
@@ -169,7 +171,7 @@ export default function LandingPage() {
                 <h3 className="font-bold text-slate-900 mb-2">{s.title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
                 {s.step !== '04' && (
-                  <div className="hidden md:block absolute top-6 -right-3 text-slate-200 text-2xl font-bold">→</div>
+                  <div className="hidden md:block absolute top-6 -right-3 text-slate-300 text-2xl font-bold">→</div>
                 )}
               </div>
             ))}
