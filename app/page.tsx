@@ -2,6 +2,204 @@
 
 import Link from 'next/link'
 
+function BrowserMockup({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
+      {/* Browser chrome */}
+      <div className="bg-slate-700 px-4 py-3 flex items-center gap-3">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-400/70" />
+          <div className="w-3 h-3 rounded-full bg-amber-400/70" />
+          <div className="w-3 h-3 rounded-full bg-emerald-400/70" />
+        </div>
+        <div className="flex-1 bg-slate-600 rounded-md px-3 py-1 text-slate-400 text-xs font-mono">
+          reconcilebook.com/dashboard
+        </div>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function DashboardMockup() {
+  const clients = [
+    { name: 'Apex Builders LLC', jobs: 8, contract: '$1,240,000', billed: '$892,000', costs: '$710,000', ar: '$148,000', over: '$24,500', under: '—', status: 'over' },
+    { name: 'Summit Contracting', jobs: 5, contract: '$780,000', billed: '$430,000', costs: '$380,000', ar: '$95,000', over: '—', under: '$61,200', status: 'under' },
+    { name: 'Peak Construction Co.', jobs: 11, contract: '$2,100,000', billed: '$1,560,000', costs: '$1,290,000', ar: '$210,000', over: '$88,000', under: '—', status: 'over' },
+  ]
+  return (
+    <div className="bg-slate-50 text-slate-800 text-xs font-sans">
+      {/* Top nav */}
+      <div className="bg-white border-b border-slate-200 px-5 h-11 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 bg-amber-400 rounded flex items-center justify-center">
+            <div className="w-2.5 h-2.5 bg-slate-900 rounded-sm" />
+          </div>
+          <span className="font-bold text-slate-900 text-xs">ReconcileBook</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-slate-400">sarah@bookpro.com</span>
+          <div className="w-6 h-6 bg-slate-800 rounded-full text-white flex items-center justify-center text-[9px] font-bold">SB</div>
+        </div>
+      </div>
+      <div className="p-4">
+        {/* Page header */}
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="font-bold text-slate-900 text-sm">Client Dashboard</div>
+            <div className="text-slate-400 text-[10px]">3 clients connected · 24 active jobs</div>
+          </div>
+          <div className="px-3 py-1.5 bg-amber-400 text-slate-900 font-bold rounded-lg text-[10px]">+ Connect Client</div>
+        </div>
+        {/* Portfolio bar */}
+        <div className="bg-slate-900 rounded-xl p-3 mb-3">
+          <div className="text-slate-400 text-[9px] font-semibold uppercase tracking-widest mb-2">Portfolio Overview</div>
+          <div className="grid grid-cols-5 gap-3">
+            {[
+              { label: 'Total Clients', value: '3' },
+              { label: 'Contract Value', value: '$4,120,000' },
+              { label: 'Billed to Date', value: '$2,882,000' },
+              { label: 'Accounts Rec.', value: '$453,000' },
+              { label: 'Net Position', value: '+$48,700' },
+            ].map(s => (
+              <div key={s.label}>
+                <div className="text-white font-bold text-xs">{s.value}</div>
+                <div className="text-slate-500 text-[9px] mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Client cards */}
+        <div className="space-y-2">
+          {clients.map(c => (
+            <div key={c.name} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-amber-50 rounded-lg flex items-center justify-center text-[10px]">🏢</div>
+                  <div>
+                    <div className="font-bold text-slate-900 text-[11px]">{c.name}</div>
+                    <div className="text-emerald-600 text-[9px] font-medium">Connected · {c.jobs} jobs</div>
+                  </div>
+                </div>
+                <div className="flex gap-1.5">
+                  <div className="px-2 py-1 bg-amber-400 text-slate-900 font-bold rounded text-[9px]">Job Costing</div>
+                  <div className="px-2 py-1 bg-slate-900 text-white font-bold rounded text-[9px]">WIP</div>
+                </div>
+              </div>
+              <div className="p-2.5">
+                <div className="grid grid-cols-6 gap-1.5">
+                  {[
+                    { label: 'Contract Value', value: c.contract, color: 'bg-slate-50 text-slate-700' },
+                    { label: 'Billed to Date', value: c.billed, color: 'bg-blue-50 text-blue-800' },
+                    { label: 'Costs to Date', value: c.costs, color: 'bg-purple-50 text-purple-800' },
+                    { label: 'Accounts Rec.', value: c.ar, color: 'bg-emerald-50 text-emerald-800' },
+                    { label: 'Over Billings', value: c.over, color: c.over !== '—' ? 'bg-red-50 text-red-800' : 'bg-slate-50 text-slate-300' },
+                    { label: 'Under Billings', value: c.under, color: c.under !== '—' ? 'bg-amber-50 text-amber-800' : 'bg-slate-50 text-slate-300' },
+                  ].map(p => (
+                    <div key={p.label} className={`rounded-lg px-2 py-1.5 ${p.color}`}>
+                      <div className="font-bold text-[10px]">{p.value}</div>
+                      <div className="text-[8px] opacity-60 mt-0.5">{p.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function WipMockup() {
+  const rows = [
+    { name: 'Riverside Office Complex', pct: 78, contract: '$480,000', billed: '$374,400', costs: '$281,000', over: '$0', under: '$0', margin: '23.4%', status: 'active' },
+    { name: 'Highland Retail Center', pct: 45, contract: '$320,000', billed: '$144,000', costs: '$108,000', over: '—', under: '$36,000', margin: '18.9%', status: 'active' },
+    { name: 'Downtown Parking Garage', pct: 92, contract: '$890,000', billed: '$818,800', costs: '$720,000', over: '$48,200', under: '—', margin: '19.1%', status: 'active' },
+    { name: 'Sunset Townhomes Ph.2', pct: 31, contract: '$650,000', billed: '$201,500', costs: '$175,000', over: '—', under: '$22,500', margin: '21.2%', status: 'active' },
+  ]
+  return (
+    <div className="bg-slate-50 text-xs">
+      <div className="bg-white border-b border-slate-200 px-5 h-11 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-slate-400 text-[10px]">← Back</span>
+          <span className="font-bold text-slate-900 text-xs">Apex Builders LLC</span>
+          <span className="text-slate-400 text-[10px]">/ WIP Schedule</span>
+        </div>
+        <div className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-[10px] flex items-center gap-1.5">
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+          Download PDF
+        </div>
+      </div>
+      <div className="p-4">
+        <div className="mb-3">
+          <div className="font-bold text-slate-900 text-sm">WIP Schedule</div>
+          <div className="text-slate-400 text-[10px]">Apex Builders LLC · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+        </div>
+        {/* Summary pills */}
+        <div className="grid grid-cols-6 gap-2 mb-3">
+          {[
+            { label: 'Active Jobs', value: '4', color: 'bg-white border border-slate-200 text-slate-900' },
+            { label: 'Contract Value', value: '$2,340,000', color: 'bg-white border border-slate-200 text-slate-900' },
+            { label: 'Costs to Date', value: '$1,284,000', color: 'bg-white border border-slate-200 text-slate-900' },
+            { label: 'Billed to Date', value: '$1,538,700', color: 'bg-white border border-slate-200 text-slate-900' },
+            { label: 'Over Billings', value: '$48,200', color: 'bg-red-50 border border-red-200 text-red-800' },
+            { label: 'Under Billings', value: '$58,500', color: 'bg-amber-50 border border-amber-200 text-amber-800' },
+          ].map(s => (
+            <div key={s.label} className={`rounded-xl p-2.5 ${s.color}`}>
+              <div className="font-bold text-[11px]">{s.value}</div>
+              <div className="text-[8px] opacity-60 mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        {/* Table */}
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <table className="w-full text-[10px]">
+            <thead className="bg-slate-50 text-slate-500">
+              <tr>
+                <th className="px-3 py-2 text-left font-semibold">Project</th>
+                <th className="px-3 py-2 text-center font-semibold">% Complete</th>
+                <th className="px-3 py-2 text-right font-semibold">Contract $</th>
+                <th className="px-3 py-2 text-right font-semibold">Billed to Date</th>
+                <th className="px-3 py-2 text-right font-semibold">Costs to Date</th>
+                <th className="px-3 py-2 text-right font-semibold">Over Billing</th>
+                <th className="px-3 py-2 text-right font-semibold">Under Billing</th>
+                <th className="px-3 py-2 text-right font-semibold">Gross Margin</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {rows.map(r => (
+                <tr key={r.name} className="hover:bg-slate-50">
+                  <td className="px-3 py-2">
+                    <div className="font-medium text-slate-900">{r.name}</div>
+                    <div className="text-emerald-600 text-[8px] font-medium mt-0.5">Active</div>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="text-center font-bold text-slate-900">{r.pct}%</div>
+                    <div className="w-full bg-slate-100 rounded-full h-1 mt-1">
+                      <div className={`h-1 rounded-full ${r.pct >= 75 ? 'bg-blue-500' : r.pct >= 50 ? 'bg-emerald-500' : 'bg-amber-400'}`} style={{ width: `${r.pct}%` }} />
+                    </div>
+                  </td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.contract}</td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.billed}</td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.costs}</td>
+                  <td className="px-3 py-2 text-right">
+                    {r.over !== '—' ? <span className="text-red-600 font-semibold">{r.over}</span> : <span className="text-slate-300">—</span>}
+                  </td>
+                  <td className="px-3 py-2 text-right">
+                    {r.under !== '—' ? <span className="text-amber-600 font-semibold">{r.under}</span> : <span className="text-slate-300">—</span>}
+                  </td>
+                  <td className="px-3 py-2 text-right font-semibold text-emerald-600">{r.margin}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -23,9 +221,7 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-slate-900 transition-colors">Pricing</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-              Sign in
-            </Link>
+            <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</Link>
             <Link href="/login" className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 text-sm font-bold rounded-xl transition-colors">
               Start free trial
             </Link>
@@ -34,11 +230,11 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ────────────────────────────────────────────────── */}
-      <section className="pt-32 pb-20 bg-slate-900 relative overflow-hidden">
+      <section className="pt-32 pb-0 bg-slate-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
 
         <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto text-center pb-16">
             <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
               <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
               Built for construction bookkeepers
@@ -47,37 +243,46 @@ export default function LandingPage() {
               Construction bookkeeping,{' '}
               <span className="text-amber-400">built for the pros.</span>
             </h1>
-            <p className="text-lg text-slate-400 mb-10 max-w-2xl leading-relaxed">
+            <p className="text-lg text-slate-400 mb-10 leading-relaxed">
               Manage job costing, WIP reports, and multi-client dashboards for all your construction contractor clients — directly from QuickBooks Online data.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-400/20">
                 Start free trial →
               </Link>
-              <a href="#how-it-works" className="px-7 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base rounded-xl transition-colors">
-                See how it works
+              <a href="#features" className="px-7 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base rounded-xl transition-colors">
+                See features
               </a>
             </div>
           </div>
-        </div>
 
-        {/* Stats bar */}
-        <div className="max-w-7xl mx-auto px-6 mt-20 relative">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+          {/* Dashboard mockup */}
+          <div className="mt-4 px-4 md:px-0">
+            <BrowserMockup>
+              <DashboardMockup />
+            </BrowserMockup>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats bar */}
+      <div className="bg-slate-800">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/5">
             {[
               { value: '100%', label: 'QuickBooks native' },
               { value: 'Real-time', label: 'Job cost tracking' },
               { value: 'Instant', label: 'WIP schedule' },
               { value: 'PDF', label: 'One-click export' },
             ].map(s => (
-              <div key={s.label} className="bg-slate-800/60 px-6 py-5">
+              <div key={s.label} className="px-6 py-5">
                 <div className="text-white font-bold text-lg leading-none">{s.value}</div>
                 <div className="text-slate-400 text-xs mt-1">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ── FEATURES ────────────────────────────────────────────── */}
       <section id="features" className="py-24 bg-white">
@@ -86,6 +291,21 @@ export default function LandingPage() {
             <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">Everything you need</p>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">The full toolkit for construction bookkeepers</h2>
             <p className="text-slate-500 mt-4 text-lg max-w-2xl mx-auto">Stop building reports in spreadsheets. ReconcileBook pulls live data from QuickBooks and turns it into professional reports in seconds.</p>
+          </div>
+
+          {/* WIP report mockup */}
+          <div className="mb-16 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+            <div className="bg-slate-100 px-4 py-2.5 flex items-center gap-2.5 border-b border-slate-200">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+              </div>
+              <div className="flex-1 bg-white rounded-md px-3 py-1 text-slate-400 text-xs font-mono border border-slate-200">
+                reconcilebook.com/clients/9341025/wip
+              </div>
+            </div>
+            <WipMockup />
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -128,7 +348,6 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* Additional feature row */}
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             <div className="bg-slate-900 rounded-2xl p-7 text-white">
               <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-5">
@@ -197,7 +416,6 @@ export default function LandingPage() {
                   <span className="text-slate-400 mb-2">/month</span>
                 </div>
                 <p className="text-slate-400 text-sm mb-8">Everything included. Cancel anytime.</p>
-
                 <ul className="space-y-3 mb-8">
                   {[
                     'Unlimited contractor clients',
@@ -219,7 +437,6 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-
                 <Link href="/login" className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-base">
                   Start free trial →
                 </Link>
