@@ -1,4 +1,4 @@
--- BuildLedger — Supabase schema
+-- ReconcileBook — Supabase schema
 -- Run this in your Supabase SQL Editor (https://supabase.com/dashboard → SQL Editor)
 
 -- ============================================================
@@ -56,3 +56,26 @@ create policy "Users can read their own QBO connections"
 
 create policy "Users can delete their own QBO connections"
   on public.qbo_connections for delete using (auth.uid() = user_id);
+
+-- ============================================================
+-- SUBSCRIPTIONS (Stripe billing status per user)
+-- ============================================================
+create table if not exists public.subscriptions (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id) on delete cascade not null unique,
+  stripe_customer_id text,
+  stripe_subscription_id text,
+  status text default 'trialing' not null,
+  trial_end timestamptz default (now() + interval '14 days') not null,
+  current_period_end timestamptz,
+  created_at timestamptz default now() not null,
+  updated_at timestamptz default now() not null
+);
+
+alter table public.subscriptions enable row level security;
+
+create policy "Users can read their own subscription"
+  on public.subscriptions for select using (auth.uid() = user_id);
+
+create policy "Service role can manage subscriptions"
+  on public.subscriptions for all using (true);
