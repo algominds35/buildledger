@@ -8,7 +8,7 @@ const geist = Geist({
 })
 
 export const metadata: Metadata = {
-  title: 'BuildLedger — Construction Bookkeeping',
+  title: 'ReconcileBook — Construction Bookkeeping',
   description:
     'Job costing, WIP reports, and multi-client management for construction bookkeepers.',
 }

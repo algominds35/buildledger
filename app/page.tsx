@@ -15,7 +15,7 @@ export default function LandingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
               </svg>
             </div>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">BuildLedger</span>
+            <span className="text-lg font-bold text-slate-900 tracking-tight">ReconcileBook</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a href="#features" className="hover:text-slate-900 transition-colors">Features</a>
@@ -89,7 +89,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">Everything you need</p>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">The full toolkit for construction bookkeepers</h2>
-            <p className="text-slate-500 mt-4 text-lg max-w-2xl mx-auto">Stop building reports in spreadsheets. BuildLedger pulls live data from QuickBooks and turns it into professional reports in seconds.</p>
+            <p className="text-slate-500 mt-4 text-lg max-w-2xl mx-auto">Stop building reports in spreadsheets. ReconcileBook pulls live data from QuickBooks and turns it into professional reports in seconds.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -161,7 +161,7 @@ export default function LandingPage() {
             {[
               { step: '01', title: 'Create your account', desc: 'Sign up with your email. No credit card required to start.' },
               { step: '02', title: 'Connect a client's QBO', desc: 'Click "Connect Client" and authorize their QuickBooks account via OAuth in one click.' },
-              { step: '03', title: 'Pull live data', desc: 'BuildLedger instantly fetches jobs, invoices, bills, and expenses from QuickBooks.' },
+              { step: '03', title: 'Pull live data', desc: 'ReconcileBook instantly fetches jobs, invoices, bills, and expenses from QuickBooks.' },
               { step: '04', title: 'Generate reports', desc: 'Open job costing or WIP reports. Download as PDF and share with your client.' },
             ].map(s => (
               <div key={s.step} className="relative">
@@ -235,7 +235,7 @@ export default function LandingPage() {
             Ready to run construction books like a pro?
           </h2>
           <p className="text-slate-800/70 text-lg mb-8">
-            Join bookkeepers who have replaced spreadsheets with BuildLedger.
+            Join bookkeepers who have replaced spreadsheets with ReconcileBook.
           </p>
           <Link href="/login" className="inline-block px-8 py-4 bg-slate-900 hover:bg-slate-700 text-white font-bold text-base rounded-xl transition-colors shadow-xl">
             Get started free →
@@ -253,14 +253,14 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
                 </svg>
               </div>
-              <span className="text-white font-bold">BuildLedger</span>
+              <span className="text-white font-bold">ReconcileBook</span>
             </div>
             <div className="flex gap-6 text-sm text-slate-400">
               <a href="#features" className="hover:text-white transition-colors">Features</a>
               <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
               <Link href="/login" className="hover:text-white transition-colors">Sign in</Link>
             </div>
-            <p className="text-slate-500 text-sm">© {new Date().getFullYear()} BuildLedger. All rights reserved.</p>
+            <p className="text-slate-500 text-sm">© {new Date().getFullYear()} ReconcileBook. All rights reserved.</p>
           </div>
         </div>
       </footer>
