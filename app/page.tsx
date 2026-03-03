@@ -160,7 +160,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-6">
             {[
               { step: '01', title: 'Create your account', desc: 'Sign up with your email. No credit card required to start.' },
-              { step: '02', title: 'Connect a client's QBO', desc: 'Click "Connect Client" and authorize their QuickBooks account via OAuth in one click.' },
+              { step: '02', title: "Connect a client's QBO", desc: 'Click "Connect Client" and authorize their QuickBooks account via OAuth in one click.' },
               { step: '03', title: 'Pull live data', desc: 'ReconcileBook instantly fetches jobs, invoices, bills, and expenses from QuickBooks.' },
               { step: '04', title: 'Generate reports', desc: 'Open job costing or WIP reports. Download as PDF and share with your client.' },
             ].map(s => (
