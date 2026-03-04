@@ -19,7 +19,7 @@ export default function PricingPage() {
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Sign in</Link>
             <Link href="/login" className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 text-sm font-bold rounded-xl transition-colors">
-              Start free trial
+              Get started
             </Link>
           </div>
         </div>
@@ -37,14 +37,14 @@ export default function PricingPage() {
           <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/5 rounded-full -translate-y-12 translate-x-12" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-                14-day free trial — no credit card required
+              <div className="inline-flex items-center gap-2 bg-green-400/10 border border-green-400/30 text-green-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+                Instant access — start using it today
               </div>
               <div className="flex items-end gap-1 mb-1">
                 <span className="text-6xl font-extrabold text-white">$99</span>
                 <span className="text-slate-400 mb-3 text-lg">/month</span>
               </div>
-              <p className="text-slate-400 text-sm mb-8">Cancel anytime. No contracts.</p>
+              <p className="text-slate-400 text-sm mb-8">Cancel anytime. No contracts. No setup fees.</p>
 
               <ul className="space-y-3 mb-8">
                 {[
@@ -68,10 +68,30 @@ export default function PricingPage() {
                 ))}
               </ul>
 
+              {/* What happens after you pay */}
+              <div className="bg-slate-700/50 rounded-xl p-4 mb-6 border border-slate-600">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">What happens after you subscribe</p>
+                <div className="space-y-2.5">
+                  {[
+                    { step: '1', text: 'You\'re charged $99 and get instant full access' },
+                    { step: '2', text: 'Connect your clients\' QuickBooks accounts in seconds' },
+                    { step: '3', text: 'Job costing & WIP reports are ready immediately' },
+                    { step: '4', text: 'Cancel anytime from your billing portal — no penalty' },
+                  ].map(s => (
+                    <div key={s.step} className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-slate-900 text-xs font-bold">{s.step}</span>
+                      </div>
+                      <p className="text-slate-300 text-sm">{s.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <Link href="/login" className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-base">
-                Start 14-day free trial →
+                Subscribe now — $99/month →
               </Link>
-              <p className="text-center text-slate-500 text-xs mt-3">No credit card required · Cancel anytime from your billing portal</p>
+              <p className="text-center text-slate-500 text-xs mt-3">Billed monthly · Cancel anytime from your billing portal</p>
             </div>
           </div>
         </div>
@@ -81,7 +101,7 @@ export default function PricingPage() {
           <h2 className="text-2xl font-extrabold text-white text-center mb-8">Common questions</h2>
           <div className="space-y-4">
             {[
-              { q: 'Do I need a credit card to start?', a: 'No. Your 14-day free trial starts the moment you create an account. No credit card required until you decide to subscribe.' },
+              { q: 'When am I charged?', a: 'You are charged $99 immediately when you subscribe. You get instant full access to all features right away.' },
               { q: 'How many QuickBooks clients can I connect?', a: 'Unlimited. There are no per-client fees — connect as many contractor clients as you manage.' },
               { q: 'Can I cancel anytime?', a: 'Yes. Cancel anytime from your billing portal with no fees or penalties. You keep access until the end of your billing period.' },
               { q: 'Does it work with QuickBooks Desktop?', a: 'ReconcileBook connects to QuickBooks Online only. QuickBooks Desktop is not currently supported.' },
