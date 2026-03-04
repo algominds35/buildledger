@@ -1,8 +1,37 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubscribe() {
+    setLoading(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        window.location.href = '/login'
+        return
+      }
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: session.user.id }),
+      })
+      const { url } = await res.json()
+      window.location.href = url
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-slate-900 font-sans">
       {/* Nav */}
@@ -88,9 +117,13 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              <Link href="/login" className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-base">
-                Subscribe now — $99/month →
-              </Link>
+              <button
+                onClick={handleSubscribe}
+                disabled={loading}
+                className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-base cursor-pointer"
+              >
+                {loading ? 'Redirecting to payment…' : 'Subscribe now — $99/month →'}
+              </button>
               <p className="text-center text-slate-500 text-xs mt-3">Billed monthly · Cancel anytime from your billing portal</p>
             </div>
           </div>
