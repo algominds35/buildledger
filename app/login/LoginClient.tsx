@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -11,11 +11,32 @@ const supabase = createClient(
 
 export default function LoginClient() {
   const router = useRouter()
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const searchParams = useSearchParams()
+  const nextParam = searchParams.get('next')
+  const [mode, setMode] = useState<'signin' | 'signup'>('signup')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
   const [loading, setLoading] = useState(false)
+
+  // If coming from pricing, default to signup tab
+  useEffect(() => {
+    if (nextParam === 'checkout') setMode('signup')
+  }, [nextParam])
+
+  async function redirectAfterAuth(userId: string) {
+    if (nextParam === 'checkout') {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      })
+      const { url } = await res.json()
+      window.location.href = url
+    } else {
+      router.push('/dashboard')
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -23,13 +44,14 @@ export default function LoginClient() {
     setLoading(true)
     try {
       if (mode === 'signin') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) setMessage({ type: 'error', text: error.message })
-        else router.push('/dashboard')
+        else if (data.user) await redirectAfterAuth(data.user.id)
       } else {
-        const { error } = await supabase.auth.signUp({ email, password })
+        const { data, error } = await supabase.auth.signUp({ email, password })
         if (error) setMessage({ type: 'error', text: error.message })
-        else setMessage({ type: 'success', text: 'Account created! Check your email, then sign in.' })
+        else if (data.user) await redirectAfterAuth(data.user.id)
+        else setMessage({ type: 'success', text: 'Check your email to confirm your account, then sign in.' })
       }
     } finally {
       setLoading(false)
@@ -88,10 +110,14 @@ export default function LoginClient() {
               <span className="text-xl font-bold text-slate-900">ReconcileBook</span>
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-1">
-              {mode === 'signin' ? 'Welcome back' : 'Create your account'}
+              {nextParam === 'checkout' && mode === 'signup'
+                ? 'Create your account'
+                : mode === 'signin' ? 'Welcome back' : 'Create your account'}
             </h2>
             <p className="text-slate-500 text-sm">
-              {mode === 'signin' ? 'Sign in to your bookkeeper workspace' : 'Start managing construction clients today'}
+              {nextParam === 'checkout' && mode === 'signup'
+                ? "Create an account — you'll be taken to payment instantly"
+                : mode === 'signin' ? 'Sign in to your bookkeeper workspace' : 'Start managing construction clients today'}
             </p>
           </div>
 

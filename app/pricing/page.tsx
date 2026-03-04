@@ -17,9 +17,11 @@ export default function PricingPage() {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        window.location.href = '/login'
+        // Not logged in — send to signup with a redirect back to checkout
+        window.location.href = '/login?next=checkout'
         return
       }
+      // Already logged in — go straight to Stripe
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
