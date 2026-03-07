@@ -31,45 +31,6 @@ function StatPill({ label, value, color }: { label: string; value: string; color
   )
 }
 
-function TrialBanner({ sub, userId, email }: { sub: Subscription; userId: string; email: string }) {
-  const [loading, setLoading] = useState(false)
-  const trialEnd = sub.trial_end ? new Date(sub.trial_end) : null
-  const daysLeft = trialEnd ? Math.max(0, Math.ceil((trialEnd.getTime() - Date.now()) / 86400000)) : 0
-
-  async function handleUpgrade() {
-    setLoading(true)
-    const res = await fetch('/api/stripe/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, email }),
-    })
-    const { url } = await res.json()
-    if (url) window.location.href = url
-    else setLoading(false)
-  }
-
-  if (sub.status === 'active') return null
-
-  return (
-    <div className={`rounded-xl px-5 py-3 flex items-center justify-between gap-4 mb-6 ${daysLeft <= 3 ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-amber-200'}`}>
-      <div className="flex items-center gap-3">
-        <div className={`w-2 h-2 rounded-full ${daysLeft <= 3 ? 'bg-red-500' : 'bg-amber-500'}`} />
-        <p className={`text-sm font-medium ${daysLeft <= 3 ? 'text-red-800' : 'text-amber-800'}`}>
-          {daysLeft > 0
-            ? `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left in your free trial`
-            : 'Your free trial has ended'}
-        </p>
-      </div>
-      <button
-        onClick={handleUpgrade}
-        disabled={loading}
-        className="px-4 py-2 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
-      >
-        {loading ? 'Loading…' : 'Subscribe — $99/mo'}
-      </button>
-    </div>
-  )
-}
 
 function ClientCard({ summary, onDisconnect }: { summary: ClientSummary; onDisconnect: () => void }) {
   return (
@@ -176,12 +137,10 @@ export default function DashboardClient() {
     const conns = connRes.data ?? []
     setConnections(conns)
 
-    // Create trial subscription if none exists
-    if (subRes.error || !subRes.data) {
-      await supabase.from('subscriptions').upsert({ user_id: uid, status: 'trialing', trial_end: new Date(Date.now() + 14 * 86400000).toISOString() }, { onConflict: 'user_id' })
-      setSubscription({ status: 'trialing', trial_end: new Date(Date.now() + 14 * 86400000).toISOString(), current_period_end: null })
-    } else {
+    if (subRes.data) {
       setSubscription(subRes.data)
+    } else {
+      setSubscription({ status: 'unpaid', trial_end: null, current_period_end: null })
     }
 
     setLoading(false)
@@ -226,8 +185,7 @@ export default function DashboardClient() {
   const aggUnder = allSummaries.reduce((s, c) => s + c.underBillings, 0)
   const totalJobs = allSummaries.reduce((s, c) => s + c.activeJobs, 0)
 
-  const isExpired = subscription && subscription.status !== 'active' &&
-    subscription.trial_end && new Date(subscription.trial_end) < new Date()
+  const isExpired = subscription && subscription.status !== 'active'
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -280,11 +238,6 @@ export default function DashboardClient() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Trial banner */}
-        {subscription && subscription.status !== 'active' && !isExpired && (
-          <TrialBanner sub={subscription} userId={user?.id ?? ''} email={user?.email ?? ''} />
-        )}
-
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Client Dashboard</h1>
