@@ -464,22 +464,48 @@ export default function LandingPage() {
       {/* ── FOOTER ──────────────────────────────────────────────── */}
       <footer className="bg-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 bg-amber-400 rounded-lg flex items-center justify-center">
-                <svg className="w-3.5 h-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                </svg>
+          <div className="flex flex-col md:flex-row items-start justify-between gap-10 mb-10">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-7 h-7 bg-amber-400 rounded-lg flex items-center justify-center">
+                  <svg className="w-3.5 h-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                  </svg>
+                </div>
+                <span className="text-white font-bold">ReconcileBook</span>
               </div>
-              <span className="text-white font-bold">ReconcileBook</span>
+              <p className="text-slate-500 text-sm max-w-xs">Job costing, WIP reports, and multi-client management for construction bookkeepers.</p>
             </div>
-            <div className="flex gap-6 text-sm text-slate-400">
-              <a href="#features" className="hover:text-white transition-colors">Features</a>
-              <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
-              <a href="#testimonials" className="hover:text-white transition-colors">Reviews</a>
-              <Link href="/login" className="hover:text-white transition-colors">Sign in</Link>
+            {/* Links */}
+            <div className="flex flex-wrap gap-12">
+              <div>
+                <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">Product</p>
+                <div className="flex flex-col gap-2 text-sm text-slate-500">
+                  <a href="#features" className="hover:text-white transition-colors">Features</a>
+                  <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
+                  <a href="#testimonials" className="hover:text-white transition-colors">Reviews</a>
+                  <Link href="/login" className="hover:text-white transition-colors">Sign in</Link>
+                </div>
+              </div>
+              <div>
+                <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">Legal</p>
+                <div className="flex flex-col gap-2 text-sm text-slate-500">
+                  <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                  <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                </div>
+              </div>
+              <div>
+                <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">Support</p>
+                <div className="flex flex-col gap-2 text-sm text-slate-500">
+                  <a href="mailto:alex@reconcilebookapp.com" className="hover:text-white transition-colors">Contact Us</a>
+                  <a href="mailto:alex@reconcilebookapp.com" className="hover:text-white transition-colors">alex@reconcilebookapp.com</a>
+                </div>
+              </div>
             </div>
-            <p className="text-slate-500 text-sm">© {new Date().getFullYear()} ReconcileBook. All rights reserved.</p>
+          </div>
+          <div className="border-t border-slate-800 pt-6">
+            <p className="text-slate-600 text-sm text-center">© {new Date().getFullYear()} ReconcileBook. All rights reserved.</p>
           </div>
         </div>
       </footer>
