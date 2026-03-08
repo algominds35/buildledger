@@ -156,6 +156,22 @@ export default function LoginClient() {
               {loading ? '…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
+
+          {mode === 'signin' && (
+            <div className="mt-4 text-center">
+              <button
+                onClick={async () => {
+                  if (!email) { setMessage({ type: 'error', text: 'Enter your email address above first.' }); return }
+                  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` })
+                  if (error) setMessage({ type: 'error', text: error.message })
+                  else setMessage({ type: 'success', text: 'Password reset email sent — check your inbox.' })
+                }}
+                className="text-sm text-slate-500 hover:text-slate-700 underline transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
