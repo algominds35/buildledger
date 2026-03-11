@@ -106,23 +106,39 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
 
         {/* Summary cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: 'Total Contract Value', value: fmt(totalContract), icon: '📋', color: 'text-slate-900' },
-            { label: 'Total Budget', value: fmt(totalBudget), icon: '🎯', color: 'text-blue-600' },
-            { label: 'Total Actual Cost', value: fmt(totalCost), icon: '💰', color: 'text-slate-900' },
-            { label: 'Total Variance', value: fmt(totalVariance), icon: totalVariance >= 0 ? '✅' : '⚠️', color: totalVariance >= 0 ? 'text-emerald-600' : 'text-red-600' },
-          ].map(s => (
-            <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-5">
-              <div className="text-xl mb-2">{s.icon}</div>
-              <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center mb-3">
+              <svg className="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg>
             </div>
-          ))}
+            <div className="text-xl font-bold text-slate-900">{fmt(totalContract)}</div>
+            <div className="text-xs text-slate-500 mt-0.5">Total Contract Value</div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
+              <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+            </div>
+            <div className="text-xl font-bold text-blue-600">{fmt(totalBudget)}</div>
+            <div className="text-xs text-slate-500 mt-0.5">Total Budget</div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mb-3">
+              <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75" /></svg>
+            </div>
+            <div className="text-xl font-bold text-slate-900">{fmt(totalCost)}</div>
+            <div className="text-xs text-slate-500 mt-0.5">Total Actual Cost</div>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${totalVariance >= 0 ? 'bg-emerald-50' : 'bg-red-50'}`}>
+              <svg className={`w-4 h-4 ${totalVariance >= 0 ? 'text-emerald-600' : 'text-red-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d={totalVariance >= 0 ? "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" : "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"} /></svg>
+            </div>
+            <div className={`text-xl font-bold ${totalVariance >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>{fmt(totalVariance)}</div>
+            <div className="text-xs text-slate-500 mt-0.5">Total Variance</div>
+          </div>
         </div>
 
         {overBudget > 0 && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-5 py-3 flex items-center gap-3">
-            <span className="text-red-500 text-lg">⚠️</span>
+            <svg className="w-4 h-4 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
             <p className="text-red-700 text-sm font-medium">{overBudget} project{overBudget > 1 ? 's are' : ' is'} over budget — review cost allocations</p>
           </div>
         )}
@@ -170,7 +186,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
                         job.status === 'under-budget' ? 'bg-emerald-100 text-emerald-700' :
                         'bg-amber-100 text-amber-700'
                       }`}>
-                        {job.status === 'over-budget' ? '⚠ Over' : job.status === 'under-budget' ? '✓ Under' : '● On Track'}
+                        {job.status === 'over-budget' ? 'Over' : job.status === 'under-budget' ? 'Under' : 'On Track'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
