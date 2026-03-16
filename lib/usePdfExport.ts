@@ -4,21 +4,30 @@ import { useCallback, useState } from 'react'
 
 export function usePdfExport() {
   const [exporting, setExporting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const exportPdf = useCallback(async (elementId: string, filename: string) => {
     setExporting(true)
+    setError(null)
     try {
-      const html2canvas = (await import('html2canvas')).default
-      const jspdfMod = await import('jspdf')
-      const jsPDFCtor = (jspdfMod as { jsPDF?: typeof import('jspdf').jsPDF; default?: typeof import('jspdf').jsPDF }).jsPDF ?? (jspdfMod as { default: typeof import('jspdf').jsPDF }).default
-      if (!jsPDFCtor) {
-        setExporting(false)
+      const el = document.getElementById(elementId)
+      if (!el) {
+        setError('Report area not found. Please refresh and try again.')
         return
       }
 
-      const el = document.getElementById(elementId)
-      if (!el) {
-        setExporting(false)
+      // Ensure element is in view and layout is complete before capture
+      el.scrollIntoView({ behavior: 'instant', block: 'start' })
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+      await new Promise((r) => setTimeout(r, 150))
+
+      const html2canvas = (await import('html2canvas')).default
+      const jspdfMod = await import('jspdf')
+      const jsPDFCtor =
+        (jspdfMod as { jsPDF?: typeof import('jspdf').jsPDF; default?: typeof import('jspdf').jsPDF }).jsPDF ??
+        (jspdfMod as { default?: typeof import('jspdf').jsPDF }).default
+      if (!jsPDFCtor) {
+        setError('PDF library failed to load. Please refresh and try again.')
         return
       }
 
@@ -31,6 +40,8 @@ export function usePdfExport() {
         useCORS: true,
         logging: false,
         backgroundColor: '#f8fafc',
+        windowWidth: el.scrollWidth,
+        windowHeight: el.scrollHeight,
       })
 
       el.style.overflow = prevOverflow
@@ -65,11 +76,15 @@ export function usePdfExport() {
 
       pdf.save(filename)
     } catch (err) {
+      const message = err instanceof Error ? err.message : 'PDF export failed'
       console.error('PDF export failed:', err)
+      setError(`Could not generate PDF. ${message}. Try refreshing and try again.`)
     } finally {
       setExporting(false)
     }
   }, [])
 
-  return { exportPdf, exporting }
+  const clearError = useCallback(() => setError(null), [])
+
+  return { exportPdf, exporting, error, clearError }
 }

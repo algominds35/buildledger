@@ -24,7 +24,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selected, setSelected] = useState<JobCostData | null>(null)
-  const { exportPdf, exporting } = usePdfExport()
+  const { exportPdf, exporting, error: pdfError, clearError: clearPdfError } = usePdfExport()
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -69,6 +69,12 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {pdfError && (
+        <div className="fixed top-4 right-4 z-50 max-w-sm bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-xl shadow-lg flex items-start gap-3">
+          <span className="flex-1">{pdfError}</span>
+          <button type="button" onClick={clearPdfError} className="text-red-500 hover:text-red-700 font-medium" aria-label="Dismiss">×</button>
+        </div>
+      )}
       {/* Nav */}
       <header className="bg-white border-b border-slate-200 print:hidden">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -83,7 +89,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
             <span className="text-slate-600 text-sm">Job Costing Report</span>
           </div>
           <button
-            onClick={() => exportPdf('job-costing-report', `job-costing-${company.replace(/\s+/g, '-')}-${new Date().toISOString().slice(0,10)}.pdf`)}
+            onClick={() => { clearPdfError(); exportPdf('job-costing-report', `job-costing-${company.replace(/\s+/g, '-')}-${new Date().toISOString().slice(0,10)}.pdf`); }}
             disabled={exporting}
             className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-xl hover:bg-slate-700 disabled:opacity-60 transition-colors"
           >
