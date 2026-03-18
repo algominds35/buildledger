@@ -510,12 +510,12 @@ export default function LandingPage() {
                 Built for construction bookkeepers
               </div>
               <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-                WIP Reports.<br />
-                Job Costing.<br />
-                <span className="text-amber-400">Live from QuickBooks.</span>
+                Stop building<br />
+                WIP schedules<br />
+                <span className="text-amber-400">in Excel.</span>
               </h1>
               <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-xl">
-                Connect your clients&apos; QuickBooks Online accounts and instantly generate professional WIP schedules, job costing reports, and over/under billing summaries. No spreadsheets. No manual entry.
+                ReconcileBook connects to your contractor clients&apos; QuickBooks Online and generates WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours. No spreadsheets, no manual entry, no errors.
               </p>
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
@@ -527,9 +527,9 @@ export default function LandingPage() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { value: '$99/mo', label: 'Flat monthly price' },
-                  { value: '$0', label: 'Setup fees' },
-                  { value: '30 sec', label: 'Per WIP report' },
+                  { value: '3 hrs', label: 'Saved per client/month' },
+                  { value: '30 sec', label: 'To generate a WIP report' },
+                  { value: '$99/mo', label: 'Flat — unlimited clients' },
                 ].map(s => (
                   <div key={s.label} className="border border-slate-100 rounded-xl p-4">
                     <div className="text-xl font-extrabold text-slate-900">{s.value}</div>
@@ -541,7 +541,7 @@ export default function LandingPage() {
 
             {/* Right — Core Workflows card */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-7">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5">Core Workflows</div>
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5">How bookkeepers use it</div>
               <div className="space-y-4">
                 {[
                   { step: '01', title: 'Connect a client\'s QuickBooks', desc: 'One-click OAuth. No CSV exports, no manual entry.', color: 'bg-amber-400' },
@@ -867,10 +867,10 @@ export default function LandingPage() {
       <section className="py-20 bg-slate-900">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
-            Stop doing WIP reports manually.
+            Your clients need WIP reports.<br />You don&apos;t need Excel to make them.
           </h2>
           <p className="text-slate-400 text-lg mb-8">
-            Connect QuickBooks. Generate reports in seconds. Send to clients, lenders, and bonding agents.
+            Join construction bookkeepers who replaced their WIP spreadsheet with ReconcileBook. Set up in 5 minutes. First report in 30 seconds.
           </p>
           <Link href="/login" className="inline-block px-8 py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-xl">
             Start free trial →

@@ -26,6 +26,7 @@ export function usePdfExport() {
     style.id = '__pdf-print-style__'
     style.textContent = `
       @media print {
+        @page { size: landscape; margin: 0.5in; }
         body * { visibility: hidden !important; }
         #${elementId}, #${elementId} * { visibility: visible !important; }
         #${elementId} {
