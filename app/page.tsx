@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 
 function Check() {
   return (
@@ -402,6 +403,72 @@ function JobCostMockup() {
   )
 }
 
+function TabbedPreview() {
+  const [tab, setTab] = useState<'dashboard' | 'wip' | 'jobs'>('dashboard')
+  const tabs = [
+    { id: 'dashboard', label: 'Client Dashboard', url: 'app.reconcilebook.com/dashboard' },
+    { id: 'wip', label: 'WIP Schedule', url: 'app.reconcilebook.com/clients/apex/wip' },
+    { id: 'jobs', label: 'Job Costing', url: 'app.reconcilebook.com/clients/apex/job-costing' },
+  ] as const
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-8">
+          <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">Live app preview</p>
+          <h2 className="text-3xl font-extrabold text-slate-900">See exactly what you get.</h2>
+          <p className="text-slate-500 mt-3 max-w-xl mx-auto">Click the tabs to preview each report — this is your actual app, live from QuickBooks.</p>
+        </div>
+
+        {/* Tab switcher */}
+        <div className="flex justify-center gap-2 mb-6">
+          {tabs.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                tab === t.id
+                  ? 'bg-slate-900 text-white shadow-lg'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Preview */}
+        <BrowserMockup url={tabs.find(t => t.id === tab)!.url}>
+          {tab === 'dashboard' && <DashboardMockup />}
+          {tab === 'wip' && <WipMockup />}
+          {tab === 'jobs' && <JobCostMockup />}
+        </BrowserMockup>
+
+        {/* Feature callouts under the preview */}
+        <div className="grid grid-cols-3 gap-6 mt-8">
+          {[
+            { tab: 'dashboard' as const, icon: '📊', title: 'Multi-client dashboard', desc: 'All clients in one place. Portfolio financials, over/under billing, open invoices — always live from QBO.' },
+            { tab: 'wip' as const, icon: '📋', title: 'WIP schedule in 30 seconds', desc: '% complete auto-calculated. Over/under billings, retainage, gross margin — ready to send to bonding agents.' },
+            { tab: 'jobs' as const, icon: '💰', title: 'Job costing by category', desc: 'Materials, labor, subs broken out per job. Budget vs. actual variance with over-budget alerts.' },
+          ].map(f => (
+            <button
+              key={f.tab}
+              onClick={() => setTab(f.tab)}
+              className={`text-left p-5 rounded-2xl border-2 transition-all ${
+                tab === f.tab ? 'border-amber-400 bg-amber-50' : 'border-transparent bg-slate-50 hover:border-slate-200'
+              }`}
+            >
+              <div className="text-2xl mb-2">{f.icon}</div>
+              <div className="font-bold text-slate-900 mb-1">{f.title}</div>
+              <div className="text-slate-500 text-sm leading-relaxed">{f.desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -511,24 +578,13 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* DASHBOARD PREVIEW */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">Live dashboard preview</p>
-            <h2 className="text-3xl font-extrabold text-slate-900">All your contractor clients. One screen.</h2>
-            <p className="text-slate-500 mt-3 max-w-xl mx-auto">Portfolio-level financials across every client — contract value, billings, costs, AR, and over/under billing — always live from QuickBooks.</p>
-          </div>
-          <BrowserMockup url="app.reconcilebook.com/dashboard">
-            <DashboardMockup />
-          </BrowserMockup>
-        </div>
-      </section>
+      {/* TABBED LIVE PREVIEW */}
+      <TabbedPreview />
 
       {/* FEATURE 1 — WIP */}
       <section id="features" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">WIP Schedules</div>
               <h2 className="text-4xl font-extrabold text-slate-900 leading-tight mb-4">
@@ -553,9 +609,20 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-            <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
-              <WipMockup />
-            </BrowserMockup>
+            {/* Annotated highlight cards instead of full mockup */}
+            <div className="space-y-3">
+              {[
+                { color: 'bg-amber-50 border-amber-200', tag: 'Auto-calculated', tagColor: 'bg-amber-400 text-slate-900', title: '% Complete — cost-to-cost method', desc: 'No manual input. ReconcileBook divides costs-to-date by estimated total costs — the method banks and bonding agents require.' },
+                { color: 'bg-red-50 border-red-200', tag: 'Over billing alert', tagColor: 'bg-red-100 text-red-700', title: 'Over & under billings per job', desc: 'Instantly see which jobs are over-billed (liability) and which are under-billed (asset on the balance sheet).' },
+                { color: 'bg-blue-50 border-blue-200', tag: 'PDF ready', tagColor: 'bg-blue-100 text-blue-700', title: 'One-click PDF for bonding agents', desc: 'Download a professionally formatted WIP schedule PDF. Send directly to your client\'s lender or bonding agent.' },
+              ].map(c => (
+                <div key={c.title} className={`rounded-2xl border p-5 ${c.color}`}>
+                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${c.tagColor}`}>{c.tag}</span>
+                  <div className="font-bold text-slate-900 mt-3 mb-1">{c.title}</div>
+                  <div className="text-slate-600 text-sm leading-relaxed">{c.desc}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -563,10 +630,20 @@ export default function LandingPage() {
       {/* FEATURE 2 — JOB COSTING */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <BrowserMockup url="app.reconcilebook.com/clients/apex/job-costing">
-              <JobCostMockup />
-            </BrowserMockup>
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <div className="space-y-3">
+              {[
+                { color: 'bg-purple-50 border-purple-200', tag: 'Broken out', tagColor: 'bg-purple-100 text-purple-700', title: 'Materials, labor & subs — separately', desc: 'Every cost category from QBO pulled into its own column. Your contractor sees exactly where the money went.' },
+                { color: 'bg-emerald-50 border-emerald-200', tag: 'Live from QBO', tagColor: 'bg-emerald-100 text-emerald-700', title: 'Budget vs. actual variance', desc: 'ReconcileBook compares actual bills and expenses against the estimate budget — and flags jobs that are over budget in red.' },
+                { color: 'bg-slate-100 border-slate-200', tag: 'All QBO plans', tagColor: 'bg-slate-200 text-slate-700', title: 'No Projects feature required', desc: 'Works with Simple Start, Essentials, Plus — any QBO plan. Uses customers and jobs (sub-customers), not the Projects add-on.' },
+              ].map(c => (
+                <div key={c.title} className={`rounded-2xl border p-5 ${c.color}`}>
+                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${c.tagColor}`}>{c.tag}</span>
+                  <div className="font-bold text-slate-900 mt-3 mb-1">{c.title}</div>
+                  <div className="text-slate-600 text-sm leading-relaxed">{c.desc}</div>
+                </div>
+              ))}
+            </div>
             <div>
               <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">Job Costing</div>
               <h2 className="text-4xl font-extrabold text-slate-900 leading-tight mb-4">
