@@ -2,6 +2,47 @@
 
 import { useCallback, useState } from 'react'
 
+// html2canvas cannot parse oklch/lab colors produced by Tailwind CSS v4.
+// This patches all computed styles on the element tree to replace unsupported
+// color values with a plain hex fallback before capture.
+function patchOklchColors(root: HTMLElement): () => void {
+  const patched: Array<{ el: HTMLElement; prop: string; old: string }> = []
+  const unsupported = /oklch|oklab|lab\(|lch\(/i
+
+  const walk = (el: HTMLElement) => {
+    const cs = window.getComputedStyle(el)
+    const props = [
+      'color', 'backgroundColor', 'borderColor',
+      'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor',
+      'outlineColor', 'textDecorationColor', 'fill', 'stroke',
+    ]
+    for (const prop of props) {
+      const val = cs.getPropertyValue(prop)
+      if (val && unsupported.test(val)) {
+        const old = (el.style as Record<string, string>)[prop] ?? ''
+        patched.push({ el, prop, old })
+        // Use a safe neutral fallback; most of these are decorative
+        const fallback =
+          prop === 'backgroundColor' ? '#ffffff' :
+          prop === 'color' ? '#1e293b' :
+          '#cbd5e1'
+          ; (el.style as Record<string, string>)[prop] = fallback
+      }
+    }
+    for (const child of Array.from(el.children)) {
+      if (child instanceof HTMLElement) walk(child)
+    }
+  }
+
+  walk(root)
+
+  return () => {
+    for (const { el, prop, old } of patched) {
+      (el.style as Record<string, string>)[prop] = old
+    }
+  }
+}
+
 export function usePdfExport() {
   const [exporting, setExporting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -9,6 +50,7 @@ export function usePdfExport() {
   const exportPdf = useCallback(async (elementId: string, filename: string) => {
     setExporting(true)
     setError(null)
+    let restoreColors: (() => void) | null = null
     try {
       const el = document.getElementById(elementId)
       if (!el) {
@@ -35,6 +77,9 @@ export function usePdfExport() {
       const prevOverflow = el.style.overflow
       el.style.overflow = 'visible'
 
+      // Patch oklch/lab colors that html2canvas cannot parse (Tailwind v4)
+      restoreColors = patchOklchColors(el)
+
       const canvas = await html2canvas(el, {
         scale: 2,
         useCORS: true,
@@ -44,6 +89,8 @@ export function usePdfExport() {
         windowHeight: el.scrollHeight,
       })
 
+      restoreColors()
+      restoreColors = null
       el.style.overflow = prevOverflow
 
       // Use JPEG to avoid jsPDF 2.4+ PNG addImage bugs (Acrobat "error on this page" / black background).
@@ -76,6 +123,7 @@ export function usePdfExport() {
 
       pdf.save(filename)
     } catch (err) {
+      if (restoreColors) { restoreColors(); restoreColors = null }
       const message = err instanceof Error ? err.message : 'PDF export failed'
       console.error('PDF export failed:', err)
       setError(`Could not generate PDF. ${message}. Try refreshing and try again.`)
