@@ -26,6 +26,57 @@ function BrowserMockup({ children, url }: { children: React.ReactNode; url: stri
   )
 }
 
+function SidebarIcon({ active, children }: { active?: boolean; children: React.ReactNode }) {
+  return (
+    <div className={`w-9 h-9 rounded-xl flex items-center justify-center cursor-pointer transition-colors ${active ? 'bg-amber-400' : 'hover:bg-white/10'}`}>
+      {children}
+    </div>
+  )
+}
+
+function AppShell({ children, activeTab }: { children: React.ReactNode; activeTab: 'dashboard' | 'wip' | 'jobs' | 'pdf' }) {
+  return (
+    <div className="flex h-full font-sans text-xs">
+      {/* Dark sidebar */}
+      <div className="w-14 bg-[#0f1117] flex flex-col items-center py-3 gap-2 flex-shrink-0">
+        {/* Logo */}
+        <div className="w-9 h-9 bg-amber-400 rounded-xl flex items-center justify-center mb-2">
+          <svg className="w-4 h-4 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+          </svg>
+        </div>
+        {/* Nav icons */}
+        <SidebarIcon active={activeTab === 'dashboard'}>
+          <svg className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-slate-900' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+          </svg>
+        </SidebarIcon>
+        <SidebarIcon active={activeTab === 'wip'}>
+          <svg className={`w-4 h-4 ${activeTab === 'wip' ? 'text-slate-900' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+          </svg>
+        </SidebarIcon>
+        <SidebarIcon active={activeTab === 'jobs'}>
+          <svg className={`w-4 h-4 ${activeTab === 'jobs' ? 'text-slate-900' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>
+        </SidebarIcon>
+        <SidebarIcon active={activeTab === 'pdf'}>
+          <svg className={`w-4 h-4 ${activeTab === 'pdf' ? 'text-slate-900' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+          </svg>
+        </SidebarIcon>
+        {/* Avatar at bottom */}
+        <div className="mt-auto w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center text-[9px] font-bold text-white">SB</div>
+      </div>
+      {/* Main content */}
+      <div className="flex-1 bg-slate-50 overflow-hidden">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function DashboardMockup() {
   const clients = [
     { name: 'Apex Builders LLC', jobs: 8, contract: '$1,240,000', billed: '$892,000', costs: '$710,000', ar: '$148,000', over: '$24,500', under: '—' },
@@ -33,77 +84,78 @@ function DashboardMockup() {
     { name: 'Peak Construction Co.', jobs: 11, contract: '$2,100,000', billed: '$1,560,000', costs: '$1,290,000', ar: '$210,000', over: '$88,000', under: '—' },
   ]
   return (
-    <div className="bg-slate-50 text-xs font-sans">
+    <AppShell activeTab="dashboard">
+      {/* Top bar */}
       <div className="bg-white border-b border-slate-200 px-5 h-11 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 bg-amber-400 rounded flex items-center justify-center">
-            <div className="w-2.5 h-2.5 bg-slate-900 rounded-sm" />
-          </div>
-          <span className="font-bold text-slate-900 text-xs">ReconcileBook</span>
+        <div>
+          <span className="font-bold text-slate-900 text-xs">Client Dashboard</span>
+          <span className="text-slate-400 text-[10px] ml-2">3 clients · 24 active jobs</span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-slate-400">sarah@bookpro.com</span>
-          <div className="w-6 h-6 bg-slate-800 rounded-full text-white flex items-center justify-center text-[9px] font-bold">SB</div>
-        </div>
+        <div className="px-3 py-1.5 bg-amber-400 text-slate-900 font-bold rounded-lg text-[10px] cursor-pointer">+ Connect Client</div>
       </div>
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <div className="font-bold text-slate-900 text-sm">Client Dashboard</div>
-            <div className="text-slate-400 text-[10px]">3 clients connected · 24 active jobs</div>
+      {/* Stats row */}
+      <div className="grid grid-cols-4 gap-3 p-4 pb-0">
+        {[
+          { label: 'Active Clients', value: '3', dot: 'bg-blue-400', sub: '24 active jobs' },
+          { label: 'Contract Value', value: '$4.1M', dot: 'bg-emerald-400', sub: 'across all clients' },
+          { label: 'Accounts Rec.', value: '$453K', dot: 'bg-amber-400', sub: '3 invoices open' },
+          { label: 'Net Position', value: '+$48.7K', dot: 'bg-purple-400', sub: 'over/(under) billed' },
+        ].map(s => (
+          <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-3">
+            <div className="flex items-center gap-1.5 mb-1">
+              <div className={`w-2 h-2 rounded-full ${s.dot}`} />
+              <span className="text-slate-400 text-[9px] font-semibold uppercase tracking-wider">{s.label}</span>
+            </div>
+            <div className="font-extrabold text-slate-900 text-sm">{s.value}</div>
+            <div className="text-slate-400 text-[9px] mt-0.5">{s.sub}</div>
           </div>
-          <div className="px-3 py-1.5 bg-amber-400 text-slate-900 font-bold rounded-lg text-[10px]">+ Connect Client</div>
+        ))}
+      </div>
+      {/* Client cards */}
+      <div className="p-4 pt-3 space-y-2">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Clients</span>
+          <span className="text-[10px] text-amber-500 font-semibold cursor-pointer">View all →</span>
         </div>
-        <div className="bg-slate-900 rounded-xl p-3 mb-3">
-          <div className="text-slate-400 text-[9px] font-semibold uppercase tracking-widest mb-2">Portfolio Overview</div>
-          <div className="grid grid-cols-5 gap-3">
-            {[
-              { label: 'Total Clients', value: '3' },
-              { label: 'Contract Value', value: '$4,120,000' },
-              { label: 'Billed to Date', value: '$2,882,000' },
-              { label: 'Accounts Rec.', value: '$453,000' },
-              { label: 'Net Position', value: '+$48,700' },
-            ].map(s => (
-              <div key={s.label}>
-                <div className="text-white font-bold text-xs">{s.value}</div>
-                <div className="text-slate-500 text-[9px] mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="space-y-2">
-          {clients.map(c => (
-            <div key={c.name} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+        {clients.map(c => (
+          <div key={c.name} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center text-[9px] font-extrabold text-slate-500">
+                  {c.name.charAt(0)}
+                </div>
                 <div>
                   <div className="font-bold text-slate-900 text-[11px]">{c.name}</div>
-                  <div className="text-emerald-600 text-[9px] font-medium">Connected · {c.jobs} jobs</div>
-                </div>
-                <div className="flex gap-1.5">
-                  <div className="px-2 py-1 bg-amber-400 text-slate-900 font-bold rounded text-[9px]">Job Costing</div>
-                  <div className="px-2 py-1 bg-slate-900 text-white font-bold rounded text-[9px]">WIP</div>
+                  <div className="text-emerald-600 text-[9px] font-medium flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full inline-block" />
+                    Connected · {c.jobs} jobs
+                  </div>
                 </div>
               </div>
-              <div className="p-2.5 grid grid-cols-6 gap-1.5">
-                {[
-                  { label: 'Contract', value: c.contract, color: 'bg-slate-50 text-slate-700' },
-                  { label: 'Billed', value: c.billed, color: 'bg-blue-50 text-blue-800' },
-                  { label: 'Costs', value: c.costs, color: 'bg-purple-50 text-purple-800' },
-                  { label: 'AR', value: c.ar, color: 'bg-emerald-50 text-emerald-800' },
-                  { label: 'Over', value: c.over, color: c.over !== '—' ? 'bg-red-50 text-red-800' : 'bg-slate-50 text-slate-300' },
-                  { label: 'Under', value: c.under, color: c.under !== '—' ? 'bg-amber-50 text-amber-800' : 'bg-slate-50 text-slate-300' },
-                ].map(p => (
-                  <div key={p.label} className={`rounded-lg px-2 py-1.5 ${p.color}`}>
-                    <div className="font-bold text-[10px]">{p.value}</div>
-                    <div className="text-[8px] opacity-60 mt-0.5">{p.label}</div>
-                  </div>
-                ))}
+              <div className="flex gap-1.5">
+                <div className="px-2 py-1 bg-amber-400 text-slate-900 font-bold rounded text-[9px]">Job Costing</div>
+                <div className="px-2 py-1 bg-slate-900 text-white font-bold rounded text-[9px]">WIP</div>
               </div>
             </div>
-          ))}
-        </div>
+            <div className="p-2.5 grid grid-cols-6 gap-1.5">
+              {[
+                { label: 'Contract', value: c.contract, color: 'bg-slate-50 text-slate-700' },
+                { label: 'Billed', value: c.billed, color: 'bg-blue-50 text-blue-800' },
+                { label: 'Costs', value: c.costs, color: 'bg-purple-50 text-purple-800' },
+                { label: 'AR', value: c.ar, color: 'bg-emerald-50 text-emerald-800' },
+                { label: 'Over', value: c.over, color: c.over !== '—' ? 'bg-red-50 text-red-700' : 'bg-slate-50 text-slate-300' },
+                { label: 'Under', value: c.under, color: c.under !== '—' ? 'bg-amber-50 text-amber-800' : 'bg-slate-50 text-slate-300' },
+              ].map(p => (
+                <div key={p.label} className={`rounded-lg px-2 py-1.5 ${p.color}`}>
+                  <div className="font-bold text-[10px]">{p.value}</div>
+                  <div className="text-[8px] opacity-60 mt-0.5">{p.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </AppShell>
   )
 }
 
@@ -114,127 +166,159 @@ function WipMockup() {
     { name: 'Downtown Parking Garage', pct: 92, contract: '$890,000', billed: '$818,800', costs: '$720,000', over: '$22,400', under: '—', margin: '19.1%' },
   ]
   return (
-    <div className="bg-white text-xs">
-      <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-        <div>
-          <div className="font-bold text-slate-900 text-sm">WIP Schedule</div>
-          <div className="text-slate-400 text-[10px]">Apex Builders LLC · March 2026</div>
+    <AppShell activeTab="wip">
+      {/* Top bar */}
+      <div className="bg-white border-b border-slate-200 px-5 h-11 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-slate-400 text-[10px] cursor-pointer">← Apex Builders LLC</span>
+          <span className="text-slate-300">/</span>
+          <span className="font-bold text-slate-900 text-xs">WIP Schedule</span>
         </div>
-        <div className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-[10px] flex items-center gap-1.5">
+        <div className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-[10px] flex items-center gap-1.5 cursor-pointer">
           ↓ Download PDF
         </div>
       </div>
-      <div className="p-4 grid grid-cols-6 gap-2 border-b border-slate-100">
+      {/* Stats */}
+      <div className="grid grid-cols-6 gap-2 p-4 pb-0">
         {[
-          { label: 'Active Jobs', value: '3', color: 'bg-slate-50' },
-          { label: 'Contract Value', value: '$1,690,000', color: 'bg-slate-50' },
-          { label: 'Costs to Date', value: '$1,109,000', color: 'bg-amber-50' },
-          { label: 'Billed to Date', value: '$1,337,200', color: 'bg-blue-50' },
-          { label: 'Over Billings', value: '$70,600', color: 'bg-red-50' },
-          { label: 'Under Billings', value: '$36,000', color: 'bg-amber-50' },
+          { label: 'Active Jobs', value: '3', dot: 'bg-slate-400' },
+          { label: 'Contract Value', value: '$1.69M', dot: 'bg-blue-400' },
+          { label: 'Costs to Date', value: '$1.11M', dot: 'bg-amber-400' },
+          { label: 'Billed to Date', value: '$1.34M', dot: 'bg-blue-400' },
+          { label: 'Over Billings', value: '$70,600', dot: 'bg-red-400' },
+          { label: 'Under Billings', value: '$36,000', dot: 'bg-amber-400' },
         ].map(s => (
-          <div key={s.label} className={`rounded-xl p-2.5 ${s.color}`}>
-            <div className="font-bold text-[11px] text-slate-900">{s.value}</div>
-            <div className="text-[8px] text-slate-500 mt-0.5">{s.label}</div>
+          <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-2.5">
+            <div className="flex items-center gap-1 mb-1">
+              <div className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
+            </div>
+            <div className="font-extrabold text-slate-900 text-[11px]">{s.value}</div>
+            <div className="text-[8px] text-slate-400 mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-[10px]">
-          <thead className="bg-slate-50 text-slate-500">
-            <tr>
-              <th className="px-3 py-2 text-left">Project</th>
-              <th className="px-3 py-2 text-center">% Complete</th>
-              <th className="px-3 py-2 text-right">Contract</th>
-              <th className="px-3 py-2 text-right">Billed</th>
-              <th className="px-3 py-2 text-right">Costs</th>
-              <th className="px-3 py-2 text-right">Over Billing</th>
-              <th className="px-3 py-2 text-right">Margin</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {rows.map(r => (
-              <tr key={r.name}>
-                <td className="px-3 py-2 font-medium text-slate-900">{r.name}</td>
-                <td className="px-3 py-2">
-                  <div className="text-center font-bold text-slate-900">{r.pct}%</div>
-                  <div className="w-full bg-slate-100 rounded-full h-1 mt-1">
-                    <div className={`h-1 rounded-full ${r.pct >= 75 ? 'bg-blue-500' : 'bg-amber-400'}`} style={{ width: `${r.pct}%` }} />
-                  </div>
-                </td>
-                <td className="px-3 py-2 text-right text-slate-700">{r.contract}</td>
-                <td className="px-3 py-2 text-right text-slate-700">{r.billed}</td>
-                <td className="px-3 py-2 text-right text-slate-700">{r.costs}</td>
-                <td className="px-3 py-2 text-right">{r.over !== '—' ? <span className="text-red-600 font-semibold">{r.over}</span> : <span className="text-slate-300">—</span>}</td>
-                <td className="px-3 py-2 text-right font-semibold text-emerald-600">{r.margin}</td>
+      {/* Table */}
+      <div className="p-4 pt-3">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="px-3 py-2 text-left font-semibold text-slate-500">Project</th>
+                <th className="px-3 py-2 text-center font-semibold text-slate-500">% Done</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Contract</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Billed</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Costs</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Over Billing</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Margin</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {rows.map(r => (
+                <tr key={r.name} className="hover:bg-slate-50">
+                  <td className="px-3 py-2">
+                    <div className="font-semibold text-slate-900">{r.name}</div>
+                    <div className="text-emerald-500 text-[8px] font-medium flex items-center gap-1 mt-0.5">
+                      <span className="w-1 h-1 bg-emerald-400 rounded-full inline-block" />Active
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="text-center font-bold text-slate-900 mb-1">{r.pct}%</div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div className={`h-1.5 rounded-full ${r.pct >= 75 ? 'bg-blue-500' : r.pct >= 50 ? 'bg-emerald-400' : 'bg-amber-400'}`} style={{ width: `${r.pct}%` }} />
+                    </div>
+                  </td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.contract}</td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.billed}</td>
+                  <td className="px-3 py-2 text-right text-slate-700">{r.costs}</td>
+                  <td className="px-3 py-2 text-right">{r.over !== '—' ? <span className="text-red-600 font-bold">{r.over}</span> : <span className="text-slate-300">—</span>}</td>
+                  <td className="px-3 py-2 text-right font-bold text-emerald-600">{r.margin}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </AppShell>
   )
 }
 
 function JobCostMockup() {
   const rows = [
-    { name: 'Riverside Office Complex', contract: '$480,000', budget: '$360,000', labor: '$98,000', materials: '$112,000', subs: '$71,000', total: '$281,000', status: 'On Track' },
-    { name: 'Highland Retail Center', contract: '$320,000', budget: '$240,000', labor: '$42,000', materials: '$38,000', subs: '$28,000', total: '$108,000', status: 'Under' },
-    { name: 'Downtown Parking Garage', contract: '$890,000', budget: '$640,000', labor: '$210,000', materials: '$280,000', subs: '$230,000', total: '$720,000', status: 'Over' },
+    { name: 'Riverside Office Complex', contract: '$480,000', labor: '$98,000', materials: '$112,000', subs: '$71,000', total: '$281,000', status: 'On Track' },
+    { name: 'Highland Retail Center', contract: '$320,000', labor: '$42,000', materials: '$38,000', subs: '$28,000', total: '$108,000', status: 'Under' },
+    { name: 'Downtown Parking Garage', contract: '$890,000', labor: '$210,000', materials: '$280,000', subs: '$230,000', total: '$720,000', status: 'Over' },
   ]
   return (
-    <div className="bg-white text-xs">
-      <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-        <div>
-          <div className="font-bold text-slate-900 text-sm">Job Costing Report</div>
-          <div className="text-slate-400 text-[10px]">Apex Builders LLC · March 2026</div>
+    <AppShell activeTab="jobs">
+      {/* Top bar */}
+      <div className="bg-white border-b border-slate-200 px-5 h-11 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-slate-400 text-[10px] cursor-pointer">← Apex Builders LLC</span>
+          <span className="text-slate-300">/</span>
+          <span className="font-bold text-slate-900 text-xs">Job Costing</span>
         </div>
-        <div className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-[10px]">↓ Download PDF</div>
+        <div className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-[10px] cursor-pointer">↓ Download PDF</div>
       </div>
-      <div className="p-4 grid grid-cols-4 gap-2 border-b border-slate-100">
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-2 p-4 pb-0">
         {[
-          { label: 'Contract Value', value: '$1,690,000', color: 'bg-slate-50' },
-          { label: 'Total Budget', value: '$1,240,000', color: 'bg-blue-50' },
-          { label: 'Actual Cost', value: '$1,109,000', color: 'bg-amber-50' },
-          { label: 'Variance', value: '+$131,000', color: 'bg-emerald-50' },
+          { label: 'Contract Value', value: '$1.69M', dot: 'bg-blue-400' },
+          { label: 'Total Budget', value: '$1.24M', dot: 'bg-slate-400' },
+          { label: 'Actual Cost', value: '$1.11M', dot: 'bg-amber-400' },
+          { label: 'Under Budget', value: '+$131K', dot: 'bg-emerald-400' },
         ].map(s => (
-          <div key={s.label} className={`rounded-xl p-2.5 ${s.color}`}>
-            <div className="font-bold text-[11px] text-slate-900">{s.value}</div>
-            <div className="text-[8px] text-slate-500 mt-0.5">{s.label}</div>
+          <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-3">
+            <div className="flex items-center gap-1.5 mb-1">
+              <div className={`w-2 h-2 rounded-full ${s.dot}`} />
+              <span className="text-slate-400 text-[9px] font-semibold">{s.label}</span>
+            </div>
+            <div className="font-extrabold text-slate-900 text-sm">{s.value}</div>
           </div>
         ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-[10px]">
-          <thead className="bg-slate-50 text-slate-500">
-            <tr>
-              <th className="px-3 py-2 text-left">Project</th>
-              <th className="px-3 py-2 text-right">Contract</th>
-              <th className="px-3 py-2 text-right">Labor</th>
-              <th className="px-3 py-2 text-right">Materials</th>
-              <th className="px-3 py-2 text-right">Subs</th>
-              <th className="px-3 py-2 text-right">Total Cost</th>
-              <th className="px-3 py-2 text-center">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {rows.map(r => (
-              <tr key={r.name}>
-                <td className="px-3 py-2 font-medium text-slate-900">{r.name}</td>
-                <td className="px-3 py-2 text-right text-slate-600">{r.contract}</td>
-                <td className="px-3 py-2 text-right text-slate-600">{r.labor}</td>
-                <td className="px-3 py-2 text-right text-slate-600">{r.materials}</td>
-                <td className="px-3 py-2 text-right text-slate-600">{r.subs}</td>
-                <td className="px-3 py-2 text-right font-semibold text-slate-900">{r.total}</td>
-                <td className="px-3 py-2 text-center">
-                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${r.status === 'Over' ? 'bg-red-100 text-red-700' : r.status === 'Under' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>{r.status}</span>
-                </td>
+      {/* Table */}
+      <div className="p-4 pt-3">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Jobs</span>
+            <span className="text-[10px] text-amber-500 font-semibold">View all →</span>
+          </div>
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100">
+                <th className="px-3 py-2 text-left font-semibold text-slate-500">Project</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Contract</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Labor</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Materials</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Subs</th>
+                <th className="px-3 py-2 text-right font-semibold text-slate-500">Total Cost</th>
+                <th className="px-3 py-2 text-center font-semibold text-slate-500">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {rows.map(r => (
+                <tr key={r.name} className="hover:bg-slate-50">
+                  <td className="px-3 py-2">
+                    <div className="font-semibold text-slate-900">{r.name}</div>
+                    <div className="text-emerald-500 text-[8px] font-medium flex items-center gap-1 mt-0.5">
+                      <span className="w-1 h-1 bg-emerald-400 rounded-full inline-block" />Active
+                    </div>
+                  </td>
+                  <td className="px-3 py-2 text-right text-slate-600">{r.contract}</td>
+                  <td className="px-3 py-2 text-right text-slate-600">{r.labor}</td>
+                  <td className="px-3 py-2 text-right text-slate-600">{r.materials}</td>
+                  <td className="px-3 py-2 text-right text-slate-600">{r.subs}</td>
+                  <td className="px-3 py-2 text-right font-bold text-slate-900">{r.total}</td>
+                  <td className="px-3 py-2 text-center">
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${r.status === 'Over' ? 'bg-red-100 text-red-700' : r.status === 'Under' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>{r.status}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </AppShell>
   )
 }
 
