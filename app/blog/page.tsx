@@ -39,6 +39,14 @@ const posts = [
     readTime: '9 min read',
     tag: 'Billings',
   },
+  {
+    slug: 'percent-complete-billing-construction',
+    title: 'Percent Complete Billing in Construction — How It Works',
+    description: 'What percent complete billing is, how to calculate it using the cost-to-cost method, and why it matters for construction bookkeepers managing WIP schedules.',
+    date: 'March 2026',
+    readTime: '8 min read',
+    tag: 'WIP Reports',
+  },
 ]
 
 export default function BlogPage() {

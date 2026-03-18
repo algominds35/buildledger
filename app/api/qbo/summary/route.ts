@@ -31,7 +31,10 @@ async function qboQuery(baseUrl: string, realmId: string, token: string, query: 
     `${baseUrl}/v3/company/${realmId}/query?query=${encodeURIComponent(query)}&minorversion=65`,
     { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
   )
-  return res.json()
+  const data = await res.json()
+  if (!res.ok) return { error: res.status, Fault: data?.Fault ?? { Error: [{ Message: res.statusText }] } }
+  if (data?.Fault) return data
+  return data
 }
 
 export async function GET(request: NextRequest) {
@@ -51,6 +54,25 @@ export async function GET(request: NextRequest) {
     qboQuery(baseUrl, realmId, token, 'SELECT * FROM Bill MAXRESULTS 200'),
     qboQuery(baseUrl, realmId, token, 'SELECT * FROM Estimate MAXRESULTS 200'),
   ])
+
+  const qboError = customersData?.Fault?.Error?.[0]?.Message ?? customersData?.error
+  if (qboError) {
+    return NextResponse.json({
+      company,
+      realmId,
+      activeJobs: 0,
+      totalContract: 0,
+      totalBilled: 0,
+      totalCosts: 0,
+      totalAR: 0,
+      totalAP: 0,
+      overBillings: 0,
+      underBillings: 0,
+      openInvoices: 0,
+      openBills: 0,
+      error: `QuickBooks error: ${qboError}. For a sandbox company, set QBO_ENVIRONMENT=sandbox.`,
+    }, { status: 200 })
+  }
 
   const customers: any[] = customersData?.QueryResponse?.Customer ?? []
   const invoices: any[] = invoicesData?.QueryResponse?.Invoice ?? []
