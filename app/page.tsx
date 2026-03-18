@@ -166,81 +166,147 @@ function DashboardMockup() {
 
 function WipMockup() {
   const rows = [
-    { name: 'Riverside Office Complex', pct: 78, contract: '$480,000', billed: '$374,400', costs: '$281,000', over: '$48,200', under: '—', margin: '23.4%' },
-    { name: 'Highland Retail Center', pct: 45, contract: '$320,000', billed: '$144,000', costs: '$108,000', over: '—', under: '$36,000', margin: '18.9%' },
-    { name: 'Downtown Parking Garage', pct: 92, contract: '$890,000', billed: '$818,800', costs: '$720,000', over: '$22,400', under: '—', margin: '19.1%' },
+    { name: 'Smith Roofing LLC', status: 'Active', pct: 0, contract: '$45,000', estCosts: '$33,750', revEarned: '$0', billed: '$45,000', costs: '$0', over: '$45,000', under: '—', retainage: '$4,500', costToComplete: '$33,750', margin: '0.0%' },
+    { name: '88 Pine St Remodel', status: 'Not Started', pct: 0, contract: '$0', estCosts: '$117,000', revEarned: '$0', billed: '$0', costs: '$0', over: '—', under: '—', retainage: '$0', costToComplete: '$117,000', margin: '0.0%' },
+    { name: 'Peak Construction Co', status: 'Not Started', pct: 0, contract: '$0', estCosts: '$0', revEarned: '$0', billed: '$0', costs: '$0', over: '—', under: '—', retainage: '$0', costToComplete: '$0', margin: '0.0%' },
   ]
   return (
     <AppShell activeTab="wip">
-      {/* Top bar */}
+      {/* Top nav — exact match to real app */}
       <div className="bg-white border-b border-slate-200 px-4 h-10 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-slate-400 text-[9px] cursor-pointer">← Apex Builders LLC</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-slate-400 text-[9px]">← Back</span>
           <span className="text-slate-300">/</span>
-          <span className="font-bold text-slate-900 text-[11px]">WIP Schedule</span>
+          <span className="font-bold text-slate-800 text-[9px]">reconcilebook</span>
+          <span className="text-slate-300">/</span>
+          <span className="text-slate-600 text-[9px]">WIP Schedule</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="flex gap-1">
-            {['🏗️ Active (3)', 'All Jobs', '✓ Complete'].map((f, i) => (
-              <div key={f} className={`px-2 py-0.5 rounded text-[7px] font-medium ${i === 0 ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-500'}`}>{f}</div>
-            ))}
+          <div className="flex items-center gap-1 px-2 py-1 border border-slate-200 rounded text-[8px] text-slate-600 font-medium">
+            <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z" /></svg>
+            Job Costing
           </div>
-          <div className="px-2 py-1 bg-slate-900 text-white font-bold rounded text-[8px] cursor-pointer">↓ PDF</div>
+          <div className="flex items-center gap-1 px-2 py-1 bg-slate-900 text-white rounded text-[8px] font-bold">
+            <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+            Download PDF
+          </div>
         </div>
       </div>
-      {/* 6 stat cards — exact match */}
-      <div className="grid grid-cols-6 gap-1.5 p-3 pb-0">
-        {[
-          { label: 'Active Jobs', value: '3', bg: 'bg-white', val: 'text-slate-900' },
-          { label: 'Contract Value', value: '$1,690,000', bg: 'bg-white', val: 'text-slate-900' },
-          { label: 'Costs to Date', value: '$1,109,000', bg: 'bg-amber-50', val: 'text-amber-700' },
-          { label: 'Billed to Date', value: '$1,337,200', bg: 'bg-blue-50', val: 'text-blue-700' },
-          { label: 'Over Billings', value: '$70,600', bg: 'bg-red-50', val: 'text-red-600' },
-          { label: 'Under Billings', value: '$36,000', bg: 'bg-amber-50', val: 'text-amber-700' },
-        ].map(s => (
-          <div key={s.label} className={`${s.bg} rounded-xl border border-slate-200 p-2`}>
-            <div className={`font-bold text-[9px] ${s.val}`}>{s.value}</div>
-            <div className="text-[7px] text-slate-400 mt-0.5">{s.label}</div>
-          </div>
-        ))}
-      </div>
-      {/* Table */}
-      <div className="p-3 pt-2">
+
+      <div className="p-3 space-y-2 overflow-auto">
+        {/* Title */}
+        <div>
+          <div className="font-bold text-slate-900 text-sm">WIP Schedule</div>
+          <div className="text-slate-400 text-[9px]">reconcilebook · March 18, 2026</div>
+        </div>
+
+        {/* 6 stat cards with icons — exact match */}
+        <div className="grid grid-cols-6 gap-1.5">
+          {[
+            { label: 'Active Jobs', value: '1', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21' },
+            { label: 'Contract Value', value: '$45,000', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z' },
+            { label: 'Costs to Date', value: '$0', valColor: 'text-slate-900', iconColor: 'text-amber-500', iconBg: 'bg-amber-50', path: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75' },
+            { label: 'Billed to Date', value: '$45,000', valColor: 'text-slate-900', iconColor: 'text-blue-500', iconBg: 'bg-blue-50', path: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z' },
+            { label: 'Over Billings', value: '$45,000', valColor: 'text-red-600', iconColor: 'text-red-500', iconBg: 'bg-red-50', path: 'M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18' },
+            { label: 'Under Billings', value: '$0', valColor: 'text-slate-400', iconColor: 'text-slate-400', iconBg: 'bg-slate-50', path: 'M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3' },
+          ].map(s => (
+            <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-2">
+              <div className={`w-5 h-5 ${s.iconBg} rounded-md flex items-center justify-center mb-1`}>
+                <svg className={`w-2.5 h-2.5 ${s.iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d={s.path} /></svg>
+              </div>
+              <div className={`font-bold text-[10px] ${s.valColor}`}>{s.value}</div>
+              <div className="text-[7px] text-slate-400 mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Retainage banner — blue, with lock icon */}
+        <div className="bg-blue-50 border border-blue-200 rounded-xl px-3 py-1.5 flex items-center gap-2">
+          <svg className="w-3 h-3 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+          <span className="text-blue-700 text-[8px] font-medium">Total retainage held: <strong>$4,500</strong> — confirm release schedule with clients</span>
+        </div>
+
+        {/* Filter tabs */}
+        <div className="flex gap-1">
+          {[{ label: '🏗️ Active (1)', active: false }, { label: 'All Jobs', active: true }, { label: '✓ Complete', active: false }].map(f => (
+            <div key={f.label} className={`px-2 py-1 rounded-lg text-[8px] font-medium ${f.active ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}`}>{f.label}</div>
+          ))}
+        </div>
+
+        {/* WIP Table — all columns from real app */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <table className="w-full text-[8px]">
-            <thead>
-              <tr className="border-b border-slate-100">
-                {['PROJECT','CONTRACT $','EST. COSTS','% COMPLETE','REV. EARNED','BILLED TO DATE','COSTS TO DATE','OVER BILLING','UNDER BILLING','RETAINAGE','GROSS MARGIN'].map(h => (
-                  <th key={h} className="px-2 py-1.5 text-left font-semibold text-slate-400 whitespace-nowrap">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {rows.map(r => (
-                <tr key={r.name} className="hover:bg-slate-50">
-                  <td className="px-2 py-1.5">
-                    <div className="font-medium text-slate-900 whitespace-nowrap">{r.name}</div>
-                    <div className="text-emerald-500 text-[7px] font-medium">Active</div>
-                  </td>
-                  <td className="px-2 py-1.5 text-slate-600">{r.contract}</td>
-                  <td className="px-2 py-1.5 text-slate-500">—</td>
-                  <td className="px-2 py-1.5">
-                    <div className="font-bold text-slate-900">{r.pct}%</div>
-                    <div className="w-10 bg-slate-100 rounded-full h-1 mt-0.5">
-                      <div className={`h-1 rounded-full ${r.pct >= 75 ? 'bg-blue-500' : 'bg-amber-400'}`} style={{ width: `${r.pct}%` }} />
-                    </div>
-                  </td>
-                  <td className="px-2 py-1.5 text-slate-600">{r.billed}</td>
-                  <td className="px-2 py-1.5 text-slate-600">{r.billed}</td>
-                  <td className="px-2 py-1.5 text-slate-600">{r.costs}</td>
-                  <td className="px-2 py-1.5">{r.over !== '—' ? <span className="text-red-600 font-bold">{r.over}</span> : <span className="text-slate-300">—</span>}</td>
-                  <td className="px-2 py-1.5">{r.under !== '—' ? <span className="text-amber-600 font-bold">{r.under}</span> : <span className="text-slate-300">—</span>}</td>
-                  <td className="px-2 py-1.5 text-blue-600 font-medium">$0</td>
-                  <td className="px-2 py-1.5 font-bold text-emerald-600">{r.margin}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-[7px]">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  {['PROJECT','CONTRACT $','EST. COSTS','% COMPLETE','REV. EARNED','BILLED TO DATE','COSTS TO DATE','OVER BILLING','UNDER BILLING','RETAINAGE','COST TO COMPLETE','GROSS MARGIN'].map(h => (
+                    <th key={h} className="px-1.5 py-1.5 text-left font-semibold text-slate-400 whitespace-nowrap">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {rows.map(r => (
+                  <tr key={r.name} className="hover:bg-slate-50">
+                    <td className="px-1.5 py-2">
+                      <div className="font-semibold text-slate-900 whitespace-nowrap">{r.name}</div>
+                      <div className={`text-[7px] font-medium mt-0.5 ${r.status === 'Active' ? 'text-emerald-500' : 'text-slate-400'}`}>{r.status}</div>
+                    </td>
+                    <td className="px-1.5 py-2 text-slate-700">{r.contract}</td>
+                    <td className="px-1.5 py-2 text-blue-600 font-medium">{r.estCosts}</td>
+                    <td className="px-1.5 py-2">
+                      <div className="font-bold text-slate-900">{r.pct}.0%</div>
+                      <div className="w-8 bg-slate-100 rounded-full h-1 mt-0.5">
+                        <div className="h-1 rounded-full bg-slate-300" style={{ width: `${r.pct}%` }} />
+                      </div>
+                    </td>
+                    <td className="px-1.5 py-2 text-slate-600">{r.revEarned}</td>
+                    <td className="px-1.5 py-2 text-slate-700">{r.billed}</td>
+                    <td className="px-1.5 py-2 text-slate-600">{r.costs}</td>
+                    <td className="px-1.5 py-2">{r.over !== '—' ? <span className="text-red-600 font-bold">{r.over}</span> : <span className="text-slate-300">—</span>}</td>
+                    <td className="px-1.5 py-2">{r.under !== '—' ? <span className="text-amber-600 font-bold">{r.under}</span> : <span className="text-slate-300">—</span>}</td>
+                    <td className="px-1.5 py-2 text-blue-600 font-medium">{r.retainage}</td>
+                    <td className="px-1.5 py-2 text-slate-600">{r.costToComplete}</td>
+                    <td className="px-1.5 py-2 font-bold text-amber-500">{r.margin}</td>
+                  </tr>
+                ))}
+                {/* Totals row */}
+                <tr className="border-t-2 border-slate-300 bg-slate-50 font-bold">
+                  <td className="px-1.5 py-2 text-slate-900">TOTAL</td>
+                  <td className="px-1.5 py-2">$45,000</td>
+                  <td className="px-1.5 py-2 text-blue-600">$150,750</td>
+                  <td className="px-1.5 py-2">0.0%</td>
+                  <td className="px-1.5 py-2">$0</td>
+                  <td className="px-1.5 py-2">$45,000</td>
+                  <td className="px-1.5 py-2">$0</td>
+                  <td className="px-1.5 py-2 text-red-600">$45,000</td>
+                  <td className="px-1.5 py-2 text-slate-300">—</td>
+                  <td className="px-1.5 py-2 text-blue-600">$4,500</td>
+                  <td className="px-1.5 py-2">$150,750</td>
+                  <td className="px-1.5 py-2 text-slate-300">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Definitions section */}
+        <div className="bg-white rounded-xl border border-slate-200 p-3">
+          <div className="font-semibold text-slate-900 text-[9px] mb-2">WIP Schedule Definitions</div>
+          <div className="grid grid-cols-3 gap-x-4 gap-y-1.5 text-[7px] text-slate-500">
+            {[
+              { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method)' },
+              { term: 'Revenue Earned', def: 'Contract Amount × % Complete' },
+              { term: 'Over Billing', def: 'Billed to Date exceeds Revenue Earned — liability on balance sheet' },
+              { term: 'Under Billing', def: 'Revenue Earned exceeds Billed to Date — asset on balance sheet' },
+              { term: 'Retainage', def: 'Amount held by owner until project completion (typically 10%)' },
+              { term: 'Cost to Complete', def: 'Estimated Total Costs minus Costs to Date' },
+            ].map(d => (
+              <div key={d.term} className="flex gap-1">
+                <span className="font-semibold text-slate-700 whitespace-nowrap">{d.term}:</span>
+                <span>{d.def}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </AppShell>
