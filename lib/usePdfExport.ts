@@ -19,14 +19,14 @@ function patchOklchColors(root: HTMLElement): () => void {
     for (const prop of props) {
       const val = cs.getPropertyValue(prop)
       if (val && unsupported.test(val)) {
-        const old = (el.style as Record<string, string>)[prop] ?? ''
+        const old = (el.style as unknown as Record<string, string>)[prop] ?? ''
         patched.push({ el, prop, old })
         // Use a safe neutral fallback; most of these are decorative
         const fallback =
           prop === 'backgroundColor' ? '#ffffff' :
           prop === 'color' ? '#1e293b' :
           '#cbd5e1'
-          ; (el.style as Record<string, string>)[prop] = fallback
+          ; (el.style as unknown as Record<string, string>)[prop] = fallback
       }
     }
     for (const child of Array.from(el.children)) {
@@ -38,7 +38,7 @@ function patchOklchColors(root: HTMLElement): () => void {
 
   return () => {
     for (const { el, prop, old } of patched) {
-      (el.style as Record<string, string>)[prop] = old
+      (el.style as unknown as Record<string, string>)[prop] = old
     }
   }
 }
