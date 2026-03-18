@@ -584,7 +584,7 @@ export default function LandingPage() {
       {/* FEATURE 1 — WIP */}
       <section id="features" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">WIP Schedules</div>
               <h2 className="text-4xl font-extrabold text-slate-900 leading-tight mb-4">
@@ -609,20 +609,9 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-            {/* Annotated highlight cards instead of full mockup */}
-            <div className="space-y-3">
-              {[
-                { color: 'bg-amber-50 border-amber-200', tag: 'Auto-calculated', tagColor: 'bg-amber-400 text-slate-900', title: '% Complete — cost-to-cost method', desc: 'No manual input. ReconcileBook divides costs-to-date by estimated total costs — the method banks and bonding agents require.' },
-                { color: 'bg-red-50 border-red-200', tag: 'Over billing alert', tagColor: 'bg-red-100 text-red-700', title: 'Over & under billings per job', desc: 'Instantly see which jobs are over-billed (liability) and which are under-billed (asset on the balance sheet).' },
-                { color: 'bg-blue-50 border-blue-200', tag: 'PDF ready', tagColor: 'bg-blue-100 text-blue-700', title: 'One-click PDF for bonding agents', desc: 'Download a professionally formatted WIP schedule PDF. Send directly to your client\'s lender or bonding agent.' },
-              ].map(c => (
-                <div key={c.title} className={`rounded-2xl border p-5 ${c.color}`}>
-                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${c.tagColor}`}>{c.tag}</span>
-                  <div className="font-bold text-slate-900 mt-3 mb-1">{c.title}</div>
-                  <div className="text-slate-600 text-sm leading-relaxed">{c.desc}</div>
-                </div>
-              ))}
-            </div>
+            <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
+              <WipMockup />
+            </BrowserMockup>
           </div>
         </div>
       </section>
@@ -630,20 +619,10 @@ export default function LandingPage() {
       {/* FEATURE 2 — JOB COSTING */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="space-y-3">
-              {[
-                { color: 'bg-purple-50 border-purple-200', tag: 'Broken out', tagColor: 'bg-purple-100 text-purple-700', title: 'Materials, labor & subs — separately', desc: 'Every cost category from QBO pulled into its own column. Your contractor sees exactly where the money went.' },
-                { color: 'bg-emerald-50 border-emerald-200', tag: 'Live from QBO', tagColor: 'bg-emerald-100 text-emerald-700', title: 'Budget vs. actual variance', desc: 'ReconcileBook compares actual bills and expenses against the estimate budget — and flags jobs that are over budget in red.' },
-                { color: 'bg-slate-100 border-slate-200', tag: 'All QBO plans', tagColor: 'bg-slate-200 text-slate-700', title: 'No Projects feature required', desc: 'Works with Simple Start, Essentials, Plus — any QBO plan. Uses customers and jobs (sub-customers), not the Projects add-on.' },
-              ].map(c => (
-                <div key={c.title} className={`rounded-2xl border p-5 ${c.color}`}>
-                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${c.tagColor}`}>{c.tag}</span>
-                  <div className="font-bold text-slate-900 mt-3 mb-1">{c.title}</div>
-                  <div className="text-slate-600 text-sm leading-relaxed">{c.desc}</div>
-                </div>
-              ))}
-            </div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <BrowserMockup url="app.reconcilebook.com/clients/apex/job-costing">
+              <JobCostMockup />
+            </BrowserMockup>
             <div>
               <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">Job Costing</div>
               <h2 className="text-4xl font-extrabold text-slate-900 leading-tight mb-4">
