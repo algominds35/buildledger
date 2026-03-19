@@ -9,35 +9,71 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-export default function PricingPage() {
-  const [loading, setLoading] = useState(false)
+function Check() {
+  return (
+    <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  )
+}
 
-  async function handleSubscribe() {
-    setLoading(true)
+function Dash() {
+  return <span className="text-slate-300 mt-0.5 flex-shrink-0">—</span>
+}
+
+export default function PricingPage() {
+  const [loading, setLoading] = useState<string | null>(null)
+
+  async function handleSubscribe(plan: 'starter' | 'pro') {
+    setLoading(plan)
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        // Not logged in — send to signup with a redirect back to checkout
-        window.location.href = '/login?next=checkout'
+        window.location.href = '/login?next=pricing'
         return
       }
-      // Already logged in — go straight to Stripe
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: session.user.id }),
+        body: JSON.stringify({ userId: session.user.id, plan }),
       })
       const { url } = await res.json()
       window.location.href = url
     } finally {
-      setLoading(false)
+      setLoading(null)
     }
   }
 
+  const starterFeatures = [
+    { text: 'Up to 3 contractor clients', included: true },
+    { text: 'WIP Schedule — cost-to-cost method', included: true },
+    { text: 'Job Costing reports', included: true },
+    { text: 'One-click PDF export', included: true },
+    { text: 'QuickBooks Online integration', included: true },
+    { text: 'Over/under billing tracking', included: true },
+    { text: 'Multi-client dashboard', included: false },
+    { text: 'Retainage tracking', included: false },
+    { text: 'Portfolio overview', included: false },
+    { text: 'Priority support', included: false },
+  ]
+
+  const proFeatures = [
+    { text: 'Unlimited contractor clients', included: true },
+    { text: 'WIP Schedule — cost-to-cost method', included: true },
+    { text: 'Job Costing reports', included: true },
+    { text: 'One-click PDF export', included: true },
+    { text: 'QuickBooks Online integration', included: true },
+    { text: 'Over/under billing tracking', included: true },
+    { text: 'Multi-client dashboard', included: true },
+    { text: 'Retainage tracking', included: true },
+    { text: 'Portfolio overview', included: true },
+    { text: 'Priority support', included: true },
+  ]
+
   return (
-    <div className="min-h-screen bg-slate-900 font-sans">
+    <div className="min-h-screen bg-white font-sans">
       {/* Nav */}
-      <nav className="border-b border-white/10">
+      <nav className="border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center">
@@ -45,111 +81,206 @@ export default function PricingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
               </svg>
             </div>
-            <span className="text-lg font-bold text-white tracking-tight">ReconcileBook</span>
+            <span className="text-lg font-bold text-slate-900 tracking-tight">ReconcileBook</span>
           </Link>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+            <Link href="/#features" className="hover:text-slate-900 transition-colors">Features</Link>
+            <Link href="/blog" className="hover:text-slate-900 transition-colors">Blog</Link>
+          </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Sign in</Link>
+            <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</Link>
             <Link href="/login" className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 text-sm font-bold rounded-xl transition-colors">
-              Get started
+              Start free trial
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-20">
+        {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">Simple pricing</p>
-          <h1 className="text-5xl font-extrabold text-white tracking-tight mb-4">One plan. Everything included.</h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">No per-client fees. No report limits. One flat monthly rate for everything.</p>
+          <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">Pricing</p>
+          <h1 className="text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+            Simple, transparent pricing.
+          </h1>
+          <p className="text-slate-500 text-lg max-w-xl mx-auto">
+            Start free for 14 days — no credit card required. Pick your plan when your trial ends.
+          </p>
         </div>
 
-        <div className="max-w-lg mx-auto mb-16">
-          <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/5 rounded-full -translate-y-12 translate-x-12" />
-            <div className="relative">
-              <div className="inline-flex items-center gap-2 bg-green-400/10 border border-green-400/30 text-green-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-                Instant access — start using it today
-              </div>
+        {/* 3 pricing cards */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+
+          {/* Starter — $49 */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
+            <div className="mb-6">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Starter</div>
               <div className="flex items-end gap-1 mb-1">
-                <span className="text-6xl font-extrabold text-white">$99</span>
-                <span className="text-slate-400 mb-3 text-lg">/month</span>
+                <span className="text-5xl font-extrabold text-slate-900">$49</span>
+                <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-400 text-sm mb-8">Cancel anytime. No contracts. No setup fees.</p>
-
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Unlimited contractor clients',
-                  'Job Costing reports — live from QBO',
-                  'WIP Schedule — cost-to-cost method',
-                  'Multi-client dashboard',
-                  'One-click PDF export',
-                  'Retainage & over/under billing tracking',
-                  'QuickBooks Online integration',
-                  'Priority support',
-                ].map(item => (
-                  <li key={item} className="flex items-center gap-3 text-sm text-slate-300">
-                    <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              {/* What happens after you pay */}
-              <div className="bg-slate-700/50 rounded-xl p-4 mb-6 border border-slate-600">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">What happens after you subscribe</p>
-                <div className="space-y-2.5">
-                  {[
-                    { step: '1', text: 'You\'re charged $99 and get instant full access' },
-                    { step: '2', text: 'Connect your clients\' QuickBooks accounts in seconds' },
-                    { step: '3', text: 'Job costing & WIP reports are ready immediately' },
-                    { step: '4', text: 'Cancel anytime from your billing portal — no penalty' },
-                  ].map(s => (
-                    <div key={s.step} className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-slate-900 text-xs font-bold">{s.step}</span>
-                      </div>
-                      <p className="text-slate-300 text-sm">{s.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={handleSubscribe}
-                disabled={loading}
-                className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-base cursor-pointer"
-              >
-                {loading ? 'Redirecting to payment…' : 'Subscribe now — $99/month →'}
-              </button>
-              <p className="text-center text-slate-500 text-xs mt-3">Billed monthly · Cancel anytime from your billing portal</p>
+              <p className="text-slate-500 text-sm">For bookkeepers just getting started with a few contractor clients.</p>
             </div>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {starterFeatures.map(f => (
+                <li key={f.text} className="flex items-start gap-2.5 text-sm">
+                  {f.included ? <Check /> : <Dash />}
+                  <span className={f.included ? 'text-slate-700' : 'text-slate-400'}>{f.text}</span>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              onClick={() => handleSubscribe('starter')}
+              disabled={loading === 'starter'}
+              className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
+            >
+              {loading === 'starter' ? 'Redirecting…' : 'Start with Starter →'}
+            </button>
+            <p className="text-center text-slate-400 text-xs mt-2">14-day free trial · No credit card</p>
+          </div>
+
+          {/* Pro — $99 (most popular) */}
+          <div className="bg-slate-900 rounded-3xl border-2 border-amber-400 p-8 flex flex-col relative">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+              <span className="bg-amber-400 text-slate-900 text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span>
+            </div>
+
+            <div className="mb-6">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pro</div>
+              <div className="flex items-end gap-1 mb-1">
+                <span className="text-5xl font-extrabold text-white">$99</span>
+                <span className="text-slate-400 mb-2 text-base">/month</span>
+              </div>
+              <p className="text-slate-400 text-sm">For bookkeepers managing multiple contractor clients — no limits.</p>
+            </div>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {proFeatures.map(f => (
+                <li key={f.text} className="flex items-start gap-2.5 text-sm">
+                  <svg className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  <span className="text-slate-200">{f.text}</span>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              onClick={() => handleSubscribe('pro')}
+              disabled={loading === 'pro'}
+              className="w-full py-3.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
+            >
+              {loading === 'pro' ? 'Redirecting…' : 'Start with Pro →'}
+            </button>
+            <p className="text-center text-slate-500 text-xs mt-2">14-day free trial · No credit card</p>
+          </div>
+
+          {/* Enterprise */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
+            <div className="mb-6">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Enterprise</div>
+              <div className="flex items-end gap-1 mb-1">
+                <span className="text-4xl font-extrabold text-slate-900">Custom</span>
+              </div>
+              <p className="text-slate-500 text-sm">For large bookkeeping firms or teams needing custom setup and support.</p>
+            </div>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {[
+                'Everything in Pro',
+                'Unlimited team seats',
+                'Custom onboarding & training',
+                'White-label option',
+                'Dedicated account manager',
+                'Custom reporting',
+                'SLA & priority uptime',
+                'Invoice billing available',
+              ].map(f => (
+                <li key={f} className="flex items-start gap-2.5 text-sm">
+                  <Check />
+                  <span className="text-slate-700">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="mailto:alex@reconcilebookapp.com?subject=Enterprise inquiry"
+              className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-sm text-center block"
+            >
+              Contact us →
+            </a>
+            <p className="text-center text-slate-400 text-xs mt-2">We&apos;ll respond within 1 business day</p>
+          </div>
+        </div>
+
+        {/* Feature comparison table */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <h2 className="text-2xl font-extrabold text-slate-900 text-center mb-8">Compare plans</h2>
+          <div className="rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="grid grid-cols-4 bg-slate-900 text-white text-sm font-bold">
+              <div className="px-6 py-4 text-slate-400">Feature</div>
+              <div className="px-6 py-4 text-center">Starter</div>
+              <div className="px-6 py-4 text-center text-amber-400">Pro</div>
+              <div className="px-6 py-4 text-center">Enterprise</div>
+            </div>
+            {[
+              { feature: 'Contractor clients', starter: 'Up to 3', pro: 'Unlimited', ent: 'Unlimited' },
+              { feature: 'WIP Schedule', starter: '✓', pro: '✓', ent: '✓' },
+              { feature: 'Job Costing reports', starter: '✓', pro: '✓', ent: '✓' },
+              { feature: 'PDF export', starter: '✓', pro: '✓', ent: '✓' },
+              { feature: 'QuickBooks Online', starter: '✓', pro: '✓', ent: '✓' },
+              { feature: 'Over/under billing', starter: '✓', pro: '✓', ent: '✓' },
+              { feature: 'Multi-client dashboard', starter: '—', pro: '✓', ent: '✓' },
+              { feature: 'Retainage tracking', starter: '—', pro: '✓', ent: '✓' },
+              { feature: 'Portfolio overview', starter: '—', pro: '✓', ent: '✓' },
+              { feature: 'Team seats', starter: '—', pro: '—', ent: '✓' },
+              { feature: 'White-label', starter: '—', pro: '—', ent: '✓' },
+              { feature: 'Dedicated support', starter: 'Email', pro: 'Priority', ent: 'Dedicated' },
+            ].map((row, i) => (
+              <div key={row.feature} className={`grid grid-cols-4 text-sm border-t border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+                <div className="px-6 py-3.5 text-slate-700 font-medium">{row.feature}</div>
+                <div className="px-6 py-3.5 text-center text-slate-500">{row.starter}</div>
+                <div className="px-6 py-3.5 text-center font-semibold text-slate-900">{row.pro}</div>
+                <div className="px-6 py-3.5 text-center text-slate-500">{row.ent}</div>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* FAQ */}
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-extrabold text-white text-center mb-8">Common questions</h2>
+          <h2 className="text-2xl font-extrabold text-slate-900 text-center mb-8">Common questions</h2>
           <div className="space-y-4">
             {[
-              { q: 'When am I charged?', a: 'You are charged $99 immediately when you subscribe. You get instant full access to all features right away.' },
-              { q: 'How many QuickBooks clients can I connect?', a: 'Unlimited. There are no per-client fees — connect as many contractor clients as you manage.' },
+              { q: 'Do I need a credit card to start?', a: 'No. Your 14-day free trial starts the moment you sign up — no credit card required. You only enter payment details when your trial ends.' },
+              { q: 'Can I switch plans later?', a: 'Yes. You can upgrade from Starter to Pro at any time from your billing portal. The difference is prorated automatically by Stripe.' },
+              { q: 'What counts as a "client" on the Starter plan?', a: 'Each QuickBooks Online company you connect counts as one client. The Starter plan allows up to 3 connected QBO accounts.' },
               { q: 'Can I cancel anytime?', a: 'Yes. Cancel anytime from your billing portal with no fees or penalties. You keep access until the end of your billing period.' },
-              { q: 'Does it work with QuickBooks Desktop?', a: 'ReconcileBook connects to QuickBooks Online only. QuickBooks Desktop is not currently supported.' },
-              { q: 'What happens to my data if I cancel?', a: 'Your data stays in your QuickBooks account — ReconcileBook only reads from QBO, it never stores your financial data permanently.' },
+              { q: 'Does it work with QuickBooks Desktop?', a: 'ReconcileBook connects to QuickBooks Online only. All QBO plans are supported — Simple Start, Essentials, Plus, and Advanced.' },
+              { q: 'What happens to my data if I cancel?', a: 'Your data stays in QuickBooks — ReconcileBook only reads from QBO and never stores your financial data permanently.' },
             ].map(faq => (
-              <div key={faq.q} className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                <h3 className="font-semibold text-white text-sm mb-2">{faq.q}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{faq.a}</p>
+              <div key={faq.q} className="bg-slate-50 rounded-xl p-5 border border-slate-100">
+                <h3 className="font-semibold text-slate-900 text-sm mb-2">{faq.q}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-100 py-8 mt-16">
+        <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
+          <span>© {new Date().getFullYear()} ReconcileBook. All rights reserved.</span>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-slate-900 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-slate-900 transition-colors">Terms</Link>
+            <Link href="/" className="hover:text-slate-900 transition-colors">Home</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

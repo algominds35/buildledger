@@ -824,42 +824,52 @@ export default function LandingPage() {
 
       {/* PRICING */}
       <section className="py-20 bg-slate-50">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">Pricing</p>
             <h2 className="text-4xl font-extrabold text-slate-900">Simple, transparent pricing.</h2>
-            <p className="text-slate-500 mt-3">No per-client fees. No module charges. No annual contracts.</p>
+            <p className="text-slate-500 mt-3">14-day free trial on every plan. No credit card required to start.</p>
           </div>
-          <div className="bg-white rounded-3xl border border-slate-200 p-10 shadow-xl">
-            <div className="flex items-end gap-2 mb-2">
-              <span className="text-6xl font-extrabold text-slate-900">$99</span>
-              <span className="text-slate-400 text-lg mb-3">/month</span>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Starter */}
+            <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Starter</div>
+              <div className="flex items-end gap-1 mb-1"><span className="text-4xl font-extrabold text-slate-900">$49</span><span className="text-slate-400 mb-1">/mo</span></div>
+              <p className="text-slate-500 text-sm mb-6">Up to 3 clients. Great for getting started.</p>
+              <ul className="space-y-2 mb-8 flex-1 text-sm text-slate-600">
+                {['Up to 3 clients', 'WIP Schedule', 'Job Costing', 'PDF export', 'QBO integration'].map(f => (
+                  <li key={f} className="flex items-center gap-2"><svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>{f}</li>
+                ))}
+              </ul>
+              <Link href="/pricing" className="block w-full text-center py-3 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-xl transition-colors text-sm">Start free trial →</Link>
             </div>
-            <p className="text-slate-500 text-sm mb-8">Cancel anytime. No contracts. No setup fees.</p>
-            <div className="grid sm:grid-cols-2 gap-3 mb-8">
-              {[
-                'Unlimited contractor clients',
-                'Job Costing reports — live from QBO',
-                'WIP Schedule — cost-to-cost method',
-                'Multi-client dashboard',
-                'Over/under billing tracking',
-                'Retainage tracking',
-                'One-click PDF export',
-                'QuickBooks Online integration',
-                'All QBO plans supported',
-                'Priority support',
-              ].map(item => (
-                <div key={item} className="flex items-center gap-2.5 text-sm text-slate-700">
-                  <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                  {item}
-                </div>
-              ))}
+            {/* Pro */}
+            <div className="bg-slate-900 rounded-3xl border-2 border-amber-400 p-8 flex flex-col relative">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2"><span className="bg-amber-400 text-slate-900 text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span></div>
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pro</div>
+              <div className="flex items-end gap-1 mb-1"><span className="text-4xl font-extrabold text-white">$99</span><span className="text-slate-400 mb-1">/mo</span></div>
+              <p className="text-slate-400 text-sm mb-6">Unlimited clients. Everything included.</p>
+              <ul className="space-y-2 mb-8 flex-1 text-sm text-slate-300">
+                {['Unlimited clients', 'WIP Schedule', 'Job Costing', 'PDF export', 'Multi-client dashboard', 'Retainage tracking', 'Priority support'].map(f => (
+                  <li key={f} className="flex items-center gap-2"><svg className="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>{f}</li>
+                ))}
+              </ul>
+              <Link href="/pricing" className="block w-full text-center py-3 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-sm">Start free trial →</Link>
             </div>
-            <Link href="/login" className="block w-full text-center py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-base">
-              Start free trial — $99/month →
-            </Link>
-            <p className="text-center text-slate-400 text-xs mt-3">Billed monthly · Cancel anytime</p>
+            {/* Enterprise */}
+            <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Enterprise</div>
+              <div className="flex items-end gap-1 mb-1"><span className="text-4xl font-extrabold text-slate-900">Custom</span></div>
+              <p className="text-slate-500 text-sm mb-6">For large firms needing custom setup and team seats.</p>
+              <ul className="space-y-2 mb-8 flex-1 text-sm text-slate-600">
+                {['Everything in Pro', 'Unlimited team seats', 'Custom onboarding', 'White-label option', 'Dedicated support'].map(f => (
+                  <li key={f} className="flex items-center gap-2"><svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>{f}</li>
+                ))}
+              </ul>
+              <a href="mailto:alex@reconcilebookapp.com?subject=Enterprise inquiry" className="block w-full text-center py-3 bg-slate-900 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-sm">Contact us →</a>
+            </div>
           </div>
+          <p className="text-center text-slate-400 text-sm mt-6">All plans include a 14-day free trial · No credit card required · Cancel anytime</p>
         </div>
       </section>
 

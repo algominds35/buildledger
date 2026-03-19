@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const PAYMENT_LINK = 'https://buy.stripe.com/test_28E4gBd2eerBdvjaee0Fi0c'
+const PAYMENT_LINKS: Record<string, string> = {
+  starter: 'https://buy.stripe.com/dRm4gBgeqerBbnbaee0Fi0k',  // $49/mo
+  pro:     'https://buy.stripe.com/8x214p1jwdnx3UJgCC0Fi0l',  // $99/mo
+}
 
 export async function POST(request: NextRequest) {
-  const { userId } = await request.json()
+  const { userId, plan } = await request.json()
   if (!userId) return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
 
-  // Attach user ID so the webhook can match the payment to the Supabase user
-  const url = `${PAYMENT_LINK}?client_reference_id=${userId}`
+  const link = PAYMENT_LINKS[plan] ?? PAYMENT_LINKS.pro
+  const url = `${link}?client_reference_id=${userId}`
   return NextResponse.json({ url })
 }
