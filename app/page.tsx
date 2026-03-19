@@ -526,11 +526,10 @@ export default function LandingPage() {
                 </Link>
               </div>
               <p className="text-slate-400 text-sm mb-10">14-day free trial · No credit card required</p>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { value: '3 hrs', label: 'Saved per client/month' },
                   { value: '30 sec', label: 'To generate a WIP report' },
-                  { value: '$99/mo', label: 'Flat — unlimited clients' },
                 ].map(s => (
                   <div key={s.label} className="border border-slate-100 rounded-xl p-4">
                     <div className="text-xl font-extrabold text-slate-900">{s.value}</div>
