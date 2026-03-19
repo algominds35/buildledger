@@ -517,7 +517,7 @@ export default function LandingPage() {
               <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-xl">
                 ReconcileBook connects to your contractor clients&apos; QuickBooks Online and generates WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours. No spreadsheets, no manual entry, no errors.
               </p>
-              <div className="flex flex-wrap gap-4 mb-10">
+              <div className="flex flex-wrap gap-4 items-center mb-3">
                 <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
                   Start free trial →
                 </Link>
@@ -525,6 +525,7 @@ export default function LandingPage() {
                   See pricing
                 </Link>
               </div>
+              <p className="text-slate-400 text-sm mb-10">14-day free trial · No credit card required · Cancel anytime</p>
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { value: '3 hrs', label: 'Saved per client/month' },
