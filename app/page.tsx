@@ -525,7 +525,7 @@ export default function LandingPage() {
                   See pricing
                 </Link>
               </div>
-              <p className="text-slate-400 text-sm mb-10">14-day free trial · No credit card required · Cancel anytime</p>
+              <p className="text-slate-400 text-sm mb-10">14-day free trial · No credit card required</p>
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { value: '3 hrs', label: 'Saved per client/month' },
