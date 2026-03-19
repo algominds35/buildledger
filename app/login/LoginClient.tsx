@@ -110,15 +110,17 @@ export default function LoginClient() {
               <span className="text-xl font-bold text-slate-900">ReconcileBook</span>
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-1">
-              {nextParam === 'checkout' && mode === 'signup'
-                ? 'Create your account'
-                : mode === 'signin' ? 'Welcome back' : 'Create your account'}
+              {mode === 'signin' ? 'Welcome back' : 'Start your free trial'}
             </h2>
             <p className="text-slate-500 text-sm">
-              {nextParam === 'checkout' && mode === 'signup'
-                ? "Create an account — you'll be taken to payment instantly"
-                : mode === 'signin' ? 'Sign in to your bookkeeper workspace' : 'Start managing construction clients today'}
+              {mode === 'signin' ? 'Sign in to your bookkeeper workspace' : '14 days free — no credit card required.'}
             </p>
+            {mode === 'signup' && (
+              <div className="mt-3 flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-2 rounded-xl">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                14-day free trial · No credit card · Cancel anytime
+              </div>
+            )}
           </div>
 
           <div className="flex rounded-xl bg-slate-100 p-1 mb-8">
