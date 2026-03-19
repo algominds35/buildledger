@@ -136,9 +136,9 @@ export default function PricingPage() {
               disabled={loading === 'starter'}
               className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
             >
-              {loading === 'starter' ? 'Redirecting…' : 'Start with Starter →'}
+              {loading === 'starter' ? 'Redirecting…' : 'Start free trial →'}
             </button>
-            <p className="text-center text-slate-400 text-xs mt-2">14-day free trial · No credit card</p>
+            <p className="text-center text-slate-500 text-xs mt-2 font-medium">14-day free trial · No credit card required</p>
           </div>
 
           {/* Pro — $99 (most popular) */}
@@ -172,9 +172,9 @@ export default function PricingPage() {
               disabled={loading === 'pro'}
               className="w-full py-3.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
             >
-              {loading === 'pro' ? 'Redirecting…' : 'Start with Pro →'}
+              {loading === 'pro' ? 'Redirecting…' : 'Start free trial →'}
             </button>
-            <p className="text-center text-slate-500 text-xs mt-2">14-day free trial · No credit card</p>
+            <p className="text-center text-slate-300 text-xs mt-2 font-medium">14-day free trial · No credit card required</p>
           </div>
 
           {/* Enterprise */}
