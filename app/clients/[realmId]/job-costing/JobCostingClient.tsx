@@ -68,7 +68,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
   const overBudget = jobs.filter(j => j.status === 'over-budget').length
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 print:min-h-0 print:bg-white">
       {pdfError && (
         <div className="fixed top-4 right-4 z-50 max-w-sm bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-xl shadow-lg flex items-start gap-3">
           <span className="flex-1">{pdfError}</span>
@@ -102,7 +102,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 print:py-4 print:px-4">
       <div id="job-costing-report">
         {/* Report header */}
         <div className="mb-6">
@@ -168,7 +168,7 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
                   <th className="px-4 py-3 text-right">Total Cost</th>
                   <th className="px-4 py-3 text-right">Variance</th>
                   <th className="px-4 py-3 text-center">Status</th>
-                  <th className="px-4 py-3"></th>
+                  <th className="px-4 py-3 print:hidden"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -195,8 +195,8 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
                         {job.status === 'over-budget' ? 'Over' : job.status === 'under-budget' ? 'Under' : 'On Track'}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
-                      <button onClick={() => setSelected(selected?.id === job.id ? null : job)} className="text-xs text-amber-600 hover:underline font-medium">
+                    <td className="px-4 py-3 print:hidden">
+                      <button type="button" onClick={() => setSelected(selected?.id === job.id ? null : job)} className="text-xs text-amber-600 hover:underline font-medium">
                         {selected?.id === job.id ? 'Hide' : 'Details'}
                       </button>
                     </td>
@@ -213,7 +213,8 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
                   <td className="px-4 py-3 text-right">{fmt(jobs.reduce((s, j) => s + j.costs.other, 0))}</td>
                   <td className="px-4 py-3 text-right text-slate-900">{fmt(totalCost)}</td>
                   <td className={`px-4 py-3 text-right ${totalVariance >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>{fmt(totalVariance)}</td>
-                  <td colSpan={2}></td>
+                  <td className="px-4 py-3"></td>
+                  <td className="px-4 py-3 print:hidden"></td>
                 </tr>
               </tbody>
             </table>

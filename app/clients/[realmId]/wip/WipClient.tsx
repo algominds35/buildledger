@@ -80,7 +80,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
   const totalRetainage = filtered.reduce((s, r) => s + r.retainage, 0)
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 print:min-h-0 print:bg-white">
       {pdfError && (
         <div className="fixed top-4 right-4 z-50 max-w-sm bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-xl shadow-lg flex items-start gap-3">
           <span className="flex-1">{pdfError}</span>
@@ -120,7 +120,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 print:py-4 print:px-4">
       <div id="wip-report">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-900">WIP Schedule</h1>
@@ -178,7 +178,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
             <table className="w-full text-sm">
               <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-3 text-left sticky left-0 bg-slate-50">Project</th>
+                  <th className="px-4 py-3 text-left sticky left-0 bg-slate-50 print:static">Project</th>
                   <th className="px-4 py-3 text-right">Contract $</th>
                   <th className="px-4 py-3 text-right">Est. Costs</th>
                   <th className="px-4 py-3 text-center min-w-[120px]">% Complete</th>
@@ -195,7 +195,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
               <tbody className="divide-y divide-slate-100">
                 {filtered.map((row) => (
                   <tr key={row.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 sticky left-0 bg-white">
+                    <td className="px-4 py-3 sticky left-0 bg-white print:static">
                       <div className="font-medium text-slate-900 max-w-[160px] truncate">{row.name}</div>
                       <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
                         row.status === 'active' ? 'bg-emerald-50 text-emerald-700' :
@@ -236,7 +236,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
                 ))}
                 {/* Totals */}
                 <tr className="bg-slate-50 font-semibold text-sm border-t-2 border-slate-300">
-                  <td className="px-4 py-3 sticky left-0 bg-slate-50">TOTAL</td>
+                  <td className="px-4 py-3 sticky left-0 bg-slate-50 print:static">TOTAL</td>
                   <td className="px-4 py-3 text-right">{fmt(totalContract)}</td>
                   <td className="px-4 py-3 text-right">{fmt(filtered.reduce((s, r) => s + r.estimatedCosts, 0))}</td>
                   <td className="px-4 py-3 text-center">
