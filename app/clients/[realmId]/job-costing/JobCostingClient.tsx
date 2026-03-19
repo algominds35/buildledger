@@ -107,7 +107,12 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
         {/* Report header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-900">Job Costing Report</h1>
-          <p className="text-slate-500 text-sm mt-1">{company} · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p className="text-slate-500 text-sm mt-1">
+            {company} · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {jobs.length > 0 && (
+              <span className="text-slate-400"> · {jobs.length} project{jobs.length !== 1 ? 's' : ''} — totals include all rows below</span>
+            )}
+          </p>
         </div>
 
         {/* Summary cards */}
