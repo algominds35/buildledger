@@ -140,7 +140,20 @@ export default function DashboardClient() {
     if (subRes.data) {
       setSubscription(subRes.data)
     } else {
-      setSubscription({ status: 'unpaid', trial_end: null, current_period_end: null })
+      // New user — auto-create a 14-day free trial (no credit card required)
+      const trialEnd = new Date()
+      trialEnd.setDate(trialEnd.getDate() + 14)
+      const trialEndISO = trialEnd.toISOString()
+      await supabase.from('subscriptions').upsert({
+        user_id: uid,
+        status: 'trialing',
+        trial_end: trialEndISO,
+        stripe_customer_id: null,
+        stripe_subscription_id: null,
+        current_period_end: null,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' })
+      setSubscription({ status: 'trialing', trial_end: trialEndISO, current_period_end: null })
     }
 
     setLoading(false)
@@ -185,7 +198,11 @@ export default function DashboardClient() {
   const aggUnder = allSummaries.reduce((s, c) => s + c.underBillings, 0)
   const totalJobs = allSummaries.reduce((s, c) => s + c.activeJobs, 0)
 
-  const isExpired = subscription && subscription.status !== 'active'
+  const now = new Date()
+  const trialEndDate = subscription?.trial_end ? new Date(subscription.trial_end) : null
+  const isTrialing = subscription?.status === 'trialing' && trialEndDate && trialEndDate > now
+  const trialDaysLeft = isTrialing && trialEndDate ? Math.ceil((trialEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : 0
+  const isExpired = subscription && subscription.status !== 'active' && !isTrialing
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -209,6 +226,18 @@ export default function DashboardClient() {
             </a>
             <button onClick={async () => { await supabase.auth.signOut(); router.push('/login') }} className="mt-3 text-xs text-slate-400 hover:text-slate-600">Sign out</button>
           </div>
+        </div>
+      )}
+
+      {/* Trial banner */}
+      {isTrialing && (
+        <div className="bg-amber-400 text-slate-900 text-sm font-medium py-2 px-6 flex items-center justify-between">
+          <span>
+            🎉 <strong>{trialDaysLeft} day{trialDaysLeft !== 1 ? 's' : ''} left</strong> in your free trial — no credit card needed yet.
+          </span>
+          <a href="/upgrade" className="bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-lg hover:bg-slate-700 transition-colors">
+            Subscribe $99/mo →
+          </a>
         </div>
       )}
 
