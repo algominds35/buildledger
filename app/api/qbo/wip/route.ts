@@ -85,14 +85,16 @@ export async function GET(request: NextRequest) {
     const parentId = job.ParentRef?.value ?? null
 
     const jobInvoices = invoices.filter(inv =>
-      inv.CustomerRef?.value === jobId || inv.CustomerRef?.value === parentId
+      inv.CustomerRef?.value === jobId ||
+      (parentId !== null && inv.CustomerRef?.value === parentId)
     )
     /** Progress billings — sum of invoice amounts (never use this as contract value) */
     const billedToDate = jobInvoices.reduce((s, inv) => s + Number(inv.TotalAmt ?? 0), 0)
 
     // Estimates (job contract / price + cost baseline in QBO)
     const jobEstimates = estimates.filter(est =>
-      est.CustomerRef?.value === jobId || est.CustomerRef?.value === parentId
+      est.CustomerRef?.value === jobId ||
+      (parentId !== null && est.CustomerRef?.value === parentId)
     )
     const estimateTotalAmt = jobEstimates.reduce((s, est) => s + Number(est.TotalAmt ?? 0), 0)
 
@@ -122,13 +124,20 @@ export async function GET(request: NextRequest) {
       estimateTotalAmt > 0 ? estimateTotalAmt * 0.75 : contractAmount * 0.75
 
     // Costs to date from bills + purchases assigned to this job
+    // Only match parentId when it is non-null — null === null would match every top-level customer
     const costsToDate =
-      bills.filter(b => b.CustomerRef?.value === jobId || b.CustomerRef?.value === parentId)
-        .reduce((s, b) => s + Number(b.TotalAmt ?? 0), 0) +
+      bills.filter(b =>
+        b.CustomerRef?.value === jobId ||
+        (parentId !== null && b.CustomerRef?.value === parentId)
+      ).reduce((s, b) => s + Number(b.TotalAmt ?? 0), 0) +
       purchases
         .flatMap((p: any) => p.Line ?? [])
-        .filter((l: any) => l.AccountBasedExpenseLineDetail?.CustomerRef?.value === jobId ||
-          l.ItemBasedExpenseLineDetail?.CustomerRef?.value === jobId)
+        .filter((l: any) => {
+          const lineCustomer =
+            l.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
+            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ?? null
+          return lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
+        })
         .reduce((s: number, l: any) => s + Number(l.Amount ?? 0), 0)
 
     // % Complete (cost-to-cost method)

@@ -126,7 +126,7 @@ export async function GET(request: NextRequest) {
     const billCosts = { labor: 0, materials: 0, subcontractors: 0, other: 0 }
     for (const bill of bills) {
       const topCustomer = bill.CustomerRef?.value ?? null
-      if (topCustomer === jobId || topCustomer === parentId) {
+      if (topCustomer === jobId || (parentId !== null && topCustomer === parentId)) {
         const lines = sumLineItems(bill.Line, jobId, parentId)
         if (lines.labor + lines.materials + lines.subcontractors + lines.other === 0) {
           // Top-level match, categorize as subcontractor
