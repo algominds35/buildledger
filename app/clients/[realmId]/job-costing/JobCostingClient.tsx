@@ -107,7 +107,15 @@ export default function JobCostingClient({ realmId }: { realmId: string }) {
         {/* Report header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-900">Job Costing Report</h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="mt-3 text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+            <span className="font-semibold text-slate-800">Cost vs budget</span> — see where actual spend is tracking against budget.
+            For <span className="font-semibold text-slate-800">billing vs progress</span> (over/under billing vs revenue earned), open the{' '}
+            <Link href={`/clients/${realmId}/wip`} className="text-amber-700 font-semibold hover:underline">
+              WIP Schedule
+            </Link>
+            .
+          </p>
+          <p className="text-slate-500 text-sm mt-3">
             {company} · {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             {jobs.length > 0 && (
               <span className="text-slate-400"> · {jobs.length} project{jobs.length !== 1 ? 's' : ''} — totals include all rows below</span>

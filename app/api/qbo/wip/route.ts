@@ -84,14 +84,25 @@ export async function GET(request: NextRequest) {
     const jobId = job.Id
     const parentId = job.ParentRef?.value ?? null
 
-    // Contract amount = sum of all invoices for this job
     const jobInvoices = invoices.filter(inv =>
       inv.CustomerRef?.value === jobId || inv.CustomerRef?.value === parentId
     )
-    const contractAmount = jobInvoices.reduce((s, inv) => s + Number(inv.TotalAmt ?? 0), 0)
-
-    // Billed to date = invoiced amount (total amt minus unpaid balance)
+    /** Progress billings — sum of invoice amounts (never use this as contract value) */
     const billedToDate = jobInvoices.reduce((s, inv) => s + Number(inv.TotalAmt ?? 0), 0)
+
+    // Estimates (job contract / price + cost baseline in QBO)
+    const jobEstimates = estimates.filter(est =>
+      est.CustomerRef?.value === jobId || est.CustomerRef?.value === parentId
+    )
+    const estimateTotalAmt = jobEstimates.reduce((s, est) => s + Number(est.TotalAmt ?? 0), 0)
+
+    /**
+     * Contract value (revenue basis) for % complete and "revenue earned."
+     * Prefer Estimate total (job price), not invoice sum — otherwise billed === contract
+     * and WIP never shows real over/under billing vs progress.
+     */
+    const contractAmount =
+      estimateTotalAmt > 0 ? estimateTotalAmt : billedToDate
 
     // Retainage: sum of retainage line items or estimate 10%
     const retainage = jobInvoices.reduce((s, inv) => {
@@ -102,12 +113,13 @@ export async function GET(request: NextRequest) {
       return s + retLines.reduce((rs: number, l: any) => rs + Math.abs(Number(l.Amount ?? 0)), 0)
     }, 0) || billedToDate * 0.1
 
-    // Estimated total costs from estimates, else use contract × 0.75
-    const jobEstimates = estimates.filter(est =>
-      est.CustomerRef?.value === jobId || est.CustomerRef?.value === parentId
-    )
-    const estimatedCosts = jobEstimates.reduce((s, est) => s + Number(est.TotalAmt ?? 0), 0) ||
-      contractAmount * 0.75
+    /**
+     * Denominator for cost-to-cost % complete = estimated total job cost.
+     * When QBO only has a sell-price estimate, we approximate total cost as 75% of contract
+     * (adjust if you later add a dedicated cost budget field).
+     */
+    const estimatedCosts =
+      estimateTotalAmt > 0 ? estimateTotalAmt * 0.75 : contractAmount * 0.75
 
     // Costs to date from bills + purchases assigned to this job
     const costsToDate =

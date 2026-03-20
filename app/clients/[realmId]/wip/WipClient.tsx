@@ -260,17 +260,25 @@ export default function WipClient({ realmId }: { realmId: string }) {
               </tbody>
             </table>
           </div>
+          <p className="px-4 py-2 text-[11px] text-slate-500 border-t border-slate-100 bg-slate-50/80">
+            <span className="font-semibold text-slate-600">Over billing</span> = billed more than revenue earned on work completed.
+            <span className="mx-2 text-slate-300">|</span>
+            <span className="font-semibold text-slate-600">Under billing</span> = revenue earned on completed work exceeds what you&apos;ve billed.
+          </p>
         </div>
 
         {/* Legend */}
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <h3 className="font-semibold text-slate-900 mb-3 text-sm">WIP Schedule Definitions</h3>
+          <p className="text-xs text-slate-500 mb-4 border-b border-slate-100 pb-2">
+            <strong className="text-slate-700">Contract $</strong> uses the job&apos;s <strong>Estimate total</strong> in QuickBooks when present (job price), not invoice sum — so <strong>Billed to Date</strong> can differ from contract and over/under billing reflects real progress.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-600">
             {[
               { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method)' },
               { term: 'Revenue Earned', def: 'Contract Amount × % Complete' },
-              { term: 'Over Billing', def: 'Billed to Date exceeds Revenue Earned — liability on balance sheet' },
-              { term: 'Under Billing', def: 'Revenue Earned exceeds Billed to Date — asset on balance sheet' },
+              { term: 'Over Billing', def: 'Billed to Date − Revenue Earned when positive — billed ahead of work completed (liability)' },
+              { term: 'Under Billing', def: 'Revenue Earned − Billed to Date when positive — work completed but not yet billed (asset)' },
               { term: 'Retainage', def: 'Amount held by owner until project completion (typically 10%)' },
               { term: 'Cost to Complete', def: 'Estimated Total Costs minus Costs to Date' },
             ].map(({ term, def }) => (
