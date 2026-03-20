@@ -148,8 +148,20 @@ export async function GET(request: NextRequest) {
     const costsFromPurchases = purchaseAnalysis.reduce((s: number, p: any) => s + p.includedInCosts, 0)
     const totalCostsToDate = costsFromBills + costsFromPurchases
 
+    // Raw IDs for matching comparison
+    const allBillCustomerRefs = bills.map(b => ({
+      billId: b.Id,
+      billDocNumber: b.DocNumber,
+      billTotalAmt: b.TotalAmt,
+      headerCustomerRefValue: b.CustomerRef?.value ?? null,
+      headerCustomerRefName: b.CustomerRef?.name ?? null,
+      matchesJobId: b.CustomerRef?.value === jobId,
+      matchesParentId: parentId !== null && b.CustomerRef?.value === parentId,
+    }))
+
     return {
       job: { id: jobId, name: job.DisplayName, parentId },
+      ALL_BILL_CUSTOMER_REFS: allBillCustomerRefs,
       summary: {
         matchedInvoices: matchedInvoices.length,
         totalBilled: matchedInvoices.reduce((s, i) => s + Number(i.totalAmt ?? 0), 0),
