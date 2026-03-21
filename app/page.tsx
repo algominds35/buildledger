@@ -540,28 +540,10 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Right — Core Workflows card */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-7">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5">How bookkeepers use it</div>
-              <div className="space-y-4">
-                {[
-                  { step: '01', title: 'Connect a client\'s QuickBooks', desc: 'One-click OAuth. No CSV exports, no manual entry.', color: 'bg-amber-400' },
-                  { step: '02', title: 'Pull live data automatically', desc: 'Customers, invoices, bills, and estimates — all synced instantly.', color: 'bg-amber-400' },
-                  { step: '03', title: 'Generate WIP & Job Costing', desc: 'Cost-to-cost % complete, over/under billings, materials/labor/subs.', color: 'bg-amber-400' },
-                  { step: '04', title: 'Download PDF for bonding', desc: 'Send to lenders, bonding agents, or clients in one click.', color: 'bg-amber-400' },
-                ].map(s => (
-                  <div key={s.step} className="flex gap-4 items-start bg-white rounded-xl p-4 border border-slate-100">
-                    <div className={`w-8 h-8 ${s.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                      <span className="text-slate-900 text-xs font-extrabold">{s.step}</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-900 text-sm">{s.title}</div>
-                      <div className="text-slate-500 text-xs mt-0.5 leading-relaxed">{s.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Right — WIP Mockup */}
+            <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
+              <WipMockup />
+            </BrowserMockup>
           </div>
         </div>
       </section>
