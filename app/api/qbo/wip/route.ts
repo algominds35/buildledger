@@ -159,42 +159,6 @@ export async function GET(request: NextRequest) {
 
     const costsToDate = billCosts + purchaseCosts
 
-    // ── Debug logging for "210 River Rd Roof" ────────────────────────────────
-    const DEBUG_JOB = '210 River Rd Roof'
-    if ((job.DisplayName ?? job.Name ?? '').includes(DEBUG_JOB)) {
-      console.log(`\n===== DEBUG: ${job.DisplayName ?? job.Name} (id=${jobId}) =====`)
-      console.log(`parentId: ${parentId}`)
-      console.log(`\n--- All Bills (${bills.length}) ---`)
-      bills.forEach((b: any) => {
-        console.log(`  Bill ${b.Id} | DocNumber=${b.DocNumber} | Total=${b.TotalAmt} | Header CustomerRef=${b.CustomerRef?.value ?? 'none'}`)
-        ;(b.Line ?? []).forEach((l: any, i: number) => {
-          const lineCustomer =
-            l.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
-            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ??
-            l.CustomerRef?.value ?? null
-          const matched = lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
-          console.log(`    Line[${i}] Amount=${l.Amount} DetailType=${l.DetailType} CustomerRef=${lineCustomer ?? 'none'} → ${matched ? '✓ MATCHED' : '✗ skip'}`)
-        })
-      })
-      console.log(`\n--- All Purchases (${purchases.length}) ---`)
-      purchases.forEach((p: any) => {
-        console.log(`  Purchase ${p.Id} | PaymentType=${p.PaymentType} | Total=${p.TotalAmt}`)
-        ;(p.Line ?? []).forEach((l: any, i: number) => {
-          const lineCustomer =
-            l.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
-            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ??
-            l.CustomerRef?.value ?? null
-          const matched = lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
-          console.log(`    Line[${i}] Amount=${l.Amount} DetailType=${l.DetailType} CustomerRef=${lineCustomer ?? 'none'} → ${matched ? '✓ MATCHED' : '✗ skip'}`)
-        })
-      })
-      if (costsToDate === 0) {
-        console.log('\n⚠️  No job-linked cost lines found')
-      } else {
-        console.log(`\n✅ billCosts=$${billCosts.toFixed(2)}  purchaseCosts=$${purchaseCosts.toFixed(2)}  costsToDate=$${costsToDate.toFixed(2)}`)
-      }
-    }
-    // ─────────────────────────────────────────────────────────────────────────
 
     // % Complete (cost-to-cost method)
     const pctComplete = estimatedCosts > 0
