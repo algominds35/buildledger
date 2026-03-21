@@ -167,9 +167,10 @@ function DashboardMockup() {
 
 function WipMockup() {
   const rows = [
-    { name: 'Smith Roofing LLC', status: 'Active', pct: 0, contract: '$45,000', estCosts: '$33,750', revEarned: '$0', billed: '$45,000', costs: '$0', over: '$45,000', under: '—', retainage: '$4,500', costToComplete: '$33,750', margin: '0.0%' },
-    { name: '88 Pine St Remodel', status: 'Not Started', pct: 0, contract: '$0', estCosts: '$117,000', revEarned: '$0', billed: '$0', costs: '$0', over: '—', under: '—', retainage: '$0', costToComplete: '$117,000', margin: '0.0%' },
-    { name: 'Peak Construction Co', status: 'Not Started', pct: 0, contract: '$0', estCosts: '$0', revEarned: '$0', billed: '$0', costs: '$0', over: '—', under: '—', retainage: '$0', costToComplete: '$0', margin: '0.0%' },
+    { name: 'Apex Valley Roofing', status: 'Active', pct: 74, contract: '$47,250', estCosts: '$35,438', revEarned: '$35,015', billed: '$38,000', costs: '$26,175', over: '$2,985', under: '—', retainage: '$3,800', costToComplete: '$9,263', margin: '25.3%' },
+    { name: 'Pine Ridge Remodel', status: 'Active', pct: 44, contract: '$62,500', estCosts: '$46,875', revEarned: '$27,500', billed: '$15,000', costs: '$20,625', over: '—', under: '$12,500', retainage: '$1,500', costToComplete: '$26,250', margin: '25.0%' },
+    { name: 'Summit Commercial', status: 'Active', pct: 13, contract: '$98,500', estCosts: '$73,875', revEarned: '$12,805', billed: '$49,250', costs: '$9,604', over: '$36,445', under: '—', retainage: '$4,925', costToComplete: '$64,271', margin: '24.9%' },
+    { name: 'Harbor View Build', status: 'Active', pct: 58, contract: '$31,500', estCosts: '$23,625', revEarned: '$18,270', billed: '$12,000', costs: '$13,703', over: '—', under: '$6,270', retainage: '$1,200', costToComplete: '$9,922', margin: '25.0%' },
   ]
   return (
     <AppShell activeTab="wip">
@@ -204,12 +205,12 @@ function WipMockup() {
         {/* 6 stat cards with icons — exact match */}
         <div className="grid grid-cols-6 gap-1.5">
           {[
-            { label: 'Active Jobs', value: '1', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21' },
-            { label: 'Contract Value', value: '$45,000', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z' },
-            { label: 'Costs to Date', value: '$0', valColor: 'text-slate-900', iconColor: 'text-amber-500', iconBg: 'bg-amber-50', path: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75' },
-            { label: 'Billed to Date', value: '$45,000', valColor: 'text-slate-900', iconColor: 'text-blue-500', iconBg: 'bg-blue-50', path: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z' },
-            { label: 'Over Billings', value: '$45,000', valColor: 'text-red-600', iconColor: 'text-red-500', iconBg: 'bg-red-50', path: 'M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18' },
-            { label: 'Under Billings', value: '$0', valColor: 'text-slate-400', iconColor: 'text-slate-400', iconBg: 'bg-slate-50', path: 'M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3' },
+            { label: 'Active Jobs', value: '4', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21' },
+            { label: 'Contract Value', value: '$239,750', valColor: 'text-slate-900', iconColor: 'text-slate-500', iconBg: 'bg-slate-100', path: 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z' },
+            { label: 'Costs to Date', value: '$70,107', valColor: 'text-slate-900', iconColor: 'text-amber-500', iconBg: 'bg-amber-50', path: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75' },
+            { label: 'Billed to Date', value: '$114,250', valColor: 'text-slate-900', iconColor: 'text-blue-500', iconBg: 'bg-blue-50', path: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z' },
+            { label: 'Over Billings', value: '$39,430', valColor: 'text-red-600', iconColor: 'text-red-500', iconBg: 'bg-red-50', path: 'M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18' },
+            { label: 'Under Billings', value: '$18,770', valColor: 'text-amber-600', iconColor: 'text-amber-500', iconBg: 'bg-amber-50', path: 'M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3' },
           ].map(s => (
             <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-2">
               <div className={`w-5 h-5 ${s.iconBg} rounded-md flex items-center justify-center mb-1`}>
@@ -224,7 +225,7 @@ function WipMockup() {
         {/* Retainage banner — blue, with lock icon */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl px-3 py-1.5 flex items-center gap-2">
           <svg className="w-3 h-3 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-          <span className="text-blue-700 text-[8px] font-medium">Total retainage held: <strong>$4,500</strong> — confirm release schedule with clients</span>
+          <span className="text-blue-700 text-[8px] font-medium">Total retainage held: <strong>$11,425</strong> — confirm release schedule with clients</span>
         </div>
 
         {/* Filter tabs */}
@@ -273,17 +274,17 @@ function WipMockup() {
                 {/* Totals row */}
                 <tr className="border-t-2 border-slate-300 bg-slate-50 font-bold">
                   <td className="px-1.5 py-2 text-slate-900">TOTAL</td>
-                  <td className="px-1.5 py-2">$45,000</td>
-                  <td className="px-1.5 py-2 text-blue-600">$150,750</td>
-                  <td className="px-1.5 py-2">0.0%</td>
-                  <td className="px-1.5 py-2">$0</td>
-                  <td className="px-1.5 py-2">$45,000</td>
-                  <td className="px-1.5 py-2">$0</td>
-                  <td className="px-1.5 py-2 text-red-600">$45,000</td>
-                  <td className="px-1.5 py-2 text-slate-300">—</td>
-                  <td className="px-1.5 py-2 text-blue-600">$4,500</td>
-                  <td className="px-1.5 py-2">$150,750</td>
-                  <td className="px-1.5 py-2 text-slate-300">—</td>
+                  <td className="px-1.5 py-2">$239,750</td>
+                  <td className="px-1.5 py-2 text-blue-600">$179,813</td>
+                  <td className="px-1.5 py-2">36.5%</td>
+                  <td className="px-1.5 py-2">$93,590</td>
+                  <td className="px-1.5 py-2">$114,250</td>
+                  <td className="px-1.5 py-2">$70,107</td>
+                  <td className="px-1.5 py-2 text-red-600">$39,430</td>
+                  <td className="px-1.5 py-2 text-amber-600">$18,770</td>
+                  <td className="px-1.5 py-2 text-blue-600">$11,425</td>
+                  <td className="px-1.5 py-2">$109,706</td>
+                  <td className="px-1.5 py-2 text-emerald-600">25.1%</td>
                 </tr>
               </tbody>
             </table>
@@ -316,10 +317,10 @@ function WipMockup() {
 
 function JobCostMockup() {
   const rows = [
-    { name: '210 River Rd Roof', contract: '$45,000', budget: '$33,750', mat: '$0', labor: '$13,800', subs: '$0', other: '$0', total: '$13,800', variance: '-$13,800', pct: '+0.0%', status: 'Over' },
-    { name: '88 Pine St Remodel', contract: '$0', budget: '$117,000', mat: '$0', labor: '$13,800', subs: '$0', other: '$0', total: '$13,800', variance: '+$103,200', pct: '+88.2%', status: 'Under' },
-    { name: 'Peak Construction Co', contract: '$0', budget: '$0', mat: '$0', labor: '$13,800', subs: '$0', other: '$0', total: '$13,800', variance: '-$13,800', pct: '+0.0%', status: 'Over' },
-    { name: 'Smith Roofing LLC', contract: '$45,000', budget: '$36,000', mat: '$0', labor: '$13,800', subs: '$0', other: '$0', total: '$13,800', variance: '+$22,200', pct: '+61.7%', status: 'Under' },
+    { name: 'Apex Valley Roofing', contract: '$38,000', budget: '$35,438', mat: '$8,250', labor: '$14,925', subs: '$3,000', other: '$0', total: '$26,175', variance: '+$9,263', pct: '+26.1%', status: 'Under' },
+    { name: 'Pine Ridge Remodel', contract: '$15,000', budget: '$46,875', mat: '$5,430', labor: '$12,195', subs: '$3,000', other: '$0', total: '$20,625', variance: '+$26,250', pct: '+56.0%', status: 'Under' },
+    { name: 'Summit Commercial', contract: '$49,250', budget: '$73,875', mat: '$2,750', labor: '$5,854', subs: '$1,000', other: '$0', total: '$9,604', variance: '+$64,271', pct: '+87.0%', status: 'Under' },
+    { name: 'Harbor View Build', contract: '$12,000', budget: '$23,625', mat: '$4,850', labor: '$7,353', subs: '$1,500', other: '$0', total: '$13,703', variance: '-$9,922', pct: '-42.0%', status: 'Over' },
   ]
   return (
     <AppShell activeTab="jobs">
@@ -334,10 +335,10 @@ function JobCostMockup() {
         {/* 4 stat cards — exact match to real app */}
         <div className="grid grid-cols-4 gap-2">
           {[
-            { label: 'Total Contract Value', value: '$45,000', color: 'text-slate-900', icon: 'text-slate-500' },
-            { label: 'Total Budget', value: '$153,000', color: 'text-blue-600', icon: 'text-blue-500' },
-            { label: 'Total Actual Cost', value: '$55,200', color: 'text-purple-600', icon: 'text-purple-500' },
-            { label: 'Total Variance', value: '$97,800', color: 'text-emerald-600', icon: 'text-emerald-500' },
+            { label: 'Total Contract Value', value: '$114,250', color: 'text-slate-900', icon: 'text-slate-500' },
+            { label: 'Total Budget', value: '$179,813', color: 'text-blue-600', icon: 'text-blue-500' },
+            { label: 'Total Actual Cost', value: '$70,107', color: 'text-purple-600', icon: 'text-purple-500' },
+            { label: 'Total Variance', value: '+$89,862', color: 'text-emerald-600', icon: 'text-emerald-500' },
           ].map(s => (
             <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-2.5">
               <svg className={`w-3 h-3 ${s.icon} mb-1`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
@@ -349,7 +350,7 @@ function JobCostMockup() {
         {/* Over-budget alert */}
         <div className="bg-red-50 border border-red-200 rounded-xl px-3 py-1.5 flex items-center gap-2">
           <svg className="w-3 h-3 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
-          <span className="text-red-600 text-[8px] font-medium">2 projects are over budget — review cost allocations</span>
+          <span className="text-red-600 text-[8px] font-medium">1 project is over budget — review cost allocations</span>
         </div>
         {/* Table — exact columns from real app */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
@@ -385,14 +386,14 @@ function JobCostMockup() {
               ))}
               <tr className="border-t-2 border-slate-300 bg-slate-50 font-bold">
                 <td className="px-2 py-1.5 text-slate-900">TOTAL</td>
-                <td className="px-2 py-1.5 text-slate-900">$45,000</td>
-                <td className="px-2 py-1.5 text-blue-600">$153,000</td>
+                <td className="px-2 py-1.5 text-slate-900">$114,250</td>
+                <td className="px-2 py-1.5 text-blue-600">$179,813</td>
+                <td className="px-2 py-1.5">$21,280</td>
+                <td className="px-2 py-1.5">$40,327</td>
+                <td className="px-2 py-1.5">$8,500</td>
                 <td className="px-2 py-1.5">$0</td>
-                <td className="px-2 py-1.5">$55,200</td>
-                <td className="px-2 py-1.5">$0</td>
-                <td className="px-2 py-1.5">$0</td>
-                <td className="px-2 py-1.5">$55,200</td>
-                <td className="px-2 py-1.5 text-emerald-600">$97,800</td>
+                <td className="px-2 py-1.5">$70,107</td>
+                <td className="px-2 py-1.5 text-emerald-600">+$89,862</td>
                 <td className="px-2 py-1.5"></td>
               </tr>
             </tbody>
