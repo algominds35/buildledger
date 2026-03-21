@@ -579,6 +579,25 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* DEMO VIDEO */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">See it in action</p>
+            <h2 className="text-4xl font-extrabold text-slate-900">WIP schedule from QuickBooks in 30 seconds.</h2>
+            <p className="text-slate-500 mt-3 text-lg">Watch how ReconcileBook pulls live data and generates your report automatically.</p>
+          </div>
+          <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-black aspect-video">
+            <iframe
+              src="https://drive.google.com/file/d/1Lht9gLdhskXVVAbKeBzuOTrq2SH2sPXb/preview"
+              className="w-full h-full"
+              allow="autoplay"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
       {/* TABBED LIVE PREVIEW */}
       <TabbedPreview />
 
