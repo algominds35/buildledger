@@ -123,22 +123,78 @@ export async function GET(request: NextRequest) {
     const estimatedCosts =
       estimateTotalAmt > 0 ? estimateTotalAmt * 0.75 : contractAmount * 0.75
 
-    // Costs to date from bills + purchases assigned to this job
-    // Only match parentId when it is non-null — null === null would match every top-level customer
-    const costsToDate =
-      bills.filter(b =>
+    // ── Costs to date ────────────────────────────────────────────────────────
+    // QBO assigns customer/job at the LINE level (not the bill/expense header).
+    // We must read Line[].AccountBasedExpenseLineDetail.CustomerRef  or
+    //                  Line[].ItemBasedExpenseLineDetail.CustomerRef
+    // and fall back to the header CustomerRef only when the header is set.
+
+    const isJobLine = (line: any): boolean => {
+      const lineCustomer =
+        line.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
+        line.ItemBasedExpenseLineDetail?.CustomerRef?.value ??
+        line.CustomerRef?.value ?? null
+      return lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
+    }
+
+    // Bills — sum matching line amounts; fall back to TotalAmt when header matches
+    const billCosts = bills.reduce((s: number, b: any) => {
+      const headerMatch =
         b.CustomerRef?.value === jobId ||
         (parentId !== null && b.CustomerRef?.value === parentId)
-      ).reduce((s, b) => s + Number(b.TotalAmt ?? 0), 0) +
-      purchases
-        .flatMap((p: any) => p.Line ?? [])
-        .filter((l: any) => {
+      if (headerMatch) return s + Number(b.TotalAmt ?? 0)
+      const lineCosts = (b.Line ?? [])
+        .filter((l: any) => l.DetailType !== 'SubTotalLineDetail' && isJobLine(l))
+        .reduce((ls: number, l: any) => ls + Number(l.Amount ?? 0), 0)
+      return s + lineCosts
+    }, 0)
+
+    // Purchases / Expenses — always line-level
+    const purchaseCosts = purchases.reduce((s: number, p: any) => {
+      const lineCosts = (p.Line ?? [])
+        .filter((l: any) => l.DetailType !== 'SubTotalLineDetail' && isJobLine(l))
+        .reduce((ls: number, l: any) => ls + Number(l.Amount ?? 0), 0)
+      return s + lineCosts
+    }, 0)
+
+    const costsToDate = billCosts + purchaseCosts
+
+    // ── Debug logging for "210 River Rd Roof" ────────────────────────────────
+    const DEBUG_JOB = '210 River Rd Roof'
+    if ((job.DisplayName ?? job.Name ?? '').includes(DEBUG_JOB)) {
+      console.log(`\n===== DEBUG: ${job.DisplayName ?? job.Name} (id=${jobId}) =====`)
+      console.log(`parentId: ${parentId}`)
+      console.log(`\n--- All Bills (${bills.length}) ---`)
+      bills.forEach((b: any) => {
+        console.log(`  Bill ${b.Id} | DocNumber=${b.DocNumber} | Total=${b.TotalAmt} | Header CustomerRef=${b.CustomerRef?.value ?? 'none'}`)
+        ;(b.Line ?? []).forEach((l: any, i: number) => {
           const lineCustomer =
             l.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
-            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ?? null
-          return lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
+            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ??
+            l.CustomerRef?.value ?? null
+          const matched = lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
+          console.log(`    Line[${i}] Amount=${l.Amount} DetailType=${l.DetailType} CustomerRef=${lineCustomer ?? 'none'} → ${matched ? '✓ MATCHED' : '✗ skip'}`)
         })
-        .reduce((s: number, l: any) => s + Number(l.Amount ?? 0), 0)
+      })
+      console.log(`\n--- All Purchases (${purchases.length}) ---`)
+      purchases.forEach((p: any) => {
+        console.log(`  Purchase ${p.Id} | PaymentType=${p.PaymentType} | Total=${p.TotalAmt}`)
+        ;(p.Line ?? []).forEach((l: any, i: number) => {
+          const lineCustomer =
+            l.AccountBasedExpenseLineDetail?.CustomerRef?.value ??
+            l.ItemBasedExpenseLineDetail?.CustomerRef?.value ??
+            l.CustomerRef?.value ?? null
+          const matched = lineCustomer === jobId || (parentId !== null && lineCustomer === parentId)
+          console.log(`    Line[${i}] Amount=${l.Amount} DetailType=${l.DetailType} CustomerRef=${lineCustomer ?? 'none'} → ${matched ? '✓ MATCHED' : '✗ skip'}`)
+        })
+      })
+      if (costsToDate === 0) {
+        console.log('\n⚠️  No job-linked cost lines found')
+      } else {
+        console.log(`\n✅ billCosts=$${billCosts.toFixed(2)}  purchaseCosts=$${purchaseCosts.toFixed(2)}  costsToDate=$${costsToDate.toFixed(2)}`)
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     // % Complete (cost-to-cost method)
     const pctComplete = estimatedCosts > 0
