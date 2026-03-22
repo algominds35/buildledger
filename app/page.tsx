@@ -405,7 +405,7 @@ function JobCostMockup() {
 }
 
 function TabbedPreview() {
-  const [tab, setTab] = useState<'dashboard' | 'wip' | 'jobs'>('dashboard')
+  const [tab, setTab] = useState<'dashboard' | 'wip' | 'jobs'>('wip')
   const tabs = [
     { id: 'dashboard', label: 'Client Dashboard', url: 'app.reconcilebook.com/dashboard' },
     { id: 'wip', label: 'WIP Schedule', url: 'app.reconcilebook.com/clients/apex/wip' },
