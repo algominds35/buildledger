@@ -502,49 +502,32 @@ export default function LandingPage() {
 
       {/* HERO */}
       <section className="pt-28 pb-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
-                Built for construction bookkeepers
-              </div>
-              <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-                Stop building<br />
-                WIP schedules<br />
-                <span className="text-amber-400">in Excel.</span>
-              </h1>
-              <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-xl">
-                ReconcileBook connects to your contractor clients&apos; QuickBooks Online and generates WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours. No spreadsheets, no manual entry, no errors.
-              </p>
-              <div className="flex flex-wrap gap-4 items-center mb-3">
-                <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
-                  Start free trial →
-                </Link>
-                <Link href="/pricing" className="px-7 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-900 font-semibold text-base rounded-xl transition-colors">
-                  See pricing
-                </Link>
-              </div>
-              <p className="text-slate-400 text-sm mb-10">14-day free trial · No credit card required</p>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { value: '3 hrs', label: 'Saved per client/month' },
-                  { value: '30 sec', label: 'To generate a WIP report' },
-                ].map(s => (
-                  <div key={s.label} className="border border-slate-100 rounded-xl p-4">
-                    <div className="text-xl font-extrabold text-slate-900">{s.value}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — WIP Mockup */}
-            <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
-              <WipMockup />
-            </BrowserMockup>
+        <div className="max-w-5xl mx-auto px-6 text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+            Built for construction bookkeepers
           </div>
+          <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
+            Stop building WIP schedules<br />
+            <span className="text-amber-400">in Excel.</span>
+          </h1>
+          <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
+            ReconcileBook connects to your contractor clients&apos; QuickBooks Online and generates WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours.
+          </p>
+          <div className="flex flex-wrap gap-4 items-center justify-center mb-3">
+            <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
+              Start free trial →
+            </Link>
+            <Link href="/pricing" className="px-7 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-900 font-semibold text-base rounded-xl transition-colors">
+              See pricing
+            </Link>
+          </div>
+          <p className="text-slate-400 text-sm">14-day free trial · No credit card required</p>
+        </div>
+        <div className="max-w-7xl mx-auto px-6">
+          <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
+            <WipMockup />
+          </BrowserMockup>
         </div>
       </section>
 
