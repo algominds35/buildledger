@@ -47,6 +47,30 @@ const posts = [
     readTime: '8 min read',
     tag: 'WIP Reports',
   },
+  {
+    slug: 'monthly-close-checklist-construction-bookkeeper',
+    title: 'Monthly Close Checklist for Construction Bookkeepers',
+    description: 'The complete month-end close checklist for construction bookkeepers: WIP reports, retainage, job costing reconciliation, journal entries, and QuickBooks cleanup — step by step.',
+    date: 'March 2026',
+    readTime: '9 min read',
+    tag: 'Month-End Close',
+  },
+  {
+    slug: 'aia-billing-g702-g703-quickbooks-online',
+    title: 'AIA Billing (G702/G703) in QuickBooks Online — Complete Guide',
+    description: 'How to track AIA progress billing using G702/G703 forms in QuickBooks Online. Schedule of values, retainage, stored materials, and how it ties into the WIP schedule.',
+    date: 'March 2026',
+    readTime: '10 min read',
+    tag: 'Billing',
+  },
+  {
+    slug: 'how-to-price-construction-bookkeeping-services',
+    title: 'How to Price Construction Bookkeeping Services',
+    description: 'How much to charge for construction bookkeeping clients. Pricing models, what services to include at each tier, and how to justify premium rates for WIP and job costing work.',
+    date: 'March 2026',
+    readTime: '8 min read',
+    tag: 'Practice Growth',
+  },
 ]
 
 export default function BlogPage() {

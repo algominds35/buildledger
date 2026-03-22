@@ -49,9 +49,17 @@ export default function LoginClient() {
         else if (data.user) await redirectAfterAuth(data.user.id)
       } else {
         const { data, error } = await supabase.auth.signUp({ email, password })
-        if (error) setMessage({ type: 'error', text: error.message })
-        else if (data.user) await redirectAfterAuth(data.user.id)
-        else setMessage({ type: 'success', text: 'Check your email to confirm your account, then sign in.' })
+        if (error) {
+          setMessage({ type: 'error', text: error.message })
+        } else if (data.session && data.user) {
+          // Email confirmation is disabled — user is signed in immediately
+          await redirectAfterAuth(data.user.id)
+        } else if (data.user) {
+          // Email confirmation is enabled — session won't exist until they confirm
+          setMessage({ type: 'success', text: 'Check your email to confirm your account, then sign in.' })
+        } else {
+          setMessage({ type: 'error', text: 'Something went wrong. Please try again.' })
+        }
       }
     } finally {
       setLoading(false)
