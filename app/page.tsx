@@ -503,10 +503,6 @@ export default function LandingPage() {
       {/* HERO */}
       <section className="pt-28 pb-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
-            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
-            Built for construction bookkeepers
-          </div>
           <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
             Stop building WIP schedules<br />
             <span className="text-amber-400">in Excel.</span>
