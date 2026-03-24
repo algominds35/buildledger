@@ -48,7 +48,11 @@ export default function LoginClient() {
         if (error) setMessage({ type: 'error', text: error.message })
         else if (data.user) await redirectAfterAuth(data.user.id)
       } else {
-        const { data, error } = await supabase.auth.signUp({ email, password })
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        })
         if (error) {
           setMessage({ type: 'error', text: error.message })
         } else if (data.session && data.user) {
