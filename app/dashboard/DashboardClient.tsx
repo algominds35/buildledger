@@ -116,10 +116,22 @@ export default function DashboardClient() {
   const [billingLoading, setBillingLoading] = useState(false)
 
   useEffect(() => {
+    // getSession first (instant, reads localStorage)
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { router.push('/login'); return }
-      setUser(session.user)
-      fetchAll(session.user.id)
+      if (session) {
+        setUser(session.user)
+        fetchAll(session.user.id)
+        return
+      }
+      // No session yet — wait for auth state to settle (handles post-signup redirect)
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+        subscription.unsubscribe()
+        if (!newSession) { router.push('/login'); return }
+        setUser(newSession.user)
+        fetchAll(newSession.user.id)
+      })
+      // Safety timeout — if no auth event fires in 3s, send to login
+      setTimeout(() => { subscription.unsubscribe(); router.push('/login') }, 3000)
     })
   }, [router])
 
