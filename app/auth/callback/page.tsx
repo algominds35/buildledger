@@ -16,28 +16,49 @@ export default function AuthCallback() {
   useEffect(() => {
     async function handleCallback() {
       try {
-        // Get the code from the URL
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
+        const token_hash = params.get('token_hash')
+        const type = params.get('type') as 'signup' | 'recovery' | 'email' | null
 
         if (code) {
+          // PKCE flow
           const { error } = await supabase.auth.exchangeCodeForSession(code)
           if (error) {
-            setStatus('Something went wrong. Redirecting to login…')
+            console.error('exchangeCodeForSession error:', error)
+            setStatus('Could not confirm. Redirecting to login…')
+            setTimeout(() => router.push('/login'), 2000)
+            return
+          }
+        } else if (token_hash && type) {
+          // Email OTP / magic link flow
+          const { error } = await supabase.auth.verifyOtp({ token_hash, type })
+          if (error) {
+            console.error('verifyOtp error:', error)
+            setStatus('Could not confirm. Redirecting to login…')
+            setTimeout(() => router.push('/login'), 2000)
+            return
+          }
+        } else {
+          // No params — check if session already exists (hash-based flow)
+          const { data: { session } } = await supabase.auth.getSession()
+          if (!session) {
+            setStatus('No confirmation token found. Redirecting to login…')
             setTimeout(() => router.push('/login'), 2000)
             return
           }
         }
 
-        // Check we actually have a session now
+        // At this point we should have a session
         const { data: { session } } = await supabase.auth.getSession()
         if (session) {
           router.push('/dashboard')
         } else {
-          setStatus('Could not confirm account. Redirecting to login…')
+          setStatus('Session not found. Please sign in manually.')
           setTimeout(() => router.push('/login'), 2000)
         }
-      } catch {
+      } catch (err) {
+        console.error('Callback error:', err)
         setStatus('Something went wrong. Redirecting to login…')
         setTimeout(() => router.push('/login'), 2000)
       }
