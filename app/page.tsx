@@ -508,7 +508,7 @@ export default function LandingPage() {
             <span className="text-amber-400">in Excel.</span>
           </h1>
           <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
-            ReconcileBook connects to your contractor clients&apos; QuickBooks Online and generates WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours.
+            Connect your clients&apos; QuickBooks Online and generate WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours.
           </p>
           <div className="flex flex-wrap gap-4 items-center justify-center mb-3">
             <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
