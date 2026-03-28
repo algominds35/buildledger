@@ -504,13 +504,13 @@ export default function LandingPage() {
       <section className="pt-28 pb-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-            Stop building WIP schedules<br />
-            <span className="text-amber-400">in Excel.</span>
+            Stop wasting hours rebuilding<br />
+            WIP schedules <span className="text-amber-400">in Excel every month.</span>
           </h1>
           <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
-            Connect QuickBooks Online and generate WIP schedules, job costing reports, and over/under billing summaries in 30 seconds — not 3 hours. Built for bookkeepers, controllers, and contractors.
+            Connect QuickBooks Online and generate WIP schedules, job profitability, over/under billing, and cost-to-complete reports in seconds — not hours. Built for construction bookkeepers, controllers, and contractors.
           </p>
-          <div className="flex flex-wrap gap-4 items-center justify-center mb-3">
+          <div className="flex flex-wrap gap-4 items-center justify-center mb-4">
             <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
               Start free trial →
             </Link>
@@ -518,9 +518,39 @@ export default function LandingPage() {
               See pricing
             </Link>
           </div>
+          <p className="text-slate-700 text-sm font-semibold mb-1.5">What used to take 3+ hours in Excel can now be done in under 30 seconds.</p>
           <p className="text-slate-400 text-sm">14-day free trial · No credit card required</p>
         </div>
+
+        {/* Screenshot section */}
         <div className="max-w-7xl mx-auto px-6">
+          {/* Intro copy */}
+          <div className="text-center mb-6">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Generated automatically from QuickBooks Online</p>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">
+              See WIP, over/under billing, and job profitability instantly.
+            </h2>
+            <p className="text-slate-500 text-base max-w-xl mx-auto">
+              No spreadsheets. No month-end rebuilds. Just a clean QBO-powered view of every active job.
+            </p>
+          </div>
+
+          {/* 3 callout badges */}
+          <div className="flex flex-wrap justify-center gap-3 mb-7">
+            {[
+              'Auto-calculated % complete',
+              'Instant over/under billing visibility',
+              'Real-time gross margin by job',
+            ].map(text => (
+              <div key={text} className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium px-4 py-2 rounded-full">
+                <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {text}
+              </div>
+            ))}
+          </div>
+
           <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
             <WipMockup />
           </BrowserMockup>
