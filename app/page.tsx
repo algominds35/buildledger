@@ -504,11 +504,11 @@ export default function LandingPage() {
       <section className="pt-28 pb-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-            Generate WIP reports directly from<br />
-            QuickBooks in seconds —<span className="text-amber-400"> no Excel needed.</span>
+            WIP schedules used to take hours.<br />
+            <span className="text-amber-400">Now they take 30 seconds.</span>
           </h1>
           <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
-            Connect QuickBooks and instantly get WIP, job costing, and over/under billing reports.
+            Connect QuickBooks and instantly generate WIP schedules, job costing, and over/under billing reports — no spreadsheets, no manual work.
           </p>
           <div className="flex flex-wrap gap-4 items-center justify-center mb-4">
             <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
