@@ -504,11 +504,11 @@ export default function LandingPage() {
       <section className="pt-28 pb-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-            Stop wasting hours rebuilding<br />
-            WIP schedules <span className="text-amber-400">in Excel every month.</span>
+            Generate WIP reports directly from<br />
+            QuickBooks in seconds —<span className="text-amber-400"> no Excel needed.</span>
           </h1>
           <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
-            Connect QuickBooks Online and generate WIP schedules, job profitability, over/under billing, and cost-to-complete reports in seconds — not hours. Built for construction bookkeepers, controllers, and contractors.
+            Connect QuickBooks and instantly get WIP, job costing, and over/under billing reports.
           </p>
           <div className="flex flex-wrap gap-4 items-center justify-center mb-4">
             <Link href="/login" className="px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-200">
