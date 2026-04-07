@@ -846,9 +846,9 @@ export default function LandingPage() {
             <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
               <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Starter</div>
               <div className="flex items-end gap-1 mb-1"><span className="text-4xl font-extrabold text-slate-900">$49</span><span className="text-slate-400 mb-1">/mo</span></div>
-              <p className="text-slate-500 text-sm mb-6">Up to 3 clients. Great for getting started.</p>
+              <p className="text-slate-500 text-sm mb-6">Up to 5 clients. Great for getting started.</p>
               <ul className="space-y-2 mb-8 flex-1 text-sm text-slate-600">
-                {['Up to 3 clients', 'WIP Schedule', 'Job Costing', 'PDF export', 'QBO integration'].map(f => (
+                {['Up to 5 clients', 'WIP Schedule', 'Job Costing', 'PDF export', 'QBO integration'].map(f => (
                   <li key={f} className="flex items-center gap-2"><svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>{f}</li>
                 ))}
               </ul>
