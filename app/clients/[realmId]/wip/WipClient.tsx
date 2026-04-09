@@ -25,6 +25,17 @@ function PctBar({ value, color }: { value: number; color: string }) {
   )
 }
 
+function applyOverride(row: WipRow, manualPct: number | undefined): WipRow {
+  if (manualPct === undefined) return row
+  const p = Math.min(Math.max(manualPct, 0), 100)
+  const earnedRevenue = row.contractAmount * (p / 100)
+  const overBilling = Math.max(0, row.billedToDate - earnedRevenue)
+  const underBilling = Math.max(0, earnedRevenue - row.billedToDate)
+  const grossProfit = earnedRevenue - row.costsToDate
+  const grossMarginPct = earnedRevenue > 0 ? (grossProfit / earnedRevenue) * 100 : 0
+  return { ...row, pctComplete: p, earnedRevenue, overBilling, underBilling, grossProfit, grossMarginPct }
+}
+
 export default function WipClient({ realmId }: { realmId: string }) {
   const router = useRouter()
   const [wip, setWip] = useState<WipRow[]>([])
@@ -32,7 +43,17 @@ export default function WipClient({ realmId }: { realmId: string }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'active' | 'complete'>('active')
+  const [manualPcts, setManualPcts] = useState<Record<string, number>>({})
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editValue, setEditValue] = useState('')
   const { exportPdf, exporting, error: pdfError, clearError: clearPdfError } = usePdfExport()
+
+  useEffect(() => {
+    const stored = localStorage.getItem(`wip-pct-${realmId}`)
+    if (stored) {
+      try { setManualPcts(JSON.parse(stored)) } catch { /* ignore */ }
+    }
+  }, [realmId])
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -50,6 +71,21 @@ export default function WipClient({ realmId }: { realmId: string }) {
       }
     })
   }, [realmId, router])
+
+  function savePct(id: string, value: string) {
+    const num = parseFloat(value)
+    const next = { ...manualPcts }
+    if (isNaN(num)) {
+      delete next[id]
+    } else {
+      next[id] = Math.min(Math.max(num, 0), 100)
+    }
+    setManualPcts(next)
+    localStorage.setItem(`wip-pct-${realmId}`, JSON.stringify(next))
+    setEditingId(null)
+  }
+
+  const rows = wip.map(r => applyOverride(r, manualPcts[r.id]))
 
   if (loading) return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -69,8 +105,8 @@ export default function WipClient({ realmId }: { realmId: string }) {
     </div>
   )
 
-  const filtered = wip.filter(r => filter === 'all' ? true : r.status === filter)
-  const active = wip.filter(r => r.status === 'active')
+  const filtered = rows.filter(r => filter === 'all' ? true : r.status === filter)
+  const active = rows.filter(r => r.status === 'active')
 
   const totalContract = filtered.reduce((s, r) => s + r.contractAmount, 0)
   const totalCosts = filtered.reduce((s, r) => s + r.costsToDate, 0)
@@ -207,8 +243,41 @@ export default function WipClient({ realmId }: { realmId: string }) {
                     </td>
                     <td className="px-4 py-3 text-right text-slate-700">{fmt(row.contractAmount)}</td>
                     <td className="px-4 py-3 text-right text-slate-500">{fmt(row.estimatedCosts)}</td>
-                    <td className="px-4 py-3">
-                      <div className="text-center font-semibold text-slate-900">{pct(row.pctComplete)}</div>
+                    <td className="px-4 py-3 print:text-center">
+                      {editingId === row.id ? (
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            min={0}
+                            max={100}
+                            step={0.5}
+                            autoFocus
+                            defaultValue={row.pctComplete.toFixed(1)}
+                            onChange={e => setEditValue(e.target.value)}
+                            onBlur={e => savePct(row.id, e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') savePct(row.id, editValue || (e.target as HTMLInputElement).value)
+                              if (e.key === 'Escape') setEditingId(null)
+                            }}
+                            className="w-16 text-center text-sm font-semibold border border-amber-400 rounded-lg px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                          />
+                          <span className="text-slate-500 text-xs">%</span>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => { setEditingId(row.id); setEditValue(row.pctComplete.toFixed(1)) }}
+                          className={`w-full text-center font-semibold rounded-lg px-2 py-0.5 transition-colors print:pointer-events-none ${
+                            manualPcts[row.id] !== undefined
+                              ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 ring-1 ring-amber-300'
+                              : 'text-slate-900 hover:bg-slate-100'
+                          }`}
+                          title="Click to set % complete manually"
+                        >
+                          {pct(row.pctComplete)}
+                          {manualPcts[row.id] !== undefined && <span className="ml-1 text-[10px] text-amber-500">✎</span>}
+                        </button>
+                      )}
                       <PctBar
                         value={row.pctComplete}
                         color={row.pctComplete >= 100 ? 'bg-blue-500' : row.pctComplete >= 50 ? 'bg-emerald-500' : 'bg-amber-400'}
@@ -275,7 +344,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-600">
             {[
-              { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method)' },
+              { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method). Click any value to enter manually.' },
               { term: 'Revenue Earned', def: 'Contract Amount × % Complete' },
               { term: 'Over Billing', def: 'Billed to Date − Revenue Earned when positive — billed ahead of work completed (liability)' },
               { term: 'Under Billing', def: 'Revenue Earned − Billed to Date when positive — work completed but not yet billed (asset)' },
