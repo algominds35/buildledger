@@ -587,7 +587,7 @@ export default function LandingPage() {
                 <span className="bg-red-100 text-red-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">Before</span>
                 <span className="text-slate-500 text-sm font-medium">2–4 hours per client in Excel</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl" style={{ height: '340px' }}>
+              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl" style={{ height: '500px' }}>
                 <div className="bg-red-50 border-b border-red-200 px-4 py-2 flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
@@ -618,7 +618,7 @@ export default function LandingPage() {
                 <span className="bg-emerald-100 text-emerald-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">After</span>
                 <span className="text-slate-500 text-sm font-medium">30 seconds with ReconcileBook</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl" style={{ height: '340px' }}>
+              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl" style={{ height: '500px' }}>
                 <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-2 flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
@@ -636,6 +636,12 @@ export default function LandingPage() {
                 <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold flex-shrink-0">✓</span> % complete, over/under billings, retainage — all there</li>
                 <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold flex-shrink-0">✓</span> Download PDF in one click — done</li>
               </ul>
+              <div className="mt-5">
+                <Link href="/login" className="inline-block px-7 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors shadow-lg shadow-amber-100">
+                  Start free trial →
+                </Link>
+                <p className="text-slate-400 text-xs mt-2">14-day free trial · No credit card required</p>
+              </div>
             </div>
           </div>
 
@@ -647,13 +653,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* CTA under before/after */}
-          <div className="mt-10 text-center">
-            <Link href="/login" className="inline-block px-8 py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-100">
-              Start free trial →
-            </Link>
-            <p className="text-slate-400 text-sm mt-3">14-day free trial · No credit card required · Set up in 5 minutes</p>
-          </div>
         </div>
       </section>
 
