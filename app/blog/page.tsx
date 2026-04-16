@@ -8,6 +8,30 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'wip-report-excel-template-construction-free',
+    title: 'WIP Report Excel Template for Construction — Free + How to Use It',
+    description: 'The exact columns, formulas, and QuickBooks Online data sources you need to build a construction WIP schedule in Excel — plus a faster alternative if you manage multiple clients.',
+    date: 'April 2026',
+    readTime: '9 min read',
+    tag: 'WIP Reports',
+  },
+  {
+    slug: 'foundation-software-vs-quickbooks-online-construction-bookkeeping',
+    title: 'Foundation Software vs QuickBooks Online for Construction Bookkeeping',
+    description: 'WIP reports, job costing, retainage, certified payroll, pricing — a straight comparison of Foundation Software and QuickBooks Online for construction bookkeepers.',
+    date: 'April 2026',
+    readTime: '10 min read',
+    tag: 'Software Comparison',
+  },
+  {
+    slug: 'construction-accounting-software-comparison-wip-job-costing',
+    title: 'Construction Accounting Software Compared: QBO, Sage, Foundation, Procore',
+    description: 'How QuickBooks Online, Sage 100 Contractor, Foundation, and Procore each handle WIP reports and job costing — and which is right for your contractor clients.',
+    date: 'April 2026',
+    readTime: '12 min read',
+    tag: 'Software Comparison',
+  },
+  {
     slug: 'wip-report-quickbooks-online-construction',
     title: 'How to Create a WIP Report in QuickBooks Online for Construction',
     description: 'A step-by-step guide to building a WIP schedule using QuickBooks Online data — the cost-to-cost method explained for construction bookkeepers.',
