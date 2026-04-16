@@ -571,58 +571,15 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* DEMO VIDEO */}
+      {/* BEFORE / AFTER — right after hero */}
       <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
-            <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">See it in action</p>
-            <h2 className="text-4xl font-extrabold text-slate-900">WIP schedule from QuickBooks in 30 seconds.</h2>
-            <p className="text-slate-500 mt-3 text-lg">Watch how ReconcileBook pulls live data and generates your report automatically.</p>
-          </div>
-          <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-black aspect-video">
-            <iframe
-              src="https://drive.google.com/file/d/1Lht9gLdhskXVVAbKeBzuOTrq2SH2sPXb/preview"
-              className="w-full h-full"
-              allow="autoplay"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* TABBED LIVE PREVIEW */}
-      <TabbedPreview />
-
-      {/* FEATURE 1 — WIP + BEFORE/AFTER */}
-      <section id="features" className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Top: text + bullets */}
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">WIP Schedules</div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
-              WIP schedule done in 30 seconds —<br className="hidden md:block" /> not 3 hours.
-            </h2>
-            <p className="text-slate-500 text-lg leading-relaxed mb-8">
-              Your contractor clients need WIP reports for bonding, lenders, and monthly close. ReconcileBook generates them automatically using the cost-to-cost method — live from QuickBooks, no spreadsheet required.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-3 text-left max-w-2xl mx-auto">
-              {[
-                '% Complete calculated automatically (cost-to-cost method)',
-                'Over/under billings per project',
-                'Retainage tracked separately — not buried in AR',
-                'Revenue earned vs. billed — the number banks require',
-                'Cost to complete and gross margin per job',
-                'Download PDF in one click — bonding agent ready',
-              ].map(b => (
-                <div key={b} className="flex gap-3 items-start">
-                  <Check />
-                  <span className="text-slate-700 text-sm">{b}</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-2">Before vs. After</p>
+            <h2 className="text-4xl font-extrabold text-slate-900">This is what changes when you use ReconcileBook.</h2>
+            <p className="text-slate-500 mt-3 text-lg">Hours of Excel work every month — replaced by 30 seconds.</p>
           </div>
 
-          {/* Before / After — big, full width */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* BEFORE */}
             <div className="flex flex-col">
@@ -630,28 +587,28 @@ export default function LandingPage() {
                 <span className="bg-red-100 text-red-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">Before</span>
                 <span className="text-slate-500 text-sm font-medium">2–4 hours per client in Excel</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl flex-1" style={{ height: '430px' }}>
-                <div className="bg-red-50 border-b border-red-200 px-4 py-2.5 flex items-center gap-2">
+              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl" style={{ height: '340px' }}>
+                <div className="bg-red-50 border-b border-red-200 px-4 py-2 flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-slate-300" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
                   </div>
                   <span className="text-xs text-red-400 font-mono">WIP Report (Manual).xlsx — Excel</span>
                 </div>
                 <Image
                   src="/wip-excel-manual.png"
-                  alt="WIP report built manually in Microsoft Excel — messy and time consuming"
+                  alt="WIP report built manually in Microsoft Excel"
                   width={900}
                   height={500}
                   className="w-full object-cover object-top"
-                  style={{ height: 'calc(100% - 41px)' }}
+                  style={{ height: 'calc(100% - 37px)' }}
                 />
               </div>
               <ul className="mt-4 space-y-2 text-sm text-slate-500">
-                <li className="flex items-start gap-2"><span className="text-red-400 font-bold mt-0.5 flex-shrink-0">✗</span> Export 3–4 reports from QuickBooks manually</li>
-                <li className="flex items-start gap-2"><span className="text-red-400 font-bold mt-0.5 flex-shrink-0">✗</span> Clean, paste, and write all formulas by hand</li>
-                <li className="flex items-start gap-2"><span className="text-red-400 font-bold mt-0.5 flex-shrink-0">✗</span> Repeat for every client, every single month</li>
+                <li className="flex items-start gap-2"><span className="text-red-400 font-bold flex-shrink-0">✗</span> Export 3–4 reports from QuickBooks manually</li>
+                <li className="flex items-start gap-2"><span className="text-red-400 font-bold flex-shrink-0">✗</span> Clean, paste, and write all formulas by hand</li>
+                <li className="flex items-start gap-2"><span className="text-red-400 font-bold flex-shrink-0">✗</span> Repeat for every client, every single month</li>
               </ul>
             </div>
 
@@ -661,33 +618,78 @@ export default function LandingPage() {
                 <span className="bg-emerald-100 text-emerald-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">After</span>
                 <span className="text-slate-500 text-sm font-medium">30 seconds with ReconcileBook</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl flex-1" style={{ height: '430px' }}>
-                <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-2.5 flex items-center gap-2">
+              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl" style={{ height: '340px' }}>
+                <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-2 flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-amber-400" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                   </div>
                   <span className="text-xs text-emerald-600 font-mono">app.reconcilebook.com/clients/apex/wip</span>
                 </div>
-                <div style={{ height: 'calc(100% - 41px)', overflow: 'hidden' }}>
+                <div style={{ height: 'calc(100% - 37px)', overflow: 'hidden' }}>
                   <WipMockup />
                 </div>
               </div>
               <ul className="mt-4 space-y-2 text-sm text-slate-500">
-                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5 flex-shrink-0">✓</span> Connect QuickBooks — WIP generates instantly</li>
-                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5 flex-shrink-0">✓</span> % complete, over/under billings, retainage — all there</li>
-                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5 flex-shrink-0">✓</span> Download PDF in one click — done</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold flex-shrink-0">✓</span> Connect QuickBooks — WIP generates instantly</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold flex-shrink-0">✓</span> % complete, over/under billings, retainage — all there</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold flex-shrink-0">✓</span> Download PDF in one click — done</li>
               </ul>
             </div>
           </div>
 
-          {/* Time savings pill */}
           <div className="flex justify-center mt-10">
             <div className="bg-slate-900 text-white rounded-2xl px-10 py-5 text-center">
               <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-1">Time savings</p>
               <p className="text-3xl font-extrabold">Save 20+ hours/month</p>
               <p className="text-slate-400 text-sm mt-1">For a bookkeeper with 10 construction clients — that&apos;s half a work week back.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TABBED LIVE PREVIEW */}
+      <TabbedPreview />
+
+      {/* FEATURE 1 — WIP + DEMO VIDEO */}
+      <section id="features" className="py-20 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-block text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">WIP Schedules</div>
+              <h2 className="text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+                WIP schedule done in 30 seconds — not 3 hours.
+              </h2>
+              <p className="text-slate-500 text-lg leading-relaxed mb-6">
+                Your contractor clients need WIP reports for bonding, lenders, and monthly close. ReconcileBook generates them automatically using the cost-to-cost method — live from QuickBooks, no spreadsheet required.
+              </p>
+              <div className="space-y-3">
+                {[
+                  '% Complete calculated automatically (cost-to-cost method)',
+                  'Over/under billings per project',
+                  'Retainage tracked separately — not buried in AR',
+                  'Revenue earned vs. billed — the number banks require',
+                  'Cost to complete and gross margin per job',
+                  'Download PDF in one click — bonding agent ready',
+                ].map(b => (
+                  <div key={b} className="flex gap-3 items-start">
+                    <Check />
+                    <span className="text-slate-700 text-sm">{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">See it in action</p>
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-black aspect-video">
+                <iframe
+                  src="https://drive.google.com/file/d/1Lht9gLdhskXVVAbKeBzuOTrq2SH2sPXb/preview"
+                  className="w-full h-full"
+                  allow="autoplay"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </div>
