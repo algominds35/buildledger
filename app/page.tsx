@@ -646,13 +646,21 @@ export default function LandingPage() {
               <p className="text-slate-400 text-sm mt-1">For a bookkeeper with 10 construction clients — that&apos;s half a work week back.</p>
             </div>
           </div>
+
+          {/* CTA under before/after */}
+          <div className="mt-10 text-center">
+            <Link href="/login" className="inline-block px-8 py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-base rounded-xl transition-colors shadow-lg shadow-amber-100">
+              Start free trial →
+            </Link>
+            <p className="text-slate-400 text-sm mt-3">14-day free trial · No credit card required · Set up in 5 minutes</p>
+          </div>
         </div>
       </section>
 
       {/* TABBED LIVE PREVIEW */}
       <TabbedPreview />
 
-      {/* FEATURE 1 — WIP + DEMO VIDEO */}
+      {/* FEATURE 1 — WIP */}
       <section id="features" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -680,17 +688,9 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-            <div>
-              <p className="text-amber-500 text-sm font-bold uppercase tracking-widest mb-3">See it in action</p>
-              <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-black aspect-video">
-                <iframe
-                  src="https://drive.google.com/file/d/1Lht9gLdhskXVVAbKeBzuOTrq2SH2sPXb/preview"
-                  className="w-full h-full"
-                  allow="autoplay"
-                  allowFullScreen
-                />
-              </div>
-            </div>
+            <BrowserMockup url="app.reconcilebook.com/clients/apex/wip">
+              <WipMockup />
+            </BrowserMockup>
           </div>
         </div>
       </section>
