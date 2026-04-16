@@ -630,7 +630,7 @@ export default function LandingPage() {
                 <span className="bg-red-100 text-red-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">Before</span>
                 <span className="text-slate-500 text-sm font-medium">2–4 hours per client in Excel</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl flex-1">
+              <div className="rounded-2xl overflow-hidden border-2 border-red-200 shadow-xl flex-1" style={{ height: '430px' }}>
                 <div className="bg-red-50 border-b border-red-200 px-4 py-2.5 flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-400" />
@@ -644,7 +644,8 @@ export default function LandingPage() {
                   alt="WIP report built manually in Microsoft Excel — messy and time consuming"
                   width={900}
                   height={500}
-                  className="w-full"
+                  className="w-full object-cover object-top"
+                  style={{ height: 'calc(100% - 41px)' }}
                 />
               </div>
               <ul className="mt-4 space-y-2 text-sm text-slate-500">
@@ -660,7 +661,7 @@ export default function LandingPage() {
                 <span className="bg-emerald-100 text-emerald-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wide">After</span>
                 <span className="text-slate-500 text-sm font-medium">30 seconds with ReconcileBook</span>
               </div>
-              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl flex-1">
+              <div className="rounded-2xl overflow-hidden border-2 border-emerald-300 shadow-xl flex-1" style={{ height: '430px' }}>
                 <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-2.5 flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-400" />
@@ -669,13 +670,9 @@ export default function LandingPage() {
                   </div>
                   <span className="text-xs text-emerald-600 font-mono">app.reconcilebook.com/clients/apex/wip</span>
                 </div>
-                <Image
-                  src="/wip-schedule-app.png"
-                  alt="ReconcileBook WIP Schedule — automated from QuickBooks Online in 30 seconds"
-                  width={900}
-                  height={500}
-                  className="w-full"
-                />
+                <div style={{ height: 'calc(100% - 41px)', overflow: 'hidden' }}>
+                  <WipMockup />
+                </div>
               </div>
               <ul className="mt-4 space-y-2 text-sm text-slate-500">
                 <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5 flex-shrink-0">✓</span> Connect QuickBooks — WIP generates instantly</li>
