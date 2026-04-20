@@ -24,7 +24,7 @@ function Dash() {
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null)
 
-  async function handleSubscribe(plan: 'starter' | 'pro') {
+  async function handleSubscribe(plan: 'pro') {
     setLoading(plan)
     try {
       const { data: { session } } = await supabase.auth.getSession()
@@ -43,19 +43,6 @@ export default function PricingPage() {
       setLoading(null)
     }
   }
-
-  const starterFeatures = [
-    { text: '1 company (your own)', included: true },
-    { text: 'WIP Schedule — cost-to-cost method', included: true },
-    { text: 'Job Costing reports', included: true },
-    { text: 'One-click PDF export', included: true },
-    { text: 'QuickBooks Online integration', included: true },
-    { text: 'Over/under billing tracking', included: true },
-    { text: 'Retainage tracking', included: true },
-    { text: 'Multi-client dashboard', included: false },
-    { text: 'Portfolio overview', included: false },
-    { text: 'Priority support', included: false },
-  ]
 
   const proFeatures = [
     { text: 'Unlimited construction clients', included: true },
@@ -188,29 +175,27 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto mb-20">
           <h2 className="text-2xl font-extrabold text-slate-900 text-center mb-8">Compare plans</h2>
           <div className="rounded-2xl border border-slate-200 overflow-hidden">
-            <div className="grid grid-cols-4 bg-slate-900 text-white text-sm font-bold">
+            <div className="grid grid-cols-3 bg-slate-900 text-white text-sm font-bold">
               <div className="px-6 py-4 text-slate-400">Feature</div>
-              <div className="px-6 py-4 text-center">Starter</div>
               <div className="px-6 py-4 text-center text-amber-400">Pro</div>
               <div className="px-6 py-4 text-center">Enterprise</div>
             </div>
             {[
-              { feature: 'QBO companies', starter: '1 (your own)', pro: 'Unlimited', ent: 'Unlimited' },
-              { feature: 'WIP Schedule', starter: '✓', pro: '✓', ent: '✓' },
-              { feature: 'Job Costing reports', starter: '✓', pro: '✓', ent: '✓' },
-              { feature: 'PDF export', starter: '✓', pro: '✓', ent: '✓' },
-              { feature: 'QuickBooks Online', starter: '✓', pro: '✓', ent: '✓' },
-              { feature: 'Over/under billing', starter: '✓', pro: '✓', ent: '✓' },
-              { feature: 'Multi-client dashboard', starter: '—', pro: '✓', ent: '✓' },
-              { feature: 'Retainage tracking', starter: '—', pro: '✓', ent: '✓' },
-              { feature: 'Portfolio overview', starter: '—', pro: '✓', ent: '✓' },
-              { feature: 'Team seats', starter: '—', pro: '—', ent: '✓' },
-              { feature: 'White-label', starter: '—', pro: '—', ent: '✓' },
-              { feature: 'Dedicated support', starter: 'Email', pro: 'Priority', ent: 'Dedicated' },
+              { feature: 'QBO companies', pro: 'Unlimited', ent: 'Unlimited' },
+              { feature: 'WIP Schedule', pro: '✓', ent: '✓' },
+              { feature: 'Job Costing reports', pro: '✓', ent: '✓' },
+              { feature: 'PDF export', pro: '✓', ent: '✓' },
+              { feature: 'QuickBooks Online', pro: '✓', ent: '✓' },
+              { feature: 'Over/under billing', pro: '✓', ent: '✓' },
+              { feature: 'Multi-client dashboard', pro: '✓', ent: '✓' },
+              { feature: 'Retainage tracking', pro: '✓', ent: '✓' },
+              { feature: 'Portfolio overview', pro: '✓', ent: '✓' },
+              { feature: 'Team seats', pro: '—', ent: '✓' },
+              { feature: 'White-label', pro: '—', ent: '✓' },
+              { feature: 'Dedicated support', pro: 'Priority', ent: 'Dedicated' },
             ].map((row, i) => (
-              <div key={row.feature} className={`grid grid-cols-4 text-sm border-t border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+              <div key={row.feature} className={`grid grid-cols-3 text-sm border-t border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                 <div className="px-6 py-3.5 text-slate-700 font-medium">{row.feature}</div>
-                <div className="px-6 py-3.5 text-center text-slate-500">{row.starter}</div>
                 <div className="px-6 py-3.5 text-center font-semibold text-slate-900">{row.pro}</div>
                 <div className="px-6 py-3.5 text-center text-slate-500">{row.ent}</div>
               </div>
@@ -224,8 +209,7 @@ export default function PricingPage() {
           <div className="space-y-4">
             {[
               { q: 'Do I need a credit card to start?', a: 'No. Your 14-day free trial starts the moment you sign up — no credit card required. You only enter payment details when your trial ends.' },
-              { q: 'Can I switch plans later?', a: 'Yes. You can upgrade from Starter to Pro at any time from your billing portal. The difference is prorated automatically by Stripe.' },
-              { q: 'What counts as a "client" on the Starter plan?', a: 'Each QuickBooks Online company you connect counts as one client. The Starter plan allows up to 3 connected QBO accounts.' },
+              { q: 'How many QBO companies can I connect?', a: 'On the Pro plan you can connect unlimited QuickBooks Online companies. Each connected QBO account is one company.' },
               { q: 'Can I cancel anytime?', a: 'Yes. Cancel anytime from your billing portal with no fees or penalties. You keep access until the end of your billing period.' },
               { q: 'Does it work with QuickBooks Desktop?', a: 'ReconcileBook connects to QuickBooks Online only. All QBO plans are supported — Simple Start, Essentials, Plus, and Advanced.' },
               { q: 'What happens to my data if I cancel?', a: 'Your data stays in QuickBooks — ReconcileBook only reads from QBO and never stores your financial data permanently.' },
