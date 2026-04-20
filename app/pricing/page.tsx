@@ -119,7 +119,7 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-slate-900">$49</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-500 text-sm">For financial controllers managing a few construction clients.</p>
+              <p className="text-slate-500 text-sm">For financial controllers managing a few construction projects.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
@@ -153,7 +153,7 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-white">$99</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-400 text-sm">For financial controllers managing multiple construction clients — no limits.</p>
+              <p className="text-slate-400 text-sm">For bookkeepers managing multiple construction clients — no limits.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
