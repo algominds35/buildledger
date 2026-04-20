@@ -108,40 +108,10 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* 3 pricing cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+        {/* 2 pricing cards */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-20">
 
-          {/* Starter — $49 */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
-            <div className="mb-6">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Starter</div>
-              <div className="flex items-end gap-1 mb-1">
-                <span className="text-5xl font-extrabold text-slate-900">$49</span>
-                <span className="text-slate-400 mb-2 text-base">/month</span>
-              </div>
-              <p className="text-slate-500 text-sm">For financial controllers working inside a single construction company.</p>
-            </div>
-
-            <ul className="space-y-3 mb-8 flex-1">
-              {starterFeatures.map(f => (
-                <li key={f.text} className="flex items-start gap-2.5 text-sm">
-                  {f.included ? <Check /> : <Dash />}
-                  <span className={f.included ? 'text-slate-700' : 'text-slate-400'}>{f.text}</span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              onClick={() => handleSubscribe('starter')}
-              disabled={loading === 'starter'}
-              className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
-            >
-              {loading === 'starter' ? 'Redirecting…' : 'Start free trial →'}
-            </button>
-            <p className="text-center text-slate-500 text-xs mt-2 font-medium">14-day free trial · No credit card required</p>
-          </div>
-
-          {/* Pro — $99 (most popular) */}
+          {/* Pro — $99 */}
           <div className="bg-slate-900 rounded-3xl border-2 border-amber-400 p-8 flex flex-col relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
               <span className="bg-amber-400 text-slate-900 text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span>
@@ -174,7 +144,6 @@ export default function PricingPage() {
             >
               {loading === 'pro' ? 'Redirecting…' : 'Start free trial →'}
             </button>
-            <p className="text-center text-slate-300 text-xs mt-2 font-medium">14-day free trial · No credit card required</p>
           </div>
 
           {/* Enterprise */}
