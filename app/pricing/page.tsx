@@ -45,7 +45,7 @@ export default function PricingPage() {
   }
 
   const starterFeatures = [
-    { text: 'Up to 3 contractor clients', included: true },
+    { text: 'Up to 3 construction clients', included: true },
     { text: 'WIP Schedule — cost-to-cost method', included: true },
     { text: 'Job Costing reports', included: true },
     { text: 'One-click PDF export', included: true },
@@ -58,7 +58,7 @@ export default function PricingPage() {
   ]
 
   const proFeatures = [
-    { text: 'Unlimited contractor clients', included: true },
+    { text: 'Unlimited construction clients', included: true },
     { text: 'WIP Schedule — cost-to-cost method', included: true },
     { text: 'Job Costing reports', included: true },
     { text: 'One-click PDF export', included: true },
@@ -119,7 +119,7 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-slate-900">$49</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-500 text-sm">For bookkeepers just getting started with a few contractor clients.</p>
+              <p className="text-slate-500 text-sm">For financial controllers managing a few construction clients.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
@@ -153,7 +153,7 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-white">$99</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-400 text-sm">For bookkeepers managing multiple contractor clients — no limits.</p>
+              <p className="text-slate-400 text-sm">For financial controllers managing multiple construction clients — no limits.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
@@ -184,7 +184,7 @@ export default function PricingPage() {
               <div className="flex items-end gap-1 mb-1">
                 <span className="text-4xl font-extrabold text-slate-900">Custom</span>
               </div>
-              <p className="text-slate-500 text-sm">For large bookkeeping firms or teams needing custom setup and support.</p>
+              <p className="text-slate-500 text-sm">For finance teams and large firms needing custom setup and dedicated support.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
