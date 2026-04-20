@@ -45,14 +45,14 @@ export default function PricingPage() {
   }
 
   const starterFeatures = [
-    { text: 'Up to 3 construction clients', included: true },
+    { text: '1 company (your own)', included: true },
     { text: 'WIP Schedule — cost-to-cost method', included: true },
     { text: 'Job Costing reports', included: true },
     { text: 'One-click PDF export', included: true },
     { text: 'QuickBooks Online integration', included: true },
     { text: 'Over/under billing tracking', included: true },
+    { text: 'Retainage tracking', included: true },
     { text: 'Multi-client dashboard', included: false },
-    { text: 'Retainage tracking', included: false },
     { text: 'Portfolio overview', included: false },
     { text: 'Priority support', included: false },
   ]
@@ -119,7 +119,7 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-slate-900">$49</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-500 text-sm">For financial controllers managing a few construction projects.</p>
+              <p className="text-slate-500 text-sm">For financial controllers working inside a single construction company.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
@@ -226,7 +226,7 @@ export default function PricingPage() {
               <div className="px-6 py-4 text-center">Enterprise</div>
             </div>
             {[
-              { feature: 'Contractor clients', starter: 'Up to 3', pro: 'Unlimited', ent: 'Unlimited' },
+              { feature: 'QBO companies', starter: '1 (your own)', pro: 'Unlimited', ent: 'Unlimited' },
               { feature: 'WIP Schedule', starter: '✓', pro: '✓', ent: '✓' },
               { feature: 'Job Costing reports', starter: '✓', pro: '✓', ent: '✓' },
               { feature: 'PDF export', starter: '✓', pro: '✓', ent: '✓' },
