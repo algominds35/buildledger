@@ -24,12 +24,12 @@ function Dash() {
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null)
 
-  async function handleSubscribe(plan: 'pro') {
+  async function handleSubscribe(plan: 'pro' | 'team') {
     setLoading(plan)
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        window.location.href = '/login?next=pricing'
+        window.location.href = `/login?next=${plan === 'team' ? 'team' : 'pricing'}`
         return
       }
       const res = await fetch('/api/stripe/checkout', {
@@ -45,16 +45,21 @@ export default function PricingPage() {
   }
 
   const proFeatures = [
-    { text: 'Unlimited construction clients', included: true },
-    { text: 'WIP Schedule — cost-to-cost method', included: true },
-    { text: 'Job Costing reports', included: true },
-    { text: 'One-click PDF export', included: true },
-    { text: 'QuickBooks Online integration', included: true },
-    { text: 'Over/under billing tracking', included: true },
-    { text: 'Multi-client dashboard', included: true },
-    { text: 'Retainage tracking', included: true },
-    { text: 'Portfolio overview', included: true },
-    { text: 'Priority support', included: true },
+    'Works with QuickBooks Online',
+    'Automatically generate WIP schedules',
+    'Instant job costing and over/under billing',
+    'Multi-client dashboard',
+    'Retainage tracking',
+    'Export reports in seconds',
+    'Priority support',
+  ]
+
+  const teamFeatures = [
+    'Everything in Pro',
+    'Multiple companies / entities',
+    'Team access (multi-user)',
+    'Faster / bulk report generation',
+    'Priority support',
   ]
 
   return (
@@ -95,8 +100,8 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* 2 pricing cards */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-20">
+        {/* 3 pricing cards */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
 
           {/* Pro — $99 */}
           <div className="bg-slate-900 rounded-3xl border-2 border-amber-400 p-8 flex flex-col relative">
@@ -110,16 +115,16 @@ export default function PricingPage() {
                 <span className="text-5xl font-extrabold text-white">$99</span>
                 <span className="text-slate-400 mb-2 text-base">/month</span>
               </div>
-              <p className="text-slate-400 text-sm">For bookkeepers managing multiple construction clients — no limits.</p>
+              <p className="text-slate-400 text-sm">For bookkeepers, ProAdvisors, and Financial Controllers managing construction companies — generate WIP and job costing automatically from QuickBooks.</p>
             </div>
 
             <ul className="space-y-3 mb-8 flex-1">
               {proFeatures.map(f => (
-                <li key={f.text} className="flex items-start gap-2.5 text-sm">
+                <li key={f} className="flex items-start gap-2.5 text-sm">
                   <svg className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
-                  <span className="text-slate-200">{f.text}</span>
+                  <span className="text-slate-200">{f}</span>
                 </li>
               ))}
             </ul>
@@ -129,7 +134,36 @@ export default function PricingPage() {
               disabled={loading === 'pro'}
               className="w-full py-3.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
             >
-              {loading === 'pro' ? 'Redirecting…' : 'Start free trial →'}
+              {loading === 'pro' ? 'Redirecting…' : 'Start free 14-day trial →'}
+            </button>
+          </div>
+
+          {/* Team — $199 */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 flex flex-col">
+            <div className="mb-6">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Team</div>
+              <div className="flex items-end gap-1 mb-1">
+                <span className="text-5xl font-extrabold text-slate-900">$199</span>
+                <span className="text-slate-400 mb-2 text-base">/month</span>
+              </div>
+              <p className="text-slate-500 text-sm">For firms managing multiple companies, clients, or higher usage.</p>
+            </div>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {teamFeatures.map(f => (
+                <li key={f} className="flex items-start gap-2.5 text-sm">
+                  <Check />
+                  <span className="text-slate-700">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              onClick={() => handleSubscribe('team')}
+              disabled={loading === 'team'}
+              className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors text-sm"
+            >
+              {loading === 'team' ? 'Redirecting…' : 'Choose Team →'}
             </button>
           </div>
 
@@ -145,8 +179,7 @@ export default function PricingPage() {
 
             <ul className="space-y-3 mb-8 flex-1">
               {[
-                'Everything in Pro',
-                'Unlimited team seats',
+                'Everything in Team',
                 'Custom onboarding & training',
                 'White-label option',
                 'Dedicated account manager',
@@ -163,7 +196,7 @@ export default function PricingPage() {
 
             <a
               href="mailto:alex@reconcilebookapp.com?subject=Enterprise inquiry"
-              className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-sm text-center block"
+              className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-xl transition-colors text-sm text-center block"
             >
               Contact us →
             </a>
@@ -175,28 +208,30 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto mb-20">
           <h2 className="text-2xl font-extrabold text-slate-900 text-center mb-8">Compare plans</h2>
           <div className="rounded-2xl border border-slate-200 overflow-hidden">
-            <div className="grid grid-cols-3 bg-slate-900 text-white text-sm font-bold">
+            <div className="grid grid-cols-4 bg-slate-900 text-white text-sm font-bold">
               <div className="px-6 py-4 text-slate-400">Feature</div>
               <div className="px-6 py-4 text-center text-amber-400">Pro</div>
+              <div className="px-6 py-4 text-center">Team</div>
               <div className="px-6 py-4 text-center">Enterprise</div>
             </div>
             {[
-              { feature: 'QBO companies', pro: 'Unlimited', ent: 'Unlimited' },
-              { feature: 'WIP Schedule', pro: '✓', ent: '✓' },
-              { feature: 'Job Costing reports', pro: '✓', ent: '✓' },
-              { feature: 'PDF export', pro: '✓', ent: '✓' },
-              { feature: 'QuickBooks Online', pro: '✓', ent: '✓' },
-              { feature: 'Over/under billing', pro: '✓', ent: '✓' },
-              { feature: 'Multi-client dashboard', pro: '✓', ent: '✓' },
-              { feature: 'Retainage tracking', pro: '✓', ent: '✓' },
-              { feature: 'Portfolio overview', pro: '✓', ent: '✓' },
-              { feature: 'Team seats', pro: '—', ent: '✓' },
-              { feature: 'White-label', pro: '—', ent: '✓' },
-              { feature: 'Dedicated support', pro: 'Priority', ent: 'Dedicated' },
+              { feature: 'QBO companies', pro: 'Unlimited', team: 'Unlimited', ent: 'Unlimited' },
+              { feature: 'WIP Schedule', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'Job Costing reports', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'PDF export', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'QuickBooks Online', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'Over/under billing', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'Multi-client dashboard', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'Retainage tracking', pro: '✓', team: '✓', ent: '✓' },
+              { feature: 'Team seats (multi-user)', pro: '—', team: '✓', ent: '✓' },
+              { feature: 'Bulk report generation', pro: '—', team: '✓', ent: '✓' },
+              { feature: 'White-label', pro: '—', team: '—', ent: '✓' },
+              { feature: 'Dedicated support', pro: 'Priority', team: 'Priority', ent: 'Dedicated' },
             ].map((row, i) => (
-              <div key={row.feature} className={`grid grid-cols-3 text-sm border-t border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+              <div key={row.feature} className={`grid grid-cols-4 text-sm border-t border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                 <div className="px-6 py-3.5 text-slate-700 font-medium">{row.feature}</div>
                 <div className="px-6 py-3.5 text-center font-semibold text-slate-900">{row.pro}</div>
+                <div className="px-6 py-3.5 text-center text-slate-500">{row.team}</div>
                 <div className="px-6 py-3.5 text-center text-slate-500">{row.ent}</div>
               </div>
             ))}
