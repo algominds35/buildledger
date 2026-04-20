@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
@@ -17,6 +17,13 @@ const fmt = (n: number) =>
 
 const pct = (n: number) => `${n.toFixed(1)}%`
 
+type CellOverrides = {
+  contractAmount?: number
+  estimatedCosts?: number
+}
+
+type EditingCell = { id: string; field: 'pct' | 'contractAmount' | 'estimatedCosts' } | null
+
 function PctBar({ value, color }: { value: number; color: string }) {
   return (
     <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1">
@@ -25,15 +32,114 @@ function PctBar({ value, color }: { value: number; color: string }) {
   )
 }
 
-function applyOverride(row: WipRow, manualPct: number | undefined): WipRow {
-  if (manualPct === undefined) return row
-  const p = Math.min(Math.max(manualPct, 0), 100)
-  const earnedRevenue = row.contractAmount * (p / 100)
+function applyOverride(
+  row: WipRow,
+  manualPct: number | undefined,
+  overrides: CellOverrides
+): WipRow {
+  const contractAmount = overrides.contractAmount ?? row.contractAmount
+  const estimatedCosts = overrides.estimatedCosts ?? row.estimatedCosts
+
+  const rawPct = estimatedCosts > 0 ? (row.costsToDate / estimatedCosts) * 100 : 0
+  const p = manualPct !== undefined
+    ? Math.min(Math.max(manualPct, 0), 100)
+    : Math.min(Math.max(rawPct, 0), 100)
+
+  const earnedRevenue = contractAmount * (p / 100)
   const overBilling = Math.max(0, row.billedToDate - earnedRevenue)
   const underBilling = Math.max(0, earnedRevenue - row.billedToDate)
+  const costToComplete = Math.max(0, estimatedCosts - row.costsToDate)
   const grossProfit = earnedRevenue - row.costsToDate
   const grossMarginPct = earnedRevenue > 0 ? (grossProfit / earnedRevenue) * 100 : 0
-  return { ...row, pctComplete: p, earnedRevenue, overBilling, underBilling, grossProfit, grossMarginPct }
+
+  return {
+    ...row,
+    contractAmount,
+    estimatedCosts,
+    pctComplete: p,
+    earnedRevenue,
+    overBilling,
+    underBilling,
+    costToComplete,
+    grossProfit,
+    grossMarginPct,
+  }
+}
+
+// Inline editable dollar cell
+function EditableDollarCell({
+  id,
+  field,
+  value,
+  isOverridden,
+  editing,
+  onStartEdit,
+  onSave,
+  onCancel,
+  className,
+}: {
+  id: string
+  field: 'contractAmount' | 'estimatedCosts'
+  value: number
+  isOverridden: boolean
+  editing: EditingCell
+  onStartEdit: (id: string, field: 'contractAmount' | 'estimatedCosts') => void
+  onSave: (id: string, field: 'contractAmount' | 'estimatedCosts', val: string) => void
+  onCancel: () => void
+  className?: string
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const isEditing = editing?.id === id && editing?.field === field
+
+  useEffect(() => {
+    if (isEditing) inputRef.current?.select()
+  }, [isEditing])
+
+  if (isEditing) {
+    return (
+      <td className="px-4 py-2">
+        <div className="flex items-center gap-1 justify-end">
+          <span className="text-slate-400 text-xs">$</span>
+          <input
+            ref={inputRef}
+            type="number"
+            min={0}
+            step={1000}
+            defaultValue={Math.round(value)}
+            onBlur={e => onSave(id, field, e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') onSave(id, field, (e.target as HTMLInputElement).value)
+              if (e.key === 'Escape') onCancel()
+            }}
+            className="w-28 text-right text-sm font-semibold border border-amber-400 rounded-lg px-2 py-0.5 focus:outline-none focus:ring-2 focus:ring-amber-300"
+          />
+        </div>
+      </td>
+    )
+  }
+
+  return (
+    <td className={`px-4 py-3 text-right print:pointer-events-none ${className ?? ''}`}>
+      <button
+        type="button"
+        title="Click to edit"
+        onClick={() => onStartEdit(id, field)}
+        className={`font-medium rounded px-1 transition-colors group relative ${
+          isOverridden
+            ? 'text-amber-700 bg-amber-50 ring-1 ring-amber-300 hover:bg-amber-100'
+            : 'text-slate-700 hover:bg-slate-100'
+        }`}
+      >
+        {fmt(value)}
+        {isOverridden && <span className="ml-1 text-[10px] text-amber-500">✎</span>}
+        {!isOverridden && (
+          <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 whitespace-nowrap bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-sm pointer-events-none transition-opacity">
+            click to edit
+          </span>
+        )}
+      </button>
+    </td>
+  )
 }
 
 export default function WipClient({ realmId }: { realmId: string }) {
@@ -44,7 +150,8 @@ export default function WipClient({ realmId }: { realmId: string }) {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'active' | 'complete'>('active')
   const [manualPcts, setManualPcts] = useState<Record<string, number>>({})
-  const [editingId, setEditingId] = useState<string | null>(null)
+  const [cellOverrides, setCellOverrides] = useState<Record<string, CellOverrides>>({})
+  const [editingCell, setEditingCell] = useState<EditingCell>(null)
   const [editValue, setEditValue] = useState('')
   const { exportPdf, exporting, error: pdfError, clearError: clearPdfError } = usePdfExport()
 
@@ -52,6 +159,10 @@ export default function WipClient({ realmId }: { realmId: string }) {
     const stored = localStorage.getItem(`wip-pct-${realmId}`)
     if (stored) {
       try { setManualPcts(JSON.parse(stored)) } catch { /* ignore */ }
+    }
+    const storedOverrides = localStorage.getItem(`wip-overrides-${realmId}`)
+    if (storedOverrides) {
+      try { setCellOverrides(JSON.parse(storedOverrides)) } catch { /* ignore */ }
     }
   }, [realmId])
 
@@ -82,10 +193,34 @@ export default function WipClient({ realmId }: { realmId: string }) {
     }
     setManualPcts(next)
     localStorage.setItem(`wip-pct-${realmId}`, JSON.stringify(next))
-    setEditingId(null)
+    setEditingCell(null)
   }
 
-  const rows = wip.map(r => applyOverride(r, manualPcts[r.id]))
+  function saveCellOverride(id: string, field: 'contractAmount' | 'estimatedCosts', value: string) {
+    const num = parseFloat(value)
+    const next = { ...cellOverrides }
+    if (isNaN(num) || num <= 0) {
+      const { [field]: _, ...rest } = next[id] ?? {}
+      next[id] = rest
+    } else {
+      next[id] = { ...(next[id] ?? {}), [field]: num }
+    }
+    setCellOverrides(next)
+    localStorage.setItem(`wip-overrides-${realmId}`, JSON.stringify(next))
+    setEditingCell(null)
+  }
+
+  function resetOverride(id: string, field: 'contractAmount' | 'estimatedCosts') {
+    const next = { ...cellOverrides }
+    if (next[id]) {
+      const { [field]: _, ...rest } = next[id]
+      next[id] = rest
+    }
+    setCellOverrides(next)
+    localStorage.setItem(`wip-overrides-${realmId}`, JSON.stringify(next))
+  }
+
+  const rows = wip.map(r => applyOverride(r, manualPcts[r.id], cellOverrides[r.id] ?? {}))
 
   if (loading) return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -241,10 +376,28 @@ export default function WipClient({ realmId }: { realmId: string }) {
                         {row.status === 'active' ? 'Active' : row.status === 'complete' ? 'Complete' : 'Not Started'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right text-slate-700">{fmt(row.contractAmount)}</td>
-                    <td className="px-4 py-3 text-right text-slate-500">{fmt(row.estimatedCosts)}</td>
+                    <EditableDollarCell
+                      id={row.id}
+                      field="contractAmount"
+                      value={row.contractAmount}
+                      isOverridden={cellOverrides[row.id]?.contractAmount !== undefined}
+                      editing={editingCell}
+                      onStartEdit={(id, field) => setEditingCell({ id, field })}
+                      onSave={saveCellOverride}
+                      onCancel={() => setEditingCell(null)}
+                    />
+                    <EditableDollarCell
+                      id={row.id}
+                      field="estimatedCosts"
+                      value={row.estimatedCosts}
+                      isOverridden={cellOverrides[row.id]?.estimatedCosts !== undefined}
+                      editing={editingCell}
+                      onStartEdit={(id, field) => setEditingCell({ id, field })}
+                      onSave={saveCellOverride}
+                      onCancel={() => setEditingCell(null)}
+                    />
                     <td className="px-4 py-3 print:text-center">
-                      {editingId === row.id ? (
+                      {editingCell?.id === row.id && editingCell?.field === 'pct' ? (
                         <div className="flex items-center gap-1">
                           <input
                             type="number"
@@ -257,7 +410,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
                             onBlur={e => savePct(row.id, e.target.value)}
                             onKeyDown={e => {
                               if (e.key === 'Enter') savePct(row.id, editValue || (e.target as HTMLInputElement).value)
-                              if (e.key === 'Escape') setEditingId(null)
+                              if (e.key === 'Escape') setEditingCell(null)
                             }}
                             className="w-16 text-center text-sm font-semibold border border-amber-400 rounded-lg px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-amber-300"
                           />
@@ -266,7 +419,7 @@ export default function WipClient({ realmId }: { realmId: string }) {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => { setEditingId(row.id); setEditValue(row.pctComplete.toFixed(1)) }}
+                          onClick={() => { setEditingCell({ id: row.id, field: 'pct' }); setEditValue(row.pctComplete.toFixed(1)) }}
                           className={`w-full text-center font-semibold rounded-lg px-2 py-0.5 transition-colors print:pointer-events-none ${
                             manualPcts[row.id] !== undefined
                               ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 ring-1 ring-amber-300'
@@ -338,13 +491,29 @@ export default function WipClient({ realmId }: { realmId: string }) {
 
         {/* Legend */}
         <div className="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 className="font-semibold text-slate-900 mb-3 text-sm">WIP Schedule Definitions</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-slate-900 text-sm">WIP Schedule Definitions</h3>
+            {(Object.keys(manualPcts).length > 0 || Object.keys(cellOverrides).length > 0) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setManualPcts({})
+                  setCellOverrides({})
+                  localStorage.removeItem(`wip-pct-${realmId}`)
+                  localStorage.removeItem(`wip-overrides-${realmId}`)
+                }}
+                className="text-xs text-red-500 hover:text-red-700 font-medium border border-red-200 hover:border-red-300 px-2.5 py-1 rounded-lg transition-colors"
+              >
+                Reset all manual overrides
+              </button>
+            )}
+          </div>
           <p className="text-xs text-slate-500 mb-4 border-b border-slate-100 pb-2">
-            <strong className="text-slate-700">Contract $</strong> uses the job&apos;s <strong>Estimate total</strong> in QuickBooks when present (job price), not invoice sum — so <strong>Billed to Date</strong> can differ from contract and over/under billing reflects real progress.
+            <strong className="text-slate-700">Click any amber ✎ value</strong> to edit it manually. <strong className="text-slate-700">Contract $</strong>, <strong className="text-slate-700">Est. Costs</strong>, and <strong className="text-slate-700">% Complete</strong> can all be overridden — all downstream calculations update instantly. Overrides are saved locally.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-600">
             {[
-              { term: '% Complete', def: 'Costs to Date ÷ Estimated Total Costs (cost-to-cost method). Click any value to enter manually.' },
+              { term: '% Complete', def: 'Costs to Date ÷ Est. Costs (cost-to-cost). Click to override manually.' },
               { term: 'Revenue Earned', def: 'Contract Amount × % Complete' },
               { term: 'Over Billing', def: 'Billed to Date − Revenue Earned when positive — billed ahead of work completed (liability)' },
               { term: 'Under Billing', def: 'Revenue Earned − Billed to Date when positive — work completed but not yet billed (asset)' },
