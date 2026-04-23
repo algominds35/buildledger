@@ -98,6 +98,10 @@ export default function PricingPage() {
           <p className="text-slate-500 text-lg max-w-xl mx-auto">
             Start free for 14 days — no credit card required. Pick your plan when your trial ends.
           </p>
+          <div className="inline-flex items-center gap-2 mt-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold px-4 py-2 rounded-full">
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            14-day free trial · No credit card required · Cancel anytime
+          </div>
         </div>
 
         {/* 3 pricing cards */}
