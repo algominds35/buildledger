@@ -8,6 +8,30 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'quickbooks-online-setup-construction-contractor',
+    title: 'QuickBooks Online Setup for Construction Contractors — Step-by-Step Guide',
+    description: 'How to set up QuickBooks Online correctly for a construction contractor: chart of accounts, job costing, classes, customers as jobs, and WIP reporting. The complete bookkeeper guide.',
+    date: 'May 2026',
+    readTime: '11 min read',
+    tag: 'QuickBooks Setup',
+  },
+  {
+    slug: 'wip-schedule-bonding-company-lender-construction',
+    title: 'WIP Reports for Bonding Companies and Lenders — What They Actually Need',
+    description: 'What bonding companies and construction lenders look for in a WIP schedule. Format, timing, key ratios, and how to produce a report that gets your contractor client approved.',
+    date: 'May 2026',
+    readTime: '10 min read',
+    tag: 'WIP Reports',
+  },
+  {
+    slug: 'how-to-get-construction-bookkeeping-clients',
+    title: 'How to Get Construction Bookkeeping Clients — 7 Ways That Actually Work',
+    description: 'How bookkeepers and ProAdvisors can find and sign construction contractor clients. The exact outreach methods, niching strategy, and positioning that works in 2026.',
+    date: 'May 2026',
+    readTime: '9 min read',
+    tag: 'Practice Growth',
+  },
+  {
     slug: 'wip-report-excel-template-construction-free',
     title: 'WIP Report Excel Template for Construction — Free + How to Use It',
     description: 'The exact columns, formulas, and QuickBooks Online data sources you need to build a construction WIP schedule in Excel — plus a faster alternative if you manage multiple clients.',
