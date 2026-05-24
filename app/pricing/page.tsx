@@ -29,16 +29,12 @@ export default function PricingPage() {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        window.location.href = `/login?next=${plan === 'team' ? 'team' : 'pricing'}`
+        // Not signed in — send to signup. Trial auto-starts on first dashboard load.
+        window.location.href = `/login?next=dashboard`
         return
       }
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: session.user.id, plan }),
-      })
-      const { url } = await res.json()
-      window.location.href = url
+      // Already signed in — go to dashboard (trial is already running or will auto-start)
+      window.location.href = '/dashboard'
     } finally {
       setLoading(null)
     }
@@ -167,7 +163,7 @@ export default function PricingPage() {
               disabled={loading === 'team'}
               className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors text-sm"
             >
-              {loading === 'team' ? 'Redirecting…' : 'Choose Team →'}
+              {loading === 'team' ? 'Redirecting…' : 'Start free 14-day trial →'}
             </button>
           </div>
 

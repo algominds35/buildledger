@@ -19,23 +19,13 @@ export default function LoginClient() {
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // If coming from pricing, default to signup tab
+  // Default to signup tab when coming from pricing or any trial CTA
   useEffect(() => {
-    if (nextParam === 'checkout') setMode('signup')
+    if (nextParam === 'dashboard' || nextParam === 'checkout') setMode('signup')
   }, [nextParam])
 
-  async function redirectAfterAuth(userId: string) {
-    if (nextParam === 'checkout') {
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
-      })
-      const { url } = await res.json()
-      window.location.href = url
-    } else {
-      router.push('/dashboard')
-    }
+  async function redirectAfterAuth(_userId: string) {
+    router.push('/dashboard')
   }
 
   async function handleSubmit(e: React.FormEvent) {
