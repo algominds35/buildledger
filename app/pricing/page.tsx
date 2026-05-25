@@ -2,12 +2,6 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 function Check() {
   return (
@@ -22,23 +16,6 @@ function Dash() {
 }
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState<string | null>(null)
-
-  async function handleSubscribe(plan: 'pro' | 'team') {
-    setLoading(plan)
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        // Not signed in — send to signup. Trial auto-starts on first dashboard load.
-        window.location.href = `/login?next=dashboard`
-        return
-      }
-      // Already signed in — go to dashboard (trial is already running or will auto-start)
-      window.location.href = '/dashboard'
-    } finally {
-      setLoading(null)
-    }
-  }
 
   const proFeatures = [
     'Works with QuickBooks Online',
@@ -129,13 +106,12 @@ export default function PricingPage() {
               ))}
             </ul>
 
-            <button
-              onClick={() => handleSubscribe('pro')}
-              disabled={loading === 'pro'}
-              className="w-full py-3.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-slate-900 font-bold rounded-xl transition-colors text-sm"
+            <Link
+              href="/login"
+              className="block w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-colors text-sm text-center"
             >
-              {loading === 'pro' ? 'Redirecting…' : 'Start free 14-day trial →'}
-            </button>
+              Start free 14-day trial →
+            </Link>
           </div>
 
           {/* Team — $199 */}
@@ -158,13 +134,12 @@ export default function PricingPage() {
               ))}
             </ul>
 
-            <button
-              onClick={() => handleSubscribe('team')}
-              disabled={loading === 'team'}
-              className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors text-sm"
+            <Link
+              href="/login"
+              className="block w-full py-3.5 bg-slate-900 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-sm text-center"
             >
-              {loading === 'team' ? 'Redirecting…' : 'Start free 14-day trial →'}
-            </button>
+              Start free 14-day trial →
+            </Link>
           </div>
 
           {/* Enterprise */}
